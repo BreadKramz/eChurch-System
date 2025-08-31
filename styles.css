@@ -1,20 +1,34 @@
-/* Church-themed styles */
 body {
     font-family: 'Times New Roman', serif;
-    background-color: #F5F5DC; /* Beige background */
+    background-color: #F5F5DC;
     color: #333;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
+    position: relative;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: url("Saint_Catherine_Of_Alexandria_Cathedral_(Perdices_Street,_Dumaguete,_Negros_Oriental;_01-19-2023).jpg") no-repeat center center;
+    background-size: cover;
+    filter: blur(4px); 
+    z-index: -1; 
 }
 
 header {
-    background-color: #FFD700; /* Gold */
+    background-color: #FFD700;
     color: #000;
     text-align: center;
-    padding: 20px;
+    padding: 1px;
     box-shadow: 0 2px 5px rgba(0,0,0,0.1);
 }
 
