@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>eChurch System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Dumaguete Cathedral eChurch System</h1>
+        <p>Visual App - PROPOSAL</p>
+    </header>
+
+    <main>
+        <!-- Login Section -->
+        <section id="login-section" class="auth-section">
+            <h2>Login</h2>
+            <form id="login-form">
+                <label for="login-email">Email:</label>
+                <input type="email" id="login-email" required>
+                
+                <label for="login-password">Password:</label>
+                <input type="password" id="login-password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+            <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+        </section>
+
+        <!-- Register Section -->
+        <section id="register-section" class="auth-section hidden">
+            <h2>Register</h2>
+            <form id="register-form">
+                <label for="register-name">Full Name:</label>
+                <input type="text" id="register-name" required>
+                
+                <label for="register-email">Email:</label>
+                <input type="email" id="register-email" required>
+                
+                <label for="register-password">Password:</label>
+                <input type="password" id="register-password" required>
+                
+                <label for="register-confirm-password">Confirm Password:</label>
+                <input type="password" id="register-confirm-password" required>
+                
+                <button type="submit">Register</button>
+            </form>
+            <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
+        </section>
+
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="hidden">
+            <h2>Welcome, Parishioner!</h2>
+            <p>Choose an option below:</p>
+            <div class="options">
+                <button id="schedule-service-btn">Schedule Service</button>
+                <button id="donate-btn">Donate</button>
+                <button id="request-certificate-btn">Request Certificate</button>
+                <button id="announcements-btn">Announcements</button>
+            </div>
+
+            <!-- Schedule Service Form -->
+            <div id="schedule-service-form" class="option-form hidden">
+                <h3>Schedule Service</h3>
+                <form>
+                    <label for="service-date">Date:</label>
+                    <input type="date" id="service-date" required>
+                    
+                    <label for="service-time">Time:</label>
+                    <input type="time" id="service-time" required>
+                    
+                    <label for="service-type">Service Type:</label>
+                    <select id="service-type" required>
+                        <option value="mass">Mass</option>
+                        <option value="baptism">Baptism</option>
+                        <option value="wedding">Wedding</option>
+                        <option value="funeral">Funeral</option>
+                    </select>
+                    
+                    <button type="submit">Submit Request</button>
+                </form>
+            </div>
+
+            <!-- Donate Form -->
+            <div id="donate-form" class="option-form hidden">
+                <h3>Donate</h3>
+                <form>
+                    <label for="donation-amount">Amount:</label>
+                    <input type="number" id="donation-amount" min="1" required>
+                    
+                    <label for="donation-method">Payment Method:</label>
+                    <select id="donation-method" required>
+                        <option value="credit-card">Credit Card</option>
+                        <option value="paypal">PayPal</option>
+                        <option value="bank-transfer">Bank Transfer</option>
+                    </select>
+                    
+                    <button type="submit">Submit Donation</button>
+                </form>
+            </div>
+
+            <!-- Request Certificate Form -->
+            <div id="request-certificate-form" class="option-form hidden">
+                <h3>Request Certificate</h3>
+                <form>
+                    <label for="certificate-type">Certificate Type:</label>
+                    <select id="certificate-type" required>
+                        <option value="baptism">Baptism</option>
+                        <option value="confirmation">Confirmation</option>
+                        <option value="marriage">Marriage</option>
+                    </select>
+                    
+                    <label for="certificate-details">Additional Details:</label>
+                    <textarea id="certificate-details" rows="4"></textarea>
+                    
+                    <button type="submit">Submit Request</button>
+                </form>
+            </div>
+
+            <!-- Announcements Section -->
+            <div id="announcements-section" class="option-form hidden">
+                <h3>Announcements</h3>
+                <p>Example Announcements</p>
+                <ul>
+                    <li>Example...</li>
+                    <li>Example...</li>
+                    <li>Example...</li>
+                </ul>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 eChurch System (Visual APP) by Mark Real.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
