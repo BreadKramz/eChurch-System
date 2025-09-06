@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <h1>Dumaguete Cathedral eChurch System</h1>
+        <h1>Our Mother of Perpetual Help eChurch</h1>
         <p>Visual App - PROPOSAL</p>
     </header>
 
@@ -24,7 +24,7 @@
                 
                 <button type="submit">Login</button>
             </form>
-            <p>Don't have an account? <a href="#" id="show-register">Register here</a></p>
+            <p>Don't have an account? <a href="#" id="show-register">Register here</a> | <a href="#" id="show-admin-login">Admin Login</a></p>
         </section>
 
         <section id="register-section" class="auth-section hidden">
@@ -47,15 +47,31 @@
             <p>Already have an account? <a href="#" id="show-login">Login here</a></p>
         </section>
 
+        <section id="admin-login-section" class="auth-section hidden">
+            <h2>Admin Login</h2>
+            <form id="admin-login-form">
+                <label for="admin-email">Email:</label>
+                <input type="email" id="admin-email" required>
+
+                <label for="admin-password">Password:</label>
+                <input type="password" id="admin-password" required>
+
+                <button type="submit">Login</button>
+            </form>
+            <p><a href="#" id="back-to-user-login">Back to User Login</a></p>
+        </section>
+
         <section id="dashboard-section" class="hidden">
-            <h2>Welcome, Parishioner!</h2>
-            <p>Choose an option below:</p>
-            <div class="options">
-                <button id="schedule-service-btn">Schedule Service</button>
-                <button id="donate-btn">Donate</button>
-                <button id="request-certificate-btn">Request Certificate</button>
-                <button id="announcements-btn">Announcements</button>
-            </div>
+            <div class="dashboard-container">
+                <h2>Welcome, Parishioner!</h2>
+                <p>Choose an option below:</p>
+                <div class="options">
+                    <button id="schedule-service-btn">Schedule Service</button>
+                    <button id="donate-btn">Donate</button>
+                    <button id="request-certificate-btn">Request Certificate</button>
+                    <button id="announcements-btn">Announcements</button>
+                    <button id="user-logout-btn">Logout</button>
+                </div>
 
             <div id="schedule-service-form" class="option-form hidden">
                 <h3>Schedule Service</h3>
@@ -120,6 +136,139 @@
                     <li>Example...</li>
                     <li>Example...</li>
                 </ul>
+            </div>
+            </div>
+        </section>
+
+        <section id="admin-dashboard-section" class="hidden">
+            <div class="dashboard-container">
+                <h2>Welcome, Admin!</h2>
+                <p>Manage the parish system:</p>
+                <div class="options">
+                    <button id="manage-announcements-btn">📢 Manage Announcements</button>
+                    <button id="view-service-requests-btn">📅 Service Requests</button>
+                    <button id="view-donations-btn">💰 Donations</button>
+                    <button id="view-certificate-requests-btn">📄 Certificate Requests</button>
+                </div>
+                <div class="admin-actions">
+                    <button id="admin-logout-btn" class="logout-btn">Logout</button>
+                </div>
+
+            <div id="manage-announcements-form" class="option-form hidden">
+                <h3>📢 Manage Announcements</h3>
+                <p>Enter each announcement on a new line:</p>
+                <textarea id="announcements-text" rows="8" placeholder="Enter announcements here...&#10;Example: Sunday Mass at 10 AM&#10;Bible Study on Wednesday"></textarea>
+                <div class="form-actions">
+                    <button id="save-announcements-btn">💾 Save Announcements</button>
+                    <button id="preview-announcements-btn">👁️ Preview</button>
+                </div>
+            </div>
+
+            <div id="view-service-requests-section" class="option-form hidden">
+                <h3>Service Requests</h3>
+                <div class="request-list">
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Mass</strong> - January 15, 2025 at 10:00 AM
+                            <span class="status pending">Pending</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="approve-btn" data-id="1">Approve</button>
+                            <button class="reject-btn" data-id="1">Reject</button>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Baptism</strong> - January 20, 2025 at 2:00 PM
+                            <span class="status approved">Approved</span>
+                        </div>
+                        <div class="request-actions">
+                            <span class="processed">Processed</span>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Wedding</strong> - February 1, 2025 at 4:00 PM
+                            <span class="status pending">Pending</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="approve-btn" data-id="3">Approve</button>
+                            <button class="reject-btn" data-id="3">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-donations-section" class="option-form hidden">
+                <h3>Donations</h3>
+                <div class="donation-summary">
+                    <div class="summary-stat">
+                        <span class="stat-number">$350</span>
+                        <span class="stat-label">Total This Month</span>
+                    </div>
+                </div>
+                <div class="donation-list">
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <strong>$100</strong> via Credit Card
+                            <span class="donor-name">John Doe</span>
+                        </div>
+                        <span class="donation-date">Jan 10, 2025</span>
+                    </div>
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <strong>$50</strong> via PayPal
+                            <span class="donor-name">Jane Smith</span>
+                        </div>
+                        <span class="donation-date">Jan 8, 2025</span>
+                    </div>
+                    <div class="donation-item">
+                        <div class="donation-info">
+                            <strong>$200</strong> via Bank Transfer
+                            <span class="donor-name">Anonymous</span>
+                        </div>
+                        <span class="donation-date">Jan 5, 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div id="view-certificate-requests-section" class="option-form hidden">
+                <h3>Certificate Requests</h3>
+                <div class="request-list">
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Baptism Certificate</strong>
+                            <span class="requester-name">Mary Johnson</span>
+                            <span class="status pending">Pending</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="approve-btn" data-id="cert1">Approve</button>
+                            <button class="reject-btn" data-id="cert1">Reject</button>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Confirmation Certificate</strong>
+                            <span class="requester-name">Peter Lee</span>
+                            <span class="status approved">Approved</span>
+                        </div>
+                        <div class="request-actions">
+                            <span class="processed">Processed</span>
+                        </div>
+                    </div>
+                    <div class="request-item">
+                        <div class="request-info">
+                            <strong>Marriage Certificate</strong>
+                            <span class="requester-name">Couple XYZ</span>
+                            <span class="status in-review">In Review</span>
+                        </div>
+                        <div class="request-actions">
+                            <button class="approve-btn" data-id="cert3">Approve</button>
+                            <button class="reject-btn" data-id="cert3">Reject</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             </div>
         </section>
     </main>

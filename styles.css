@@ -1,14 +1,16 @@
 body {
-    font-family: 'Times New Roman', serif;
-    background-color: #F5F5DC;
-    color: #333;
+    font-family: 'Georgia', 'Times New Roman', serif;
+    background: linear-gradient(135deg, #F5F5DC 0%, #FFF8DC 100%);
+    color: #2C3E50;
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
     position: relative;
-    overflow: hidden;
+    overflow-x: hidden;
+    overflow-y: auto;
+    line-height: 1.6;
 }
 
 body::before {
@@ -18,18 +20,19 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: url("Saint_Catherine_Of_Alexandria_Cathedral_(Perdices_Street,_Dumaguete,_Negros_Oriental;_01-19-2023).jpg") no-repeat center center;
+    background: url("8913603064_c178069305_b.jpg") no-repeat center center;
     background-size: cover;
     filter: blur(4px); 
     z-index: -1; 
 }
 
 header {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
     color: #000;
     text-align: center;
-    padding: 1px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 0px 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-bottom: 3px solid #B8860B;
 }
 
 header h1 {
@@ -43,21 +46,24 @@ header p {
 }
 
 main {
-    flex: 1;
-    padding: 20px;
-    max-width: 800px;
+    flex: 1 0 auto;
+    padding: 30px 20px;
+    max-width: 900px;
     margin: 0 auto;
+    min-height: 0;
 }
 
-.auth-section, #dashboard-section {
-    background-color: #FFF;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    margin-bottom: 20px;
+.auth-section, #dashboard-section, #admin-dashboard-section {
+    background: linear-gradient(145deg, #FFFFFF 0%, #F8F9FA 100%);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.08);
+    margin-bottom: 25px;
+    border: 1px solid rgba(255,255,255,0.8);
+    backdrop-filter: blur(10px);
 }
 
-.auth-section h2, #dashboard-section h2 {
+.auth-section h2, #dashboard-section h2, #admin-dashboard-section h2 {
     color: #FFD700;
     text-align: center;
     margin-bottom: 20px;
@@ -74,40 +80,63 @@ label {
 }
 
 input, select, textarea {
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #CCC;
-    border-radius: 4px;
+    padding: 12px 16px;
+    margin-top: 8px;
+    border: 2px solid #E9ECEF;
+    border-radius: 8px;
     font-family: inherit;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    background-color: #FAFBFC;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #FFD700;
+    box-shadow: 0 0 0 3px rgba(255, 215, 0, 0.1);
+    background-color: #FFFFFF;
 }
 
 button {
-    background-color: #FFD700;
+    background: linear-gradient(135deg, #FFD700 0%, #FFA500 100%);
     color: #000;
     border: none;
-    padding: 10px;
+    padding: 12px 24px;
     margin-top: 15px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     font-family: inherit;
-    font-weight: bold;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 button:hover {
-    background-color: #E6C200;
+    background: linear-gradient(135deg, #FFA500 0%, #FF8C00 100%);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4);
 }
 
 .options {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 15px;
     justify-content: center;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
 }
 
 .options button {
-    flex: 1;
-    min-width: 150px;
+    flex: 0 1 auto;
+    min-width: 180px;
+    padding: 15px 20px;
+    font-size: 15px;
+    font-weight: 600;
+    text-transform: none;
+    letter-spacing: normal;
+    box-shadow: 0 4px 15px rgba(255, 215, 0, 0.2);
 }
 
 .option-form {
@@ -127,24 +156,199 @@ button:hover {
 }
 
 footer {
-    background-color: #000;
-    color: #FFF;
+    background: linear-gradient(135deg, #2C3E50 0%, #34495E 100%);
+    color: #ECF0F1;
     text-align: center;
-    padding: 10px;
+    padding: 20px 10px;
     margin-top: auto;
+    border-top: 3px solid #FFD700;
+    font-size: 14px;
+}
+
+/* Dashboard Container */
+.dashboard-container {
+    max-width: 100%;
+    margin: 0 auto;
+}
+
+/* Admin Panel Styles */
+.admin-actions {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.logout-btn {
+    background: linear-gradient(135deg, #95A5A6 0%, #7F8C8D 100%) !important;
+    color: #FFF !important;
+}
+
+.logout-btn:hover {
+    background: linear-gradient(135deg, #7F8C8D 0%, #6C7B7D 100%) !important;
+}
+
+.request-list, .donation-list {
+    margin-top: 15px;
+}
+
+.request-item, .donation-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px;
+    border: 1px solid #DDD;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    background-color: #FAFAFA;
+}
+
+.request-info, .donation-info {
+    flex: 1;
+}
+
+.request-info strong, .donation-info strong {
+    display: block;
+    color: #FFD700;
+    font-size: 1.1em;
+}
+
+.requester-name, .donor-name {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.status {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 12px;
+    font-size: 0.8em;
+    font-weight: bold;
+    margin-left: 10px;
+}
+
+.status.pending {
+    background-color: #FFF3CD;
+    color: #856404;
+}
+
+.status.approved {
+    background-color: #D4EDDA;
+    color: #155724;
+}
+
+.status.in-review {
+    background-color: #D1ECF1;
+    color: #0C5460;
+}
+
+.request-actions, .donation-date {
+    text-align: right;
+}
+
+.approve-btn, .reject-btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+.approve-btn {
+    background-color: #28A745;
+    color: white;
+}
+
+.approve-btn:hover {
+    background-color: #218838;
+}
+
+.reject-btn {
+    background-color: #DC3545;
+    color: white;
+}
+
+.reject-btn:hover {
+    background-color: #C82333;
+}
+
+.processed {
+    color: #666;
+    font-style: italic;
+}
+
+.donation-summary {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.summary-stat {
+    display: inline-block;
+    background-color: #FFD700;
+    color: #000;
+    padding: 15px 25px;
+    border-radius: 8px;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2em;
+    font-weight: bold;
+}
+
+.stat-label {
+    font-size: 0.9em;
+}
+
+.form-actions {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.form-actions button {
+    margin: 0 10px;
+}
+
+#preview-announcements-btn {
+    background-color: #17A2B8 !important;
+}
+
+#preview-announcements-btn:hover {
+    background-color: #138496 !important;
 }
 
 /* Responsive design */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     header h1 {
         font-size: 2em;
     }
-    
+
+    main {
+        padding: 20px 15px;
+    }
+
+    .auth-section, #dashboard-section, #admin-dashboard-section {
+        padding: 20px;
+    }
+
     .options {
         flex-direction: column;
+        align-items: center;
+        gap: 10px;
     }
-    
+
     .options button {
-        min-width: auto;
+        padding: 12px 16px;
+        font-size: 14px;
+    }
+
+    .request-item, .donation-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .request-actions, .donation-date {
+        text-align: left;
+        width: 100%;
     }
 }
