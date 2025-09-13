@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Administrative login for Our Mother of Perpetual Help Redemptorist Church management system">
+    <title>Admin Login - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="auth.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header">
+        <div class="header-container">
+            <div class="logo">
+                <div class="logo-icon">
+                    <img src="Perpetual Church Logo.jpg" alt="Our Mother of Perpetual Help Church Logo" class="church-logo">
+                </div>
+                <div class="logo-text">
+                    <h1>Our Mother of Perpetual Help</h1>
+                    <p class="subtitle">Redemptorist Church • Dumaguete City</p>
+                </div>
+            </div>
+            <nav class="main-nav">
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="ministries.html">Ministries</a></li>
+                    <li><a href="events.html">Events</a></li>
+                    <li><a href="contact.html">Contacts</a></li>
+                    <li><a href="login.html" class="btn-nav">Parishioner Login</a></li>
+                </ul>
+                <div class="mobile-menu-toggle">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Admin Login Section -->
+    <section class="auth-section">
+        <div class="auth-container">
+            <div class="auth-header">
+                <h2>Administrative Access</h2>
+                <p>Login to access the parish management system</p>
+                <div class="admin-notice">
+                    <i class="fas fa-shield-alt"></i>
+                    <p>This area is restricted to authorized parish administrators only.</p>
+                </div>
+            </div>
+
+            <div class="auth-forms">
+                <div class="auth-form active" id="admin-login-form">
+                    <form class="admin-login-form" id="admin-login-form-element">
+                        <div class="form-group">
+                            <label for="admin-email">Administrator Email</label>
+                            <input type="email" id="admin-email" required placeholder="admin@ompchurchdumaguete.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-password">Password</label>
+                            <input type="password" id="admin-password" required placeholder="Enter administrator password">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="admin-code">Access Code</label>
+                            <input type="password" id="admin-code" required placeholder="Enter access code">
+                            <small>Contact parish office for access code</small>
+                        </div>
+
+
+                        <button type="submit" class="btn-primary btn-full">Access Admin Panel</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="auth-footer">
+                <p>For parishioner accounts, <a href="login.html">login here</a></p>
+                <p>New to our parish? <a href="register.html">Create an account</a></p>
+                <p>Need administrative access? <a href="contact.html">Contact the parish office</a></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Our Mother of Perpetual Help Redemptorist Church</h3>
+                    <p>Dumaguete City</p>
+                    <p>Serving the community with faith and love since 1974.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="ministries.html">Ministries</a></li>
+                        <li><a href="events.html">Events</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Mass Schedule</h3>
+                    <ul>
+                        <li>Sunday: 6AM, 8AM, 10AM, 5PM</li>
+                        <li>Weekday: 6AM</li>
+                        <li>Confession: Saturdays 4PM</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Connect With Us</h3>
+                    <div class="social-links">
+                        <a href="#" class="social-link"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-link"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="auth.js"></script>
+</body>
+</html>

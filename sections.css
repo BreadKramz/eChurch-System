@@ -1,0 +1,298 @@
+/* Section Styles */
+
+/* About Preview */
+.about-preview {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.about-preview .container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.about-content h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #2c3e50;
+}
+
+.about-content p {
+    font-size: 18px;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.about-image .image-placeholder {
+    width: 100%;
+    height: 300px;
+    background: #e9ecef;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: #6c757d;
+}
+
+.about-image .image-placeholder i {
+    font-size: 48px;
+    margin-bottom: 10px;
+}
+
+/* Ministries Preview */
+.ministries-preview {
+    padding: 80px 0;
+    background: #f8f9fa;
+}
+
+.ministries-preview h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 60px;
+    color: #2c3e50;
+}
+
+.ministries-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.ministry-card {
+    text-align: center;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ministry-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.ministry-icon {
+    width: 60px;
+    height: 60px;
+    background: #8B4513;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    color: white;
+    font-size: 24px;
+}
+
+.ministry-card h3 {
+    font-size: 20px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+}
+
+.ministry-card p {
+    color: #666;
+}
+
+/* Events Preview */
+.events-preview {
+    padding: 80px 0;
+    background: white;
+}
+
+.events-preview h2 {
+    text-align: center;
+    font-size: 36px;
+    margin-bottom: 60px;
+    color: #2c3e50;
+}
+
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.event-card {
+    display: flex;
+    background: #f8f9fa;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.event-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.event-date {
+    background: #8B4513;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    min-width: 80px;
+}
+
+.event-date .month {
+    display: block;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+}
+
+.event-date .day {
+    display: block;
+    font-size: 24px;
+    font-weight: 700;
+}
+
+.event-content {
+    padding: 20px;
+    flex: 1;
+}
+
+.event-content h3 {
+    font-size: 20px;
+    margin-bottom: 10px;
+    color: #2c3e50;
+}
+
+.event-content p {
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.event-time {
+    font-size: 14px;
+    color: #8B4513;
+    font-weight: 500;
+}
+
+/* Contact CTA */
+.contact-cta {
+    padding: 80px 0;
+    background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+    color: white;
+    text-align: center;
+}
+
+.contact-cta h2 {
+    font-size: 36px;
+    margin-bottom: 20px;
+}
+
+.contact-cta p {
+    font-size: 20px;
+    margin-bottom: 40px;
+    opacity: 0.9;
+}
+
+.contact-info {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.contact-item i {
+    font-size: 20px;
+    color: #8B4513;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .about-preview .container,
+    .ministries-intro .container,
+    .events-intro .container,
+    .contact-form-container {
+        grid-template-columns: 1fr;
+        gap: 40px;
+    }
+
+    .mission-vision .container {
+        grid-template-columns: 1fr;
+    }
+
+    .leadership-grid,
+    .life-grid,
+    .ministries-grid,
+    .events-grid,
+    .special-events-grid,
+    .contact-grid,
+    .schedule-grid,
+    .staff-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .events-showcase {
+        grid-template-columns: 1fr;
+    }
+
+    .story-stats,
+    .intro-stats {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+    }
+
+    .ministry-header {
+        flex-direction: column;
+        text-align: center;
+        gap: 15px;
+    }
+
+    .ministry-actions {
+        flex-direction: column;
+    }
+
+    .event-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .event-highlights {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .cta-buttons,
+    .newsletter-signup {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .newsletter-input {
+        min-width: 300px;
+    }
+
+    .contact-info {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .services h2, .about-content h2, .events-preview h2, .ministries-preview h2, .contact-cta h2 {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .services h2, .about-content h2, .events-preview h2, .ministries-preview h2, .contact-cta h2 {
+        font-size: 24px;
+    }
+}

@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Our Mother of Perpetual Help Redemptorist Church">
+    <title>Admin Dashboard - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="dashboard-header-content">
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="church-info">
+                <div class="logo">
+                    <img src="Perpetual Church Logo.jpg" alt="Our Mother of Perpetual Help Church Logo" class="church-logo">
+                </div>
+                <div class="church-details">
+                    <h1>Our Mother of Perpetual Help</h1>
+                    <p>Redemptorist Church • Dumaguete City</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="dashboard-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Admin Panel</h2>
+            <button class="sidebar-close" id="sidebar-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="sidebar-link active" data-section="home"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+            <li><a href="#" class="sidebar-link" data-section="announcements"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="#" class="sidebar-link" data-section="events"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a href="#" class="sidebar-link" data-section="service-requests"><i class="fas fa-calendar-check"></i> Service Requests</a></li>
+            <li><a href="#" class="sidebar-link" data-section="certificate-requests"><i class="fas fa-file-alt"></i> Certificate Requests</a></li>
+            <li><a href="#" class="sidebar-link" data-section="prayer-requests"><i class="fas fa-pray"></i> Prayer Requests</a></li>
+            <li><a href="#" class="sidebar-link" data-section="donations"><i class="fas fa-heart"></i> Donations</a></li>
+            <li><a href="#" class="sidebar-link" data-section="users"><i class="fas fa-users"></i> User Management</a></li>
+            <li><a href="#" class="sidebar-link" data-section="reports"><i class="fas fa-chart-bar"></i> Reports</a></li>
+            <li><a href="#" class="sidebar-link" data-section="settings"><i class="fas fa-cog"></i> Settings</a></li>
+            <li><a href="#" class="sidebar-link" data-section="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Home Section -->
+        <section id="home-section" class="dashboard-section active">
+            <div class="section-header">
+                <h1>Admin Dashboard</h1>
+                <p>Manage parish operations and monitor system activity.</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>1,247</h3>
+                        <p>Registered Users</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>23</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>₱45,230</h3>
+                        <p>Donations This Month</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>12</h3>
+                        <p>Events This Month</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <h3>Recent Activity</h3>
+                    <div class="activity-list">
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-user-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>New user registration: Maria Santos</p>
+                                <span class="activity-time">2 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-calendar-plus"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Service request submitted: Baptism</p>
+                                <span class="activity-time">4 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-heart"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Donation received: ₱500 via GCash</p>
+                                <span class="activity-time">6 hours ago</span>
+                            </div>
+                        </div>
+                        <div class="activity-item">
+                            <div class="activity-icon">
+                                <i class="fas fa-file-alt"></i>
+                            </div>
+                            <div class="activity-content">
+                                <p>Certificate request: Baptism Certificate</p>
+                                <span class="activity-time">1 day ago</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="#" class="action-btn" data-section="announcements">
+                            <i class="fas fa-plus"></i>
+                            <span>New Announcement</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="events">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Add Event</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="service-requests">
+                            <i class="fas fa-clock"></i>
+                            <span>Review Requests</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="reports">
+                            <i class="fas fa-chart-bar"></i>
+                            <span>View Reports</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-charts">
+                <div class="chart-widget">
+                    <h3>Monthly Donations</h3>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-line"></i>
+                        <p>Donation Trends Chart</p>
+                    </div>
+                </div>
+                <div class="chart-widget">
+                    <h3>Service Requests by Type</h3>
+                    <div class="chart-placeholder">
+                        <i class="fas fa-chart-pie"></i>
+                        <p>Requests Distribution</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Announcements Management -->
+        <section id="announcements-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Manage Announcements</h1>
+                <p>Create and manage parish announcements.</p>
+            </div>
+
+            <div class="content-management">
+                <div class="management-form">
+                    <h3>Add New Announcement</h3>
+                    <form class="announcement-form">
+                        <div class="form-group">
+                            <label for="announcement-title">Title *</label>
+                            <input type="text" id="announcement-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="announcement-content">Content *</label>
+                            <textarea id="announcement-content" rows="6" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="announcement-priority">Priority</label>
+                                <select id="announcement-priority">
+                                    <option value="normal">Normal</option>
+                                    <option value="important">Important</option>
+                                    <option value="urgent">Urgent</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="announcement-expiry">Expiry Date</label>
+                                <input type="date" id="announcement-expiry">
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Publish Announcement</button>
+                    </form>
+                </div>
+
+                <div class="management-list">
+                    <h3>Current Announcements</h3>
+                    <div class="announcements-list">
+                        <div class="announcement-item">
+                            <div class="announcement-info">
+                                <h4>Sunday Mass Schedule Update</h4>
+                                <p>Dear parishioners, please be informed that due to the feast day celebration...</p>
+                                <span class="announcement-meta">Posted: Oct 10, 2024 • Priority: Normal</span>
+                            </div>
+                            <div class="announcement-actions">
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </div>
+                        </div>
+                        <div class="announcement-item">
+                            <div class="announcement-info">
+                                <h4>Community Potluck Dinner</h4>
+                                <p>Join us for our monthly community potluck dinner this Saturday...</p>
+                                <span class="announcement-meta">Posted: Oct 8, 2024 • Priority: Normal</span>
+                            </div>
+                            <div class="announcement-actions">
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Management -->
+        <section id="events-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Manage Events</h1>
+                <p>Create and manage parish events and activities.</p>
+            </div>
+
+            <div class="content-management">
+                <div class="management-form">
+                    <h3>Add New Event</h3>
+                    <form class="event-form">
+                        <div class="form-group">
+                            <label for="event-title">Event Title *</label>
+                            <input type="text" id="event-title" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-description">Description *</label>
+                            <textarea id="event-description" rows="4" required></textarea>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="event-date">Date *</label>
+                                <input type="date" id="event-date" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-time">Time *</label>
+                                <input type="time" id="event-time" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="event-location">Location *</label>
+                                <input type="text" id="event-location" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-category">Category</label>
+                                <select id="event-category">
+                                    <option value="worship">Worship</option>
+                                    <option value="fellowship">Fellowship</option>
+                                    <option value="ministry">Ministry</option>
+                                    <option value="education">Education</option>
+                                    <option value="charity">Charity</option>
+                                </select>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn-primary">Create Event</button>
+                    </form>
+                </div>
+
+                <div class="management-list">
+                    <h3>Upcoming Events</h3>
+                    <div class="events-list">
+                        <div class="event-item">
+                            <div class="event-info">
+                                <h4>Community Potluck</h4>
+                                <p>October 15, 2024 at 6:00 PM - Parish Hall</p>
+                                <span class="event-category">Fellowship</span>
+                            </div>
+                            <div class="event-actions">
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </div>
+                        </div>
+                        <div class="event-item">
+                            <div class="event-info">
+                                <h4>Youth Group Meeting</h4>
+                                <p>October 20, 2024 at 7:00 PM - Youth Center</p>
+                                <span class="event-category">Ministry</span>
+                            </div>
+                            <div class="event-actions">
+                                <button class="btn-edit">Edit</button>
+                                <button class="btn-delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Service Requests -->
+        <section id="service-requests-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Service Requests</h1>
+                <p>Review and manage sacramental service requests.</p>
+            </div>
+
+            <div class="requests-management">
+                <div class="requests-filters">
+                    <button class="filter-btn active" data-filter="all">All (23)</button>
+                    <button class="filter-btn" data-filter="pending">Pending (15)</button>
+                    <button class="filter-btn" data-filter="approved">Approved (6)</button>
+                    <button class="filter-btn" data-filter="completed">Completed (2)</button>
+                </div>
+
+                <div class="requests-list">
+                    <div class="request-item">
+                        <div class="request-header">
+                            <h4>Baptism Request</h4>
+                            <span class="request-status pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Requester:</strong> Maria Santos</p>
+                            <p><strong>Date:</strong> November 15, 2024</p>
+                            <p><strong>Child:</strong> Juan Carlos Santos</p>
+                            <p><strong>Contact:</strong> (035) 123-4567</p>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-approve">Approve</button>
+                            <button class="btn-reject">Reject</button>
+                            <button class="btn-view">View Details</button>
+                        </div>
+                    </div>
+
+                    <div class="request-item">
+                        <div class="request-header">
+                            <h4>Wedding Request</h4>
+                            <span class="request-status approved">Approved</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Couple:</strong> Jose & Maria Reyes</p>
+                            <p><strong>Date:</strong> December 20, 2024</p>
+                            <p><strong>Contact:</strong> (035) 987-6543</p>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-view">View Details</button>
+                            <button class="btn-complete">Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <div class="request-item">
+                        <div class="request-header">
+                            <h4>Funeral Service</h4>
+                            <span class="request-status pending">Pending</span>
+                        </div>
+                        <div class="request-details">
+                            <p><strong>Deceased:</strong> Antonio Garcia</p>
+                            <p><strong>Date:</strong> October 25, 2024</p>
+                            <p><strong>Contact:</strong> (035) 555-0123</p>
+                        </div>
+                        <div class="request-actions">
+                            <button class="btn-approve">Approve</button>
+                            <button class="btn-reject">Reject</button>
+                            <button class="btn-view">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Certificate Requests -->
+        <section id="certificate-requests-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Certificate Requests</h1>
+                <p>Process baptismal, confirmation, and marriage certificate requests.</p>
+            </div>
+
+            <div class="certificates-management">
+                <div class="certificates-list">
+                    <div class="certificate-item">
+                        <div class="certificate-header">
+                            <h4>Baptism Certificate</h4>
+                            <span class="certificate-status pending">Pending</span>
+                        </div>
+                        <div class="certificate-details">
+                            <p><strong>Requester:</strong> Ana Cruz</p>
+                            <p><strong>Person:</strong> Miguel Cruz (born 2018)</p>
+                            <p><strong>Purpose:</strong> School enrollment</p>
+                            <p><strong>Copies:</strong> 2</p>
+                        </div>
+                        <div class="certificate-actions">
+                            <button class="btn-approve">Approve</button>
+                            <button class="btn-reject">Reject</button>
+                            <button class="btn-print">Print Certificate</button>
+                        </div>
+                    </div>
+
+                    <div class="certificate-item">
+                        <div class="certificate-header">
+                            <h4>Marriage Certificate</h4>
+                            <span class="certificate-status approved">Approved</span>
+                        </div>
+                        <div class="certificate-details">
+                            <p><strong>Requester:</strong> Pedro Santos</p>
+                            <p><strong>Couple:</strong> Pedro & Rosa Santos</p>
+                            <p><strong>Date:</strong> March 15, 2020</p>
+                            <p><strong>Purpose:</strong> Legal documentation</p>
+                        </div>
+                        <div class="certificate-actions">
+                            <button class="btn-print">Print Certificate</button>
+                            <button class="btn-complete">Mark Complete</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Prayer Requests -->
+        <section id="prayer-requests-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Prayer Requests</h1>
+                <p>Monitor and manage community prayer intentions.</p>
+            </div>
+
+            <div class="prayer-management">
+                <div class="prayer-stats">
+                    <div class="stat-box">
+                        <h4>45</h4>
+                        <p>Active Prayers</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>23</h4>
+                        <p>This Month</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>156</h4>
+                        <p>Total Prayers</p>
+                    </div>
+                </div>
+
+                <div class="prayer-list">
+                    <div class="prayer-admin-item">
+                        <div class="prayer-content">
+                            <p>"Please pray for my grandmother who is recovering from surgery. May she have a speedy recovery."</p>
+                            <div class="prayer-meta">
+                                <span class="prayer-author">Maria Santos</span>
+                                <span class="prayer-date">Oct 12, 2024</span>
+                                <span class="prayer-visibility">Public</span>
+                            </div>
+                        </div>
+                        <div class="prayer-admin-actions">
+                            <button class="btn-feature">Feature</button>
+                            <button class="btn-hide">Hide</button>
+                        </div>
+                    </div>
+
+                    <div class="prayer-admin-item">
+                        <div class="prayer-content">
+                            <p>"Prayers for our family during this difficult time. May God's peace be with us."</p>
+                            <div class="prayer-meta">
+                                <span class="prayer-author">Anonymous</span>
+                                <span class="prayer-date">Oct 10, 2024</span>
+                                <span class="prayer-visibility">Private</span>
+                            </div>
+                        </div>
+                        <div class="prayer-admin-actions">
+                            <button class="btn-feature">Feature</button>
+                            <button class="btn-hide">Hide</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donations -->
+        <section id="donations-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Donations Management</h1>
+                <p>Track and manage parish donations and contributions.</p>
+            </div>
+
+            <div class="donations-overview">
+                <div class="donation-summary">
+                    <div class="summary-card">
+                        <h3>₱45,230</h3>
+                        <p>This Month</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>₱127,450</h3>
+                        <p>This Year</p>
+                    </div>
+                    <div class="summary-card">
+                        <h3>₱23,450</h3>
+                        <p>Average Monthly</p>
+                    </div>
+                </div>
+
+                <div class="recent-donations">
+                    <h3>Recent Donations</h3>
+                    <div class="donations-list">
+                        <div class="donation-item">
+                            <div class="donor-info">
+                                <h4>₱1,000</h4>
+                                <p>Anonymous</p>
+                            </div>
+                            <div class="donation-details">
+                                <span class="donation-method">GCash</span>
+                                <span class="donation-date">Oct 12, 2024</span>
+                            </div>
+                        </div>
+                        <div class="donation-item">
+                            <div class="donor-info">
+                                <h4>₱500</h4>
+                                <p>Maria Santos</p>
+                            </div>
+                            <div class="donation-details">
+                                <span class="donation-method">Bank Transfer</span>
+                                <span class="donation-date">Oct 11, 2024</span>
+                            </div>
+                        </div>
+                        <div class="donation-item">
+                            <div class="donor-info">
+                                <h4>₱200</h4>
+                                <p>Jose Reyes</p>
+                            </div>
+                            <div class="donation-details">
+                                <span class="donation-method">Drop Box</span>
+                                <span class="donation-date">Oct 10, 2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- User Management -->
+        <section id="users-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>User Management</h1>
+                <p>Manage registered parishioners and their accounts.</p>
+            </div>
+
+            <div class="users-management">
+                <div class="users-stats">
+                    <div class="stat-box">
+                        <h4>1,247</h4>
+                        <p>Total Users</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>892</h4>
+                        <p>Active Users</p>
+                    </div>
+                    <div class="stat-box">
+                        <h4>45</h4>
+                        <p>New This Month</p>
+                    </div>
+                </div>
+
+                <div class="users-list">
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>Maria Santos</h4>
+                                <p>maria.santos@email.com</p>
+                                <span class="user-status active">Active</span>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-view">View Profile</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-deactivate">Deactivate</button>
+                        </div>
+                    </div>
+
+                    <div class="user-item">
+                        <div class="user-info">
+                            <div class="user-avatar">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <div class="user-details">
+                                <h4>Jose Reyes</h4>
+                                <p>jose.reyes@email.com</p>
+                                <span class="user-status active">Active</span>
+                            </div>
+                        </div>
+                        <div class="user-actions">
+                            <button class="btn-view">View Profile</button>
+                            <button class="btn-edit">Edit</button>
+                            <button class="btn-deactivate">Deactivate</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reports -->
+        <section id="reports-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Reports & Analytics</h1>
+                <p>View system reports and parish statistics.</p>
+            </div>
+
+            <div class="reports-container">
+                <div class="report-filters">
+                    <select id="report-period">
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                        <option value="year">This Year</option>
+                    </select>
+                    <button class="btn-primary">Generate Report</button>
+                </div>
+
+                <div class="reports-grid">
+                    <div class="report-card">
+                        <h3>User Registration Report</h3>
+                        <div class="report-placeholder">
+                            <i class="fas fa-chart-line"></i>
+                            <p>Registration Trends</p>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Service Requests Report</h3>
+                        <div class="report-placeholder">
+                            <i class="fas fa-chart-bar"></i>
+                            <p>Requests by Type</p>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Donations Report</h3>
+                        <div class="report-placeholder">
+                            <i class="fas fa-chart-pie"></i>
+                            <p>Donation Sources</p>
+                        </div>
+                    </div>
+                    <div class="report-card">
+                        <h3>Event Attendance Report</h3>
+                        <div class="report-placeholder">
+                            <i class="fas fa-users"></i>
+                            <p>Attendance Statistics</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings -->
+        <section id="settings-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>System Settings</h1>
+                <p>Configure system preferences and settings.</p>
+            </div>
+
+            <div class="settings-container">
+                <div class="settings-section">
+                    <h3>General Settings</h3>
+                    <form class="settings-form">
+                        <div class="form-group">
+                            <label for="church-name">Church Name</label>
+                            <input type="text" id="church-name" value="Our Mother of Perpetual Help Redemptorist Church">
+                        </div>
+                        <div class="form-group">
+                            <label for="church-address">Church Address</label>
+                            <input type="text" id="church-address" value="Dumaguete City">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-email">Contact Email</label>
+                            <input type="email" id="contact-email" value="info@ompchurchdumaguete.com">
+                        </div>
+                        <button type="submit" class="btn-primary">Save Settings</button>
+                    </form>
+                </div>
+
+                <div class="settings-section">
+                    <h3>System Maintenance</h3>
+                    <div class="maintenance-actions">
+                        <button class="btn-secondary">Backup Database</button>
+                        <button class="btn-secondary">Clear Cache</button>
+                        <button class="btn-secondary">Update System</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>

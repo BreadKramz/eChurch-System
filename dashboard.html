@@ -1,0 +1,553 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Parishioner Dashboard - Our Mother of Perpetual Help Redemptorist Church">
+    <title>Dashboard - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="dashboard-body">
+
+    <!-- Dashboard Header -->
+    <header class="dashboard-header">
+        <div class="dashboard-header-content">
+            <button class="menu-toggle" id="menu-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="church-info">
+                <div class="logo">
+                    <img src="Perpetual Church Logo.jpg" alt="Our Mother of Perpetual Help Church Logo" class="church-logo">
+                </div>
+                <div class="church-details">
+                    <h1>Our Mother of Perpetual Help</h1>
+                    <p>Redemptorist Church • Dumaguete City</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar -->
+    <nav class="dashboard-sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h2>Dashboard</h2>
+            <button class="sidebar-close" id="sidebar-close">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="sidebar-link active" data-section="home"><i class="fas fa-home"></i> Home</a></li>
+            <li><a href="#" class="sidebar-link" data-section="announcements"><i class="fas fa-bullhorn"></i> Announcements</a></li>
+            <li><a href="#" class="sidebar-link" data-section="events"><i class="fas fa-calendar-alt"></i> Events</a></li>
+            <li><a href="#" class="sidebar-link" data-section="schedule-service"><i class="fas fa-calendar-plus"></i> Schedule Service</a></li>
+            <li><a href="#" class="sidebar-link" data-section="request-certificate"><i class="fas fa-file-alt"></i> Request Certificate</a></li>
+            <li><a href="#" class="sidebar-link" data-section="prayer-requests"><i class="fas fa-pray"></i> Prayer Requests</a></li>
+            <li><a href="#" class="sidebar-link" data-section="donate"><i class="fas fa-heart"></i> Donate</a></li>
+            <li><a href="#" class="sidebar-link" data-section="profile"><i class="fas fa-user-edit"></i> My Profile</a></li>
+            <li><a href="#" class="sidebar-link" data-section="logout"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="dashboard-main">
+        <!-- Home Section -->
+        <section id="home-section" class="dashboard-section active">
+            <div class="section-header">
+                <h1>Dashboard Overview</h1>
+                <p>Manage your church services and stay connected with our community.</p>
+            </div>
+
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-calendar-check"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>2</h3>
+                        <p>Upcoming Events</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>1</h3>
+                        <p>Pending Requests</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-pray"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>3</h3>
+                        <p>Prayer Intentions</p>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-heart"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3>₱500</h3>
+                        <p>Donated This Year</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-widgets">
+                <div class="widget">
+                    <h3>Recent Announcements</h3>
+                    <div class="announcement-item">
+                        <div class="announcement-date">Oct 10</div>
+                        <div class="announcement-content">
+                            <h4>Sunday Mass Schedule Update</h4>
+                            <p>Please note the adjusted mass times for this weekend.</p>
+                        </div>
+                    </div>
+                    <div class="announcement-item">
+                        <div class="announcement-date">Oct 8</div>
+                        <div class="announcement-content">
+                            <h4>Community Potluck Reminder</h4>
+                            <p>Don't forget to bring your favorite dish this Saturday!</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="widget">
+                    <h3>Quick Actions</h3>
+                    <div class="quick-actions">
+                        <a href="#" class="action-btn" data-section="schedule-service">
+                            <i class="fas fa-calendar-plus"></i>
+                            <span>Schedule Mass</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="prayer-requests">
+                            <i class="fas fa-pray"></i>
+                            <span>Prayer Request</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="donate">
+                            <i class="fas fa-heart"></i>
+                            <span>Donate</span>
+                        </a>
+                        <a href="#" class="action-btn" data-section="request-certificate">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Request Certificate</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Announcements Section -->
+        <section id="announcements-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Announcements</h1>
+                <p>Stay updated with the latest news and announcements from our parish.</p>
+            </div>
+
+            <div class="announcements-list">
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <h3>Sunday Mass Schedule Update</h3>
+                        <span class="announcement-date">October 10, 2024</span>
+                    </div>
+                    <div class="announcement-content">
+                        <p>Dear parishioners, please be informed that due to the feast day celebration, the Sunday mass schedule has been adjusted as follows:</p>
+                        <ul>
+                            <li>6:00 AM - Regular Mass</li>
+                            <li>8:00 AM - Feast Day Mass</li>
+                            <li>10:00 AM - Family Mass</li>
+                            <li>5:00 PM - Anticipated Mass</li>
+                        </ul>
+                        <p>We look forward to seeing you at mass this weekend.</p>
+                    </div>
+                </div>
+
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <h3>Community Potluck Dinner</h3>
+                        <span class="announcement-date">October 8, 2024</span>
+                    </div>
+                    <div class="announcement-content">
+                        <p>Join us for our monthly community potluck dinner this Saturday at 6:00 PM in the parish hall. Bring your favorite dish to share and enjoy fellowship with fellow parishioners.</p>
+                        <p>RSVP by calling the parish office at (035) 123-4567.</p>
+                    </div>
+                </div>
+
+                <div class="announcement-card">
+                    <div class="announcement-header">
+                        <h3>Youth Ministry Meeting</h3>
+                        <span class="announcement-date">October 5, 2024</span>
+                    </div>
+                    <div class="announcement-content">
+                        <p>All youth aged 13-18 are invited to our weekly youth ministry meeting this Wednesday at 7:00 PM. We'll be discussing our upcoming retreat and planning fun activities.</p>
+                        <p>Contact Sr. Mary for more information.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Events Section -->
+        <section id="events-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Upcoming Events</h1>
+                <p>Check out our calendar of events and join our community activities.</p>
+            </div>
+
+            <div class="events-grid">
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <h3>Community Potluck</h3>
+                        <div class="event-meta">
+                            <span class="event-date"><i class="fas fa-calendar"></i> October 15, 2024</span>
+                            <span class="event-time"><i class="fas fa-clock"></i> 6:00 PM</span>
+                            <span class="event-location"><i class="fas fa-map-marker-alt"></i> Parish Hall</span>
+                        </div>
+                        <p>Join us for an evening of fellowship, food, and fun. Bring your favorite dish to share!</p>
+                        <button class="btn-secondary">RSVP</button>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-users"></i>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <h3>Youth Group Meeting</h3>
+                        <div class="event-meta">
+                            <span class="event-date"><i class="fas fa-calendar"></i> October 20, 2024</span>
+                            <span class="event-time"><i class="fas fa-clock"></i> 7:00 PM</span>
+                            <span class="event-location"><i class="fas fa-map-marker-alt"></i> Youth Center</span>
+                        </div>
+                        <p>Weekly youth gathering with games, discussions, and faith sharing.</p>
+                        <button class="btn-secondary">Join</button>
+                    </div>
+                </div>
+
+                <div class="event-card">
+                    <div class="event-image">
+                        <div class="image-placeholder">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                    </div>
+                    <div class="event-details">
+                        <h3>Charity Drive</h3>
+                        <div class="event-meta">
+                            <span class="event-date"><i class="fas fa-calendar"></i> November 1, 2024</span>
+                            <span class="event-time"><i class="fas fa-clock"></i> 9:00 AM</span>
+                            <span class="event-location"><i class="fas fa-map-marker-alt"></i> Church Grounds</span>
+                        </div>
+                        <p>Help us support our local community through our annual charity initiative.</p>
+                        <button class="btn-secondary">Volunteer</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Schedule Service Section -->
+        <section id="schedule-service-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Schedule Service</h1>
+                <p>Request baptism, wedding, funeral, or other sacramental services.</p>
+            </div>
+
+            <div class="service-scheduler">
+                <form class="service-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="service-type">Service Type *</label>
+                            <select id="service-type" required>
+                                <option value="">Select Service</option>
+                                <option value="baptism">Baptism</option>
+                                <option value="wedding">Wedding/Marriage</option>
+                                <option value="funeral">Funeral</option>
+                                <option value="confirmation">Confirmation</option>
+                                <option value="communion">First Communion</option>
+                                <option value="anointing">Anointing of the Sick</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="preferred-date">Preferred Date *</label>
+                            <input type="date" id="preferred-date" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="preferred-time">Preferred Time</label>
+                            <input type="time" id="preferred-time">
+                        </div>
+                        <div class="form-group">
+                            <label for="contact-person">Contact Person *</label>
+                            <input type="text" id="contact-person" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contact-phone">Contact Phone *</label>
+                        <input type="tel" id="contact-phone" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="service-details">Additional Details</label>
+                        <textarea id="service-details" rows="4" placeholder="Please provide any additional information about the service request..."></textarea>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Submit Request</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Request Certificate Section -->
+        <section id="request-certificate-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Request Certificate</h1>
+                <p>Request baptismal, confirmation, marriage, or other certificates.</p>
+            </div>
+
+            <div class="certificate-request">
+                <form class="certificate-form">
+                    <div class="form-group">
+                        <label for="certificate-type">Certificate Type *</label>
+                        <select id="certificate-type" required>
+                            <option value="">Select Certificate</option>
+                            <option value="baptism">Baptism Certificate</option>
+                            <option value="confirmation">Confirmation Certificate</option>
+                            <option value="marriage">Marriage Certificate</option>
+                            <option value="communion">First Communion Certificate</option>
+                            <option value="death">Death Certificate</option>
+                        </select>
+                    </div>
+
+                    <div id="certificate-details">
+                        <!-- Dynamic fields will be added here based on certificate type -->
+                    </div>
+
+                    <div class="form-group">
+                        <label for="purpose">Purpose *</label>
+                        <select id="purpose" required>
+                            <option value="">Select Purpose</option>
+                            <option value="personal">Personal Use</option>
+                            <option value="school">School Requirements</option>
+                            <option value="work">Employment</option>
+                            <option value="legal">Legal Matters</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="copies">Number of Copies *</label>
+                        <input type="number" id="copies" min="1" max="5" value="1" required>
+                    </div>
+
+                    <button type="submit" class="btn-primary">Submit Request</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- Prayer Requests Section -->
+        <section id="prayer-requests-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Prayer Requests</h1>
+                <p>Submit your prayer intentions and view community prayer requests.</p>
+            </div>
+
+            <div class="prayer-requests-container">
+                <div class="submit-prayer">
+                    <h3>Submit Prayer Request</h3>
+                    <form class="prayer-form">
+                        <div class="form-group">
+                            <label for="prayer-name">Name (Optional)</label>
+                            <input type="text" id="prayer-name" placeholder="Your name or anonymous">
+                        </div>
+                        <div class="form-group">
+                            <label for="prayer-intention">Prayer Intention *</label>
+                            <textarea id="prayer-intention" rows="4" required placeholder="Please share your prayer intention..."></textarea>
+                        </div>
+                        <div class="form-group checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="make-public">
+                                <span class="checkmark"></span>
+                                Share this prayer request with the community
+                            </label>
+                        </div>
+                        <button type="submit" class="btn-primary">Submit Prayer Request</button>
+                    </form>
+                </div>
+
+                <div class="community-prayers">
+                    <h3>Community Prayer Requests</h3>
+                    <div class="prayer-list">
+                        <div class="prayer-item">
+                            <div class="prayer-content">
+                                <p>"Please pray for my grandmother who is recovering from surgery. May she have a speedy recovery and return to full health."</p>
+                                <span class="prayer-author">Anonymous</span>
+                            </div>
+                            <button class="prayer-btn">🙏 Pray</button>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-content">
+                                <p>"Prayers for our family as we go through this difficult time. May God's peace be with us all."</p>
+                                <span class="prayer-author">Anonymous</span>
+                            </div>
+                            <button class="prayer-btn">🙏 Pray</button>
+                        </div>
+                        <div class="prayer-item">
+                            <div class="prayer-content">
+                                <p>"Thank you Lord for all the blessings. May we continue to serve You faithfully."</p>
+                                <span class="prayer-author">Anonymous</span>
+                            </div>
+                            <button class="prayer-btn">🙏 Pray</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Donate Section -->
+        <section id="donate-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>Make a Donation</h1>
+                <p>Support our parish and community through your generous contributions.</p>
+            </div>
+
+            <div class="donation-container">
+                <div class="donation-options">
+                    <div class="donation-card">
+                        <div class="donation-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>General Donation</h3>
+                        <p>Support the general operations and ministries of our parish.</p>
+                        <button class="btn-primary">Donate Now</button>
+                    </div>
+
+                    <div class="donation-card">
+                        <div class="donation-icon">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3>Food Bank</h3>
+                        <p>Help feed families in need in our community.</p>
+                        <button class="btn-primary">Support</button>
+                    </div>
+
+                    <div class="donation-card">
+                        <div class="donation-icon">
+                            <i class="fas fa-graduation-cap"></i>
+                        </div>
+                        <h3>Education Fund</h3>
+                        <p>Support our religious education programs.</p>
+                        <button class="btn-primary">Contribute</button>
+                    </div>
+                </div>
+
+                <div class="donation-methods">
+                    <h3>Payment Methods</h3>
+                    <div class="payment-options">
+                        <div class="payment-method">
+                            <i class="fas fa-mobile-alt"></i>
+                            <h4>GCash</h4>
+                            <p>Scan QR code or send to: 09123456789</p>
+                            <div class="qr-placeholder">
+                                <i class="fas fa-qrcode"></i>
+                                <p>GCash QR</p>
+                            </div>
+                        </div>
+                        <div class="payment-method">
+                            <i class="fas fa-university"></i>
+                            <h4>Bank Transfer</h4>
+                            <p>Account: Our Mother of Perpetual Help Parish<br>Bank: [Bank Name]<br>Account #: [Account Number]</p>
+                        </div>
+                        <div class="payment-method">
+                            <i class="fas fa-envelope"></i>
+                            <h4>Drop Box</h4>
+                            <p>Place your donation in the drop box at the church entrance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="profile-section" class="dashboard-section">
+            <div class="section-header">
+                <h1>My Profile</h1>
+                <p>Manage your account information and preferences.</p>
+            </div>
+
+            <div class="profile-container">
+                <div class="profile-form">
+                    <h3>Personal Information</h3>
+                    <form class="user-profile-form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profile-firstname">First Name</label>
+                                <input type="text" id="profile-firstname" value="John">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-lastname">Last Name</label>
+                                <input type="text" id="profile-lastname" value="Doe">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-email">Email</label>
+                            <input type="email" id="profile-email" value="john.doe@email.com">
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="profile-phone">Phone</label>
+                                <input type="tel" id="profile-phone" value="(035) 123-4567">
+                            </div>
+                            <div class="form-group">
+                                <label for="profile-birthdate">Birth Date</label>
+                                <input type="date" id="profile-birthdate">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="profile-address">Address</label>
+                            <input type="text" id="profile-address" value="123 Main St, Dumaguete City">
+                        </div>
+                        <button type="submit" class="btn-primary">Update Profile</button>
+                    </form>
+                </div>
+
+                <div class="profile-sidebar">
+                    <div class="profile-avatar">
+                        <i class="fas fa-user"></i>
+                        <button class="change-avatar-btn">Change Photo</button>
+                    </div>
+                    <div class="profile-stats">
+                        <h4>Account Summary</h4>
+                        <div class="stat-item">
+                            <span>Member Since:</span>
+                            <strong>January 2023</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Total Donations:</span>
+                            <strong>₱500</strong>
+                        </div>
+                        <div class="stat-item">
+                            <span>Services Requested:</span>
+                            <strong>3</strong>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+</body>
+</html>
