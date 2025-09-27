@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Parishioner Dashboard - Our Mother of Perpetual Help Redemptorist Church">
+    <title>Dashboard - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-body">
+    <!-- Top Header Section -->
+    <header class="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-gray-600 hover:text-gray-800 p-2" id="sidebar-toggle">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <img src="images/Perpetual Church Logo.jpg" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-display font-bold text-secondary">Parish Dashboard</h1>
+                        <p class="text-xs text-gray-500">Welcome back, John</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-2 text-sm text-gray-600">
+                    <i class="fas fa-clock"></i>
+                    <span id="current-time"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        J
+                    </div>
+                    <span class="hidden sm:block text-sm font-medium text-gray-700">John Doe</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar Section -->
+        <aside class="w-64 bg-white shadow-lg -translate-x-full lg:translate-x-0 lg:opacity-100 transition-transform duration-300 ease-in-out fixed lg:static inset-y-0 left-0 z-30 lg:z-auto border-r border-gray-200" id="sidebar">
+            <div class="flex flex-col h-full">
+                <!-- Sidebar Header -->
+                <div class="p-6 border-b border-gray-200">
+                    <h2 class="text-xl font-display font-bold text-secondary">Dashboard</h2>
+                    <p class="text-sm text-gray-500 mt-1">My Parish Portal</p>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="flex-1 px-4 py-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary cursor-pointer" data-section="home">
+                                <i class="fas fa-home w-5 text-center"></i>
+                                <span>Home</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="announcements">
+                                <i class="fas fa-bullhorn w-5 text-center"></i>
+                                <span>Announcements</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="events">
+                                <i class="fas fa-calendar-alt w-5 text-center"></i>
+                                <span>Events</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="schedule-service">
+                                <i class="fas fa-calendar-plus w-5 text-center"></i>
+                                <span>Schedule Service</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="request-certificate">
+                                <i class="fas fa-file-alt w-5 text-center"></i>
+                                <span>Request Certificate</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="prayer-requests">
+                                <i class="fas fa-pray w-5 text-center"></i>
+                                <span>Prayer Requests</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="profile">
+                                <i class="fas fa-user-edit w-5 text-center"></i>
+                                <span>My Profile</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-gray-200">
+                    <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-50 transition-colors text-gray-700 cursor-pointer" data-section="logout">
+                        <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300" id="sidebar-overlay"></div>
+
+        <!-- Main Content Section -->
+        <main class="flex-1 p-6" id="main-content">
+            <!-- Dashboard Home -->
+            <div class="dashboard-section active" id="home-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Dashboard Overview</h1>
+                    <p class="text-gray-600">Manage your church services and stay connected with our community</p>
+                </div>
+
+                <!-- Stats Cards -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Upcoming Events</p>
+                                <p class="text-3xl font-bold text-secondary">2</p>
+                            </div>
+                            <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-calendar-check text-blue-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Pending Requests</p>
+                                <p class="text-3xl font-bold text-orange-600">1</p>
+                            </div>
+                            <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-clock text-orange-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-sm font-medium text-gray-600">Prayer Intentions</p>
+                                <p class="text-3xl font-bold text-purple-600">3</p>
+                            </div>
+                            <div class="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-pray text-purple-600"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Recent Announcements & Quick Actions -->
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
+                    <!-- Recent Announcements -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Recent Announcements</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-primary pl-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-sm font-medium text-primary">Oct 10</span>
+                                    <span class="text-xs text-gray-500">2 days ago</span>
+                                </div>
+                                <h4 class="font-semibold text-gray-800 mb-1">Sunday Mass Schedule Update</h4>
+                                <p class="text-sm text-gray-600">Please note the adjusted mass times for this weekend.</p>
+                            </div>
+
+                            <div class="border-l-4 border-secondary pl-4">
+                                <div class="flex items-center gap-2 mb-2">
+                                    <span class="text-sm font-medium text-secondary">Oct 8</span>
+                                    <span class="text-xs text-gray-500">4 days ago</span>
+                                </div>
+                                <h4 class="font-semibold text-gray-800 mb-1">Community Potluck Reminder</h4>
+                                <p class="text-sm text-gray-600">Don't forget to bring your favorite dish this Saturday!</p>
+                            </div>
+                        </div>
+                        <a href="javascript:void(0)" class="inline-flex items-center gap-2 text-primary font-medium mt-4 hover:text-primary/80 transition-colors cursor-pointer" data-section="announcements">
+                            View All Announcements <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Quick Actions</h3>
+                        <div class="grid grid-cols-2 gap-3">
+                            <a href="javascript:void(0)" class="flex flex-col items-center gap-2 p-4 bg-primary/10 rounded-lg hover:bg-primary/20 transition-colors cursor-pointer" data-section="schedule-service">
+                                <i class="fas fa-calendar-plus text-primary text-xl"></i>
+                                <span class="text-sm font-medium text-center">Schedule Service</span>
+                            </a>
+                            <a href="javascript:void(0)" class="flex flex-col items-center gap-2 p-4 bg-secondary/10 rounded-lg hover:bg-secondary/20 transition-colors cursor-pointer" data-section="prayer-requests">
+                                <i class="fas fa-pray text-secondary text-xl"></i>
+                                <span class="text-sm font-medium text-center">Prayer Request</span>
+                            </a>
+                            <a href="javascript:void(0)" class="flex flex-col items-center gap-2 p-4 bg-purple-100 rounded-lg hover:bg-purple-200 transition-colors cursor-pointer" data-section="request-certificate">
+                                <i class="fas fa-file-alt text-purple-600 text-xl"></i>
+                                <span class="text-sm font-medium text-center">Request Certificate</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Upcoming Events Preview -->
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <h3 class="text-lg font-display font-bold text-secondary">Upcoming Events</h3>
+                        <a href="javascript:void(0)" class="text-primary font-medium hover:text-primary/80 transition-colors cursor-pointer" data-section="events">View All</a>
+                    </div>
+
+                    <div class="grid md:grid-cols-3 gap-6">
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-utensils text-primary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Community Potluck</h4>
+                                    <p class="text-sm text-gray-500">October 15, 2024</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Join us for an evening of fellowship, food, and fun.</p>
+                            <button class="w-full bg-primary text-white py-2 px-4 rounded-lg font-medium hover:bg-primary/90 transition-colors text-sm">
+                                RSVP
+                            </button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-secondary/10 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-users text-secondary"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Youth Group Meeting</h4>
+                                    <p class="text-sm text-gray-500">October 20, 2024</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Weekly youth gathering with games and discussions.</p>
+                            <button class="w-full bg-secondary text-white py-2 px-4 rounded-lg font-medium hover:bg-secondary/90 transition-colors text-sm">
+                                Join
+                            </button>
+                        </div>
+
+                        <div class="border border-gray-200 rounded-lg p-4 hover:shadow-md transition-shadow">
+                            <div class="flex items-center gap-3 mb-3">
+                                <div class="w-10 h-10 bg-accent/10 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-heart text-accent"></i>
+                                </div>
+                                <div>
+                                    <h4 class="font-semibold text-gray-800">Charity Drive</h4>
+                                    <p class="text-sm text-gray-500">November 1, 2024</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-gray-600 mb-3">Help us support our local community.</p>
+                            <button class="w-full bg-accent text-white py-2 px-4 rounded-lg font-medium hover:bg-accent/90 transition-colors text-sm">
+                                Volunteer
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Other sections would be implemented similarly -->
+            <div class="dashboard-section hidden" id="announcements-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Announcements</h1>
+                    <p class="text-gray-600">Stay updated with the latest news from our parish</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Announcements section content would go here...</p>
+                </div>
+            </div>
+
+            <div class="dashboard-section hidden" id="events-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Events</h1>
+                    <p class="text-gray-600">Check out our calendar of events</p>
+                </div>
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Events section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Schedule Service Section -->
+            <div class="dashboard-section hidden" id="schedule-service-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Schedule Service</h1>
+                    <p class="text-gray-600">Request baptism, wedding, funeral, or other sacramental services</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <form class="space-y-6">
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Service Type</label>
+                                <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                    <option>Select Service</option>
+                                    <option>Baptism</option>
+                                    <option>Wedding/Marriage</option>
+                                    <option>Funeral</option>
+                                    <option>Confirmation</option>
+                                    <option>First Communion</option>
+                                    <option>Anointing of the Sick</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Date</label>
+                                <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                        </div>
+
+                        <div class="grid md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Preferred Time</label>
+                                <input type="time" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Contact Person</label>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contact Phone</label>
+                            <input type="tel" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Additional Details</label>
+                            <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Please provide any additional information..."></textarea>
+                        </div>
+
+                        <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Request Certificate Section -->
+            <div class="dashboard-section hidden" id="request-certificate-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Request Certificate</h1>
+                    <p class="text-gray-600">Request baptismal, confirmation, marriage, or other certificates</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Certificate Type</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                <option>Select Certificate</option>
+                                <option>Baptism Certificate</option>
+                                <option>Confirmation Certificate</option>
+                                <option>Marriage Certificate</option>
+                                <option>First Communion Certificate</option>
+                                <option>Death Certificate</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Purpose</label>
+                            <select class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                <option>Select Purpose</option>
+                                <option>Personal Use</option>
+                                <option>School Requirements</option>
+                                <option>Employment</option>
+                                <option>Legal Matters</option>
+                                <option>Other</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Number of Copies</label>
+                            <input type="number" min="1" max="5" value="1" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                        </div>
+
+                        <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                            Submit Request
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Prayer Requests Section -->
+            <div class="dashboard-section hidden" id="prayer-requests-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Prayer Requests</h1>
+                    <p class="text-gray-600">Submit your prayer intentions and view community prayer requests</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Submit Prayer Request</h3>
+                        <form class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Name (Optional)</label>
+                                <input type="text" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Your name or anonymous">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Prayer Intention</label>
+                                <textarea rows="4" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary" placeholder="Please share your prayer intention..."></textarea>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <input type="checkbox" id="make-public" class="rounded">
+                                <label for="make-public" class="text-sm text-gray-700">Share this prayer request with the community</label>
+                            </div>
+                            <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                                Submit Prayer Request
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Community Prayer Requests</h3>
+                        <div class="space-y-4">
+                            <div class="border-l-4 border-primary pl-4">
+                                <p class="text-sm text-gray-800 italic">"Please pray for my grandmother who is recovering from surgery."</p>
+                                <p class="text-xs text-gray-500 mt-1">Anonymous • Oct 12, 2024</p>
+                                <button class="mt-2 bg-primary text-white px-3 py-1 rounded text-xs hover:bg-primary/90">🙏 Pray</button>
+                            </div>
+                            <div class="border-l-4 border-secondary pl-4">
+                                <p class="text-sm text-gray-800 italic">"Prayers for our family during this difficult time."</p>
+                                <p class="text-xs text-gray-500 mt-1">Anonymous • Oct 10, 2024</p>
+                                <button class="mt-2 bg-secondary text-white px-3 py-1 rounded text-xs hover:bg-secondary/90">🙏 Pray</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Profile Section -->
+            <div class="dashboard-section hidden" id="profile-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">My Profile</h1>
+                    <p class="text-gray-600">Manage your account information and preferences</p>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                        <h3 class="text-lg font-display font-bold text-secondary mb-4">Personal Information</h3>
+                        <form class="space-y-4">
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                    <input type="text" value="John" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                    <input type="text" value="Doe" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                                <input type="email" value="john.doe@email.com" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+
+                            <div class="grid md:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                                    <input type="tel" value="(035) 123-4567" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Birth Date</label>
+                                    <input type="date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                                </div>
+                            </div>
+
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Address</label>
+                                <input type="text" value="123 Main St, Dumaguete City" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary">
+                            </div>
+
+                            <button type="submit" class="bg-primary text-white px-6 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-colors">
+                                Update Profile
+                            </button>
+                        </form>
+                    </div>
+
+                    <div class="space-y-6">
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <div class="w-20 h-20 bg-primary rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
+                                J
+                            </div>
+                            <button class="block w-full bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors">
+                                Change Photo
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                            <h4 class="font-semibold text-gray-800 mb-4">Account Summary</h4>
+                            <div class="space-y-2">
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Member Since:</span>
+                                    <span class="text-sm font-medium text-gray-800">January 2023</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-sm text-gray-600">Services Requested:</span>
+                                    <span class="text-sm font-medium text-gray-800">3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts Section -->
+    <script src="js/script.js"></script>
+    <script>
+        // Current time display functionality
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        updateTime();
+        setInterval(updateTime, 1000);
+    </script>
+</body>
+</html>
