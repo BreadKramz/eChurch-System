@@ -3,1384 +3,322 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Our Mother of Perpetual Help Redemptorist Church - Dumaguete City. A place of worship, community, and spiritual growth.">
-    <title>Our Mother of Perpetual Help Redemptorist Church - Dumaguete</title>
+    <title>Our Mother of Perpetual Help - Loading...</title>
+    <meta http-equiv="refresh" content="2; url=src/pages/public/index.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        primary: '#8B4513',
-                        secondary: '#2c3e50',
-                        accent: '#34495e'
-                    },
-                    fontFamily: {
-                        'display': ['Playfair Display', 'serif'],
-                        'body': ['Roboto', 'sans-serif']
-                    },
-                    animation: {
-                        'fade-in': 'fadeIn 0.8s ease-out forwards',
-                        'slide-up': 'slideUp 0.6s ease-out forwards'
-                    },
-                    keyframes: {
-                        fadeIn: {
-                            '0%': { opacity: '0', transform: 'translateY(30px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        },
-                        slideUp: {
-                            '0%': { opacity: '0', transform: 'translateY(50px)' },
-                            '100%': { opacity: '1', transform: 'translateY(0)' }
-                        }
-                    }
-                }
-            }
-        }
-
-        // Function to close mobile menu
-        function closeMobileMenu() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            if (mobileMenu) {
-                mobileMenu.classList.add('hidden');
-            }
-        }
-
-        // Smooth scrolling for anchor links
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function (e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const target = document.querySelector(targetId);
-                    if (target) {
-                        // Close mobile menu if open
-                        closeMobileMenu();
-
-                        // Individual offset calculations for each section
-                        const headerHeight = 80; // Fixed header height
-                        const rect = target.getBoundingClientRect();
-                        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-                        const targetTop = rect.top + scrollTop;
-
-                        let offset = headerHeight;
-
-                        // Individual section adjustments
-                        switch(targetId) {
-                            case '#home':
-                                offset = 80; // Hero section: just header height
-                                break;
-                            case '#about':
-                                offset = 0; // About section: header + section padding
-                                break;
-                            case '#ministries':
-                                offset = 0; // Ministries section: header + section padding
-                                break;
-                            case '#events':
-                                offset = 0; // Events section: header + section padding
-                                break;
-                            case '#contact':
-                                offset = 0; // Contact section: header + section padding
-                                break;
-                            case '#services':
-                                offset = 0; // Services section: header + section padding
-                                break;
-                            default:
-                                offset = 120; // Default for any other sections
-                        }
-
-                        const finalPosition = targetTop - offset;
-
-                        window.scrollTo({
-                            top: finalPosition,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-
-            // Add fade-in animation for sections
-            const observerOptions = {
-                threshold: 0.1,
-                rootMargin: '0px 0px -50px 0px'
-            };
-
-            const observer = new IntersectionObserver((entries) => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('animate-fade-in');
-                    }
-                });
-            }, observerOptions);
-
-            // Observe all sections except hero
-            document.querySelectorAll('section:not(#home)').forEach(section => {
-                observer.observe(section);
-            });
-
-            // Enhanced parallax and animation effects
-            let ticking = false;
-
-            function updateParallax() {
-                const scrolled = window.pageYOffset;
-                const heroSection = document.getElementById('home');
-                const heroImage = document.querySelector('#home img');
-                const eventsSection = document.getElementById('events');
-                const eventsImage = document.querySelector('#events img');
-
-                if (heroSection && scrolled < window.innerHeight) {
-                    // Parallax effect for hero background image
-                    if (heroImage) {
-                        const parallaxOffset = scrolled * 0.4;
-                        heroImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + scrolled * 0.0001})`;
-                    }
-
-                    // Fade out hero content as user scrolls
-                    const heroContent = document.querySelector('#home .relative.z-10');
-                    if (heroContent) {
-                        const opacity = Math.max(0, 1 - (scrolled / (window.innerHeight * 0.5)));
-                        heroContent.style.opacity = opacity;
-                        heroContent.style.transform = `translateY(${scrolled * 0.2}px)`;
-                    }
-                }
-
-                // Parallax effect for events section
-                if (eventsSection && eventsImage) {
-                    const eventsRect = eventsSection.getBoundingClientRect();
-                    const eventsTop = eventsRect.top + scrolled;
-                    const eventsBottom = eventsTop + eventsRect.height;
-
-                    if (scrolled >= eventsTop && scrolled <= eventsBottom) {
-                        const parallaxOffset = (scrolled - eventsTop) * 0.3;
-                        eventsImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + (scrolled - eventsTop) * 0.00005})`;
-                    }
-                }
-
-                ticking = false;
-            }
-
-            window.addEventListener('scroll', function() {
-                if (!ticking) {
-                    requestAnimationFrame(updateParallax);
-                    ticking = true;
-                }
-            });
-
-            // Add entrance animations with delays
-            document.addEventListener('DOMContentLoaded', function() {
-                setTimeout(() => {
-                    const heroLogo = document.querySelector('#home .w-24.h-24');
-                    if (heroLogo) heroLogo.classList.add('hero-logo');
-                }, 500);
-
-                setTimeout(() => {
-                    const heroHeading = document.querySelector('#home h1');
-                    if (heroHeading) heroHeading.classList.add('hero-heading');
-                }, 800);
-
-                // Buttons are already visible with the main fade-in animation
-            });
-        });
-    </script>
     <style>
-        /* Custom animations */
-        .animate-fade-in {
-            animation: fadeIn 1.2s ease-out forwards;
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: linear-gradient(135deg, #8B4513 0%, #2c3e50 50%, #34495e 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0;
+            overflow: hidden;
         }
 
-        .parallax-bg img {
-            transition: transform 0.1s ease-out;
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(50px) scale(0.95);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0) scale(1);
-            }
+        .container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(139, 69, 19, 0.1), transparent);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+
+        .logo-container {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .church-logo {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid rgba(139, 69, 19, 0.3);
+            box-shadow: 0 8px 25px rgba(139, 69, 19, 0.2);
+            margin-bottom: 1rem;
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .church-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.025em;
+        }
+
+        .church-subtitle {
+            color: #8B4513;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+        }
+
+        .loading-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2rem 0;
+        }
+
+        .loading-ring {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(139, 69, 19, 0.2);
+            border-top: 4px solid #8B4513;
+            border-radius: 50%;
+            animation: spin 1.5s linear infinite;
+            margin-bottom: 1.5rem;
+        }
+
+        .loading-dots {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .dot {
+            width: 8px;
+            height: 8px;
+            background: #8B4513;
+            border-radius: 50%;
+            animation: bounce 1.4s ease-in-out infinite both;
+        }
+
+        .dot:nth-child(1) { animation-delay: -0.32s; }
+        .dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0.8); opacity: 0.5; }
+            40% { transform: scale(1); opacity: 1; }
+        }
+
+        .loading-text {
+            color: #34495e;
+            font-weight: 500;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .progress-bar {
+            width: 200px;
+            height: 3px;
+            background: rgba(139, 69, 19, 0.2);
+            border-radius: 2px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B4513, #2c3e50);
+            border-radius: 2px;
+            animation: progress 2s ease-in-out;
+        }
+
+        @keyframes progress {
+            0% { width: 0%; }
+            100% { width: 100%; }
+        }
+
+        .welcome-message {
+            text-align: center;
+            color: #34495e;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+        }
+
+        .manual-link {
+            display: inline-block;
+            color: #8B4513;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border: 2px solid #8B4513;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .manual-link:hover {
+            background: #8B4513;
+            color: white;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+        }
+
+        .floating-elements {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .floating-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .floating-element:nth-child(1) {
+            top: 10%;
+            left: 10%;
+            font-size: 2rem;
+            animation-delay: 0s;
+        }
+
+        .floating-element:nth-child(2) {
+            top: 20%;
+            right: 15%;
+            font-size: 1.5rem;
+            animation-delay: 2s;
+        }
+
+        .floating-element:nth-child(3) {
+            bottom: 15%;
+            left: 15%;
+            font-size: 1.8rem;
+            animation-delay: 4s;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0px); }
-            50% { transform: translateY(-20px); }
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
         }
 
-        @keyframes glow {
-            0%, 100% { box-shadow: 0 0 20px rgba(139, 69, 19, 0.3); }
-            50% { box-shadow: 0 0 40px rgba(139, 69, 19, 0.6); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
         }
 
-        .hero-logo {
-            animation: float 3s ease-in-out infinite;
-        }
+        @media (max-width: 640px) {
+            .container {
+                padding: 2rem;
+                margin: 1rem;
+            }
 
-        .hero-heading {
-            animation: fadeIn 1.5s ease-out forwards, glow 2s ease-in-out infinite alternate;
-        }
+            .church-name {
+                font-size: 1.75rem;
+            }
 
-        /* Clean button hover effects */
-        .hero-button {
-            transition: all 0.3s ease;
+            .church-logo {
+                width: 100px;
+                height: 100px;
+            }
         }
-
-        .hero-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        }
-
-        /* Smooth transitions for all interactive elements */
-        * {
-            transition: all 0.3s ease;
-        }
-
-        /* Custom scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: #8B4513;
-            border-radius: 4px;
-        }
-
-        ::-webkit-scrollbar-thumb:hover {
-            background: #654321;
-        }
-
-        /* Enhanced button hover effects */
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
-        }
-
-        /* Subtle text shadow for better readability */
-        .text-shadow {
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-
-        .text-shadow-lg {
-            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
-        }
-
-        /* Gradient text effect for special elements */
-        .gradient-text {
-            background: linear-gradient(135deg, #8B4513, #2c3e50);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        /* Subtle float and glow helpers for media */
-        .float-slow { animation: float 10s ease-in-out infinite; }
-        .glow-pulse { animation: glow 6s ease-in-out infinite; }
     </style>
 </head>
-<body class="font-body bg-gray-50">
-<!-- Header Section -->
-<header id="main-header" class="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg border-b border-gray-100 transition-transform duration-300">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <!-- Logo -->
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
-                        <img src="images/Perpetual Church Logo.jpg" alt="Our Mother of Perpetual Help Church Logo" class="w-full h-full rounded-full object-cover">
-                    </div>
-                    <div>
-                        <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
-                        <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
-                    </div>
-                </div>
-
-                <!-- Desktop Navigation -->
-                <nav class="hidden lg:flex">
-                    <ul class="flex gap-8">
-                        <li><a href="#home" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Home</a></li>
-                        <li><a href="#about" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">About Us</a></li>
-                        <li><a href="#ministries" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Ministries</a></li>
-                        <li><a href="#events" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Events</a></li>
-                        <li><a href="#services" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Services</a></li>
-                        <li><a href="#contact" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Contact Us</a></li>
-                        <li><a href="register.html" class="bg-primary text-white px-6 py-2 rounded-full font-medium hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">Sign Up</a></li>
-                    </ul>
-                </nav>
-
-                <!-- Mobile Menu Button -->
-                <button type="button" class="lg:hidden text-2xl text-primary p-2 hover:bg-primary/10 rounded-lg transition-colors" id="mobile-menu-btn" aria-label="Open mobile menu">
-                    <i class="fas fa-bars"></i>
-                </button>
-            </div>
+<body>
+    <div class="container">
+        <div class="floating-elements">
+            <div class="floating-element">✝️</div>
+            <div class="floating-element">🙏</div>
+            <div class="floating-element">⛪</div>
         </div>
 
-        <!-- Mobile Menu -->
-        <div class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg" id="mobile-menu">
-            <div class="px-4 py-6 space-y-4">
-                <a href="#home" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Home</a>
-                <a href="#about" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">About Us</a>
-                <a href="#ministries" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Ministries</a>
-                <a href="#events" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Events</a>
-                <a href="#services" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Services</a>
-                <a href="#contact" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Contact Us</a>
-                <a href="register.html" class="block bg-primary text-white px-6 py-3 rounded-full font-medium text-center hover:bg-primary/90 transition-colors">Sign Up</a>
-            </div>
-        </div>
-    </header>
-
-    <!-- Hero Section - Full Screen -->
-    <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden pt-20">
-        <!-- Background Image with Parallax -->
-        <div class="absolute inset-0 parallax-bg">
-            <img src="images/8913603064_c178069305_b.jpg" alt="Our Mother of Perpetual Help Redemptorist Church - A beacon of faith and community" class="w-full h-full object-cover filter brightness-110 contrast-105 scale-110">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
+        <div class="logo-container">
+            <img src="src/assets/images/Perpetual Church Logo.jpg" alt="Our Mother of Perpetual Help Church Logo" class="church-logo">
+            <h1 class="church-name">Our Mother of Perpetual Help</h1>
+            <div class="church-subtitle">Redemptorist Church • Dumaguete City</div>
         </div>
 
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
+        <div class="loading-container">
+            <div class="loading-ring"></div>
+            <div class="loading-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="loading-text">Preparing your spiritual journey...</div>
         </div>
 
-        <!-- Main Content Container -->
-        <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center space-y-10">
-
-                <!-- Main Heading -->
-                <div class="space-y-6">
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-display font-bold text-white leading-tight drop-shadow-2xl">
-                        Our Mother of <span class="text-primary drop-shadow-lg">Perpetual Help</span>
-                    </h1>
-                    <div class="w-24 h-1 bg-primary rounded-full mx-auto"></div>
-                </div>
-
-                <!-- Church Identity -->
-                <div class="space-y-4">
-                    <h2 class="text-xl md:text-2xl xl:text-3xl font-display font-light text-white/90 drop-shadow-lg">
-                        Redemptorist Church • Dumaguete City
-                    </h2>
-                    <p class="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto drop-shadow-md">
-                        Serving the community with faith and love since 1974. Discover spiritual nourishment, meaningful connections, and compassionate service in the heart of Dumaguete City.
-                    </p>
-                </div>
-
-                <!-- Call to Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center pt-6">
-                    <a href="register.html" class="hero-button bg-primary text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl inline-flex items-center gap-3 min-w-[240px] justify-center">
-                        <i class="fas fa-user-plus text-xl"></i>
-                        <span>Join Our Community</span>
-                    </a>
-                    <a href="#about" class="hero-button bg-white/10 backdrop-blur-md border-2 border-white/30 text-white px-10 py-5 rounded-full font-bold text-lg shadow-xl inline-flex items-center gap-3 min-w-[240px] justify-center">
-                        <i class="fas fa-book-open text-xl"></i>
-                        <span>Discover Our Story</span>
-                    </a>
-                </div>
-
-                <!-- Trust Indicators -->
-                <div class="flex flex-wrap justify-center gap-4 pt-8">
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-users text-primary text-2xl"></i>
-                        <div class="text-left">
-                            <div class="text-lg font-bold">5,000+</div>
-                            <div class="text-xs font-medium">Parishioners</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-clock text-secondary text-2xl"></i>
-                        <div class="text-left">
-                            <div class="text-lg font-bold">50+</div>
-                            <div class="text-xs font-medium">Years of Service</div>
-                        </div>
-                    </div>
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-heart text-accent text-2xl"></i>
-                        <div class="text-left">
-                            <div class="text-lg font-bold">Daily</div>
-                            <div class="text-xs font-medium">Mass Celebrations</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+        <div class="welcome-message">
+            <p>Welcome to our digital parish community. We're setting everything up for you to experience God's love and connect with our faith family.</p>
         </div>
 
-        <!-- Overlay for better text contrast -->
-        <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
-    </section>
-
-    <!-- About Us Section -->
-    <section id="about" class="py-6 bg-gradient-to-br from-white via-gray-50/30 to-primary/5 relative overflow-hidden">
-        <!-- Background Pattern -->
-        <div class="absolute inset-0 opacity-5">
-            <div class="absolute top-10 left-10 w-32 h-32 border border-primary/20 rounded-full"></div>
-            <div class="absolute bottom-20 right-20 w-24 h-24 border border-secondary/20 rounded-full"></div>
-            <div class="absolute top-1/2 left-1/3 w-16 h-16 border border-accent/20 rounded-full"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 backdrop-blur-sm rounded-full mb-2 border border-primary/20">
-                    <i class="fas fa-church text-primary text-xs"></i>
-                    <span class="text-primary font-semibold text-xs uppercase tracking-wide">About Our Parish</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-2 leading-tight">Our Sacred Story</h2>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">Discover the heart and soul of Our Mother of Perpetual Help Redemptorist Church</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 items-center mb-6">
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-3 leading-tight">A Legacy of Faith</h3>
-                        <p class="text-sm text-gray-700 mb-3 leading-relaxed">
-                            Our Mother of Perpetual Help Redemptorist Church has been a beacon of faith and community in Dumaguete City since 1974. Founded by the Redemptorist Fathers, our parish has grown from a small congregation to a vibrant community of believers committed to living out the Gospel message.
-                        </p>
-                        <p class="text-sm text-gray-700 mb-4 leading-relaxed">
-                            Named after Our Lady of Perpetual Help, our patroness, the church serves as a spiritual home for thousands of families, providing sacraments, education, and charitable works that reflect Christ's love for all people.
-                        </p>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-primary/10 via-secondary/10 to-accent/10 rounded-xl p-4 border border-primary/20 shadow-lg">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
-                                <i class="fas fa-heart text-xs"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-700 italic text-sm leading-relaxed font-medium">
-                                    "We are called to be a community of faith, hope, and love, serving God and our neighbors with compassion and dedication."
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="grid grid-cols-3 gap-3">
-                        <div class="text-center p-3 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div class="text-xl font-bold text-primary mb-1">50+</div>
-                            <div class="text-gray-600 font-semibold text-xs uppercase tracking-wide">Years of Service</div>
-                        </div>
-                        <div class="text-center p-3 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div class="text-xl font-bold text-secondary mb-1">5,000+</div>
-                            <div class="text-gray-600 font-semibold text-xs uppercase tracking-wide">Parishioners</div>
-                        </div>
-                        <div class="text-center p-3 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div class="text-xl font-bold text-accent mb-1">15</div>
-                            <div class="text-gray-600 font-semibold text-xs uppercase tracking-wide">Active Ministries</div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <!-- Main Image Container -->
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20"></div>
-                        <img src="images/Mother-of-Perpetual-Help.jpg" alt="Our Lady of Perpetual Help - Patroness of Our Church" loading="lazy" decoding="async" class="w-full h-64 lg:h-80 object-cover relative z-10">
-
-                        <!-- Decorative Elements -->
-                        <div class="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/20">
-                            <i class="fas fa-cross text-primary text-xl"></i>
-                        </div>
-                        <div class="absolute bottom-6 right-6 w-12 h-12 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-star text-white text-sm"></i>
-                        </div>
-
-                        <!-- Corner Accents -->
-                        <div class="absolute top-0 left-0 w-8 h-8 bg-primary rounded-tl-3xl"></div>
-                        <div class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-br-3xl"></div>
-                    </div>
-
-                    <!-- Floating Quote Card -->
-                    <div class="absolute -bottom-8 -left-8 bg-white rounded-2xl shadow-2xl p-6 max-w-sm border border-gray-100 hover:shadow-3xl transition-all duration-300">
-                        <div class="flex items-start gap-4">
-                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                <i class="fas fa-quote-left text-sm"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-700 italic text-base leading-relaxed font-medium">
-                                    "For where two or three gather in my name, there am I with them."
-                                </p>
-                                <div class="text-sm text-gray-500 mt-3 font-semibold">- Matthew 18:20</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Mission & Vision -->
-            <div class="text-center mb-6">
-                <h3 class="text-xl md:text-2xl font-display font-bold text-secondary mb-2">Our Mission & Vision</h3>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto">Guiding principles that shape our community and service</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-3 mb-6">
-                <!-- Mission -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-cross"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-4">Our Mission</h4>
-                    <p class="text-gray-600 leading-relaxed">To proclaim the Gospel of Jesus Christ through worship, education, and service, fostering a community of faith that transforms lives and builds a better world.</p>
-                </div>
-
-                <!-- Vision -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-heart"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-4">Our Vision</h4>
-                    <p class="text-gray-600 leading-relaxed">To be a welcoming parish where everyone experiences God's love, grows in faith, and actively participates in building God's kingdom through service to others.</p>
-                </div>
-
-                <!-- Values -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-4">Our Values</h4>
-                    <ul class="text-gray-600 space-y-2 text-left">
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-primary"></i>
-                            Faith in Jesus Christ
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-primary"></i>
-                            Love for God and neighbor
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-primary"></i>
-                            Service to the community
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-primary"></i>
-                            Respect for all people
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-primary"></i>
-                            Commitment to justice and peace
-                        </li>
-                    </ul>
-                </div>
-            </div>
-
-            <!-- Leadership -->
-            <div class="text-center mb-6">
-                <h3 class="text-xl md:text-2xl font-display font-bold text-secondary mb-2">Our Leadership</h3>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto">Dedicated servants guiding our parish community with faith and wisdom</p>
-            </div>
-
-            <div class="grid md:grid-cols-3 gap-3">
-                <!-- Leader 1 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-primary/20">
-                        <img src="images/Fr._Gaspe-removebg-preview.png" alt="Fr. Nestor Gaspe, C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-2">Fr. Nestor Gaspe, C.Ss.R.</h4>
-                    <p class="text-primary font-semibold mb-4 text-lg">Parish Priest</p>
-                    <p class="text-gray-600 leading-relaxed">Leading our parish with wisdom, compassion, and dedication to serving God's people through spiritual guidance and pastoral care.</p>
-                </div>
-
-                <!-- Leader 2 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-secondary/20">
-                        <img src="images/Fr._James-removebg-preview.png" alt="Fr. James Philip Narisma, C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-2">Fr. James Philip Narisma, C.Ss.R.</h4>
-                    <p class="text-secondary font-semibold mb-4 text-lg">Church Priest</p>
-                    <p class="text-gray-600 leading-relaxed">Supporting our community through sacramental ministry, spiritual guidance, and compassionate service to all parishioners.</p>
-                </div>
-
-                <!-- Leader 3 -->
-                <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
-                    <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-accent/20">
-                        <img src="images/Fr._Eliodoro-removebg-preview.png" alt="Fr. Eliodoro Reteracion C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-secondary mb-2">Fr. Eliodoro Reteracion C.Ss.R.</h4>
-                    <p class="text-accent font-semibold mb-4 text-lg">Church Priest</p>
-                    <p class="text-gray-600 leading-relaxed">Dedicated to nurturing faith and providing pastoral care to our parishioners with devotion and spiritual insight.</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Ministries Section -->
-    <section id="ministries" class="py-6 bg-gradient-to-br from-secondary/5 via-white to-primary/5 relative overflow-hidden">
-        <!-- Background Elements -->
-        <div class="absolute inset-0 opacity-10">
-            <div class="absolute top-20 right-20 w-40 h-40 border-2 border-primary/30 rounded-full"></div>
-            <div class="absolute bottom-10 left-10 w-28 h-28 border-2 border-secondary/30 rounded-full"></div>
-            <div class="absolute top-1/3 right-1/4 w-20 h-20 border-2 border-accent/30 rounded-full"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-secondary/10 backdrop-blur-sm rounded-full mb-2 border border-secondary/20">
-                    <i class="fas fa-hands-helping text-secondary text-xs"></i>
-                    <span class="text-secondary font-semibold text-xs uppercase tracking-wide">Our Ministries</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-2 leading-tight">Serve with Purpose</h2>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">Discover the many ways you can serve God and our community</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 items-center mb-6">
-                <div class="space-y-4">
-                    <div>
-                        <h3 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-3 leading-tight">Make a Difference</h3>
-                        <p class="text-sm text-gray-700 mb-3 leading-relaxed">
-                            Our ministries provide opportunities for every parishioner to use their unique gifts and talents in service to God and our community. Whether through worship, education, charity, or fellowship, there's a place for you to make a difference.
-                        </p>
-                    </div>
-
-                    <div class="bg-gradient-to-r from-secondary/10 via-primary/10 to-accent/10 rounded-xl p-4 border border-secondary/20 shadow-lg">
-                        <div class="flex items-start gap-3">
-                            <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
-                                <i class="fas fa-bible text-xs"></i>
-                            </div>
-                            <div>
-                                <p class="text-gray-700 italic text-sm leading-relaxed font-medium">
-                                    "For we are God's handiwork, created in Christ Jesus to do good works, which God prepared in advance for us to do."
-                                </p>
-                                <div class="text-sm text-gray-600 mt-1 font-semibold">- Ephesians 2:10</div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="space-y-2">
-                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-users text-primary text-xs"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-sm">Community Impact</h4>
-                                <p class="text-gray-600 text-xs">Serving over 2,000 people annually through our outreach programs</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3 p-3 bg-white rounded-xl shadow-lg border border-gray-100 hover:shadow-xl transition-all duration-300">
-                            <div class="w-8 h-8 bg-secondary/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-heart text-secondary text-xs"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-bold text-gray-800 text-sm">Spiritual Growth</h4>
-                                <p class="text-gray-600 text-xs">Nurturing faith through prayer, study, and fellowship</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="relative">
-                    <!-- Main Image Container -->
-                    <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-br from-secondary/20 via-transparent to-primary/20"></div>
-                        <img src="images/image.png" alt="Community Service and Ministry Work - Our Mother of Perpetual Help Church" loading="lazy" decoding="async" class="w-full h-64 lg:h-80 object-cover relative z-10">
-
-                        <!-- Decorative Elements -->
-                        <div class="absolute top-6 right-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-secondary/20">
-                            <i class="fas fa-hands-helping text-secondary text-xl"></i>
-                        </div>
-                        <div class="absolute bottom-6 left-6 w-12 h-12 bg-secondary/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                            <i class="fas fa-star text-white text-sm"></i>
-                        </div>
-
-                        <!-- Corner Accents -->
-                        <div class="absolute top-0 right-0 w-8 h-8 bg-secondary rounded-tr-3xl"></div>
-                        <div class="absolute bottom-0 left-0 w-8 h-8 bg-primary rounded-bl-3xl"></div>
-
-                        <!-- Overlay Content -->
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-3xl"></div>
-                        <div class="absolute bottom-8 left-8 right-8 text-white">
-                            <h3 class="text-3xl md:text-4xl font-display font-bold mb-4 text-shadow-lg">Start Serving Today</h3>
-                            <p class="text-lg md:text-xl opacity-95 font-medium leading-relaxed mb-6">Step into a ministry that matches your gifts and passion.</p>
-                            <a href="register.html" class="inline-flex items-center gap-3 bg-primary text-white px-8 py-4 rounded-full font-bold text-lg hover:bg-primary/90 transition-all duration-300 shadow-xl hover:shadow-2xl transform hover:scale-105">
-                                <i class="fas fa-users-cog text-xl"></i>
-                                Join a Team
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Ministry Categories -->
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Worship Ministry -->
-                <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-primary/30">
-                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-primary/20">
-                        <i class="fas fa-pray"></i>
-                    </div>
-                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Worship Ministry</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Liturgy, music, and preparation for the sacraments to enrich worship.</p>
-                    <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">Active</span>
-                </div>
-
-                <!-- Education Ministry -->
-                <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-secondary/30">
-                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-secondary/20">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Education Ministry</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Religious education, Bible study, and faith formation for all ages.</p>
-                    <span class="inline-block bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full">Growing</span>
-                </div>
-
-                <!-- Charity Ministry -->
-                <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-accent/30">
-                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-accent/20">
-                        <i class="fas fa-hands-helping"></i>
-                    </div>
-                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Charity Ministry</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Outreach programs, food drives, and support for those in need.</p>
-                    <span class="inline-block bg-accent/10 text-accent text-xs font-semibold px-3 py-1 rounded-full">Essential</span>
-                </div>
-
-                <!-- Youth Ministry -->
-                <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-green-600/30">
-                    <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-green-600/20">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Youth Ministry</h4>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Programs for young people to grow in faith and fellowship.</p>
-                    <span class="inline-block bg-green-100 text-green-700 text-xs font-semibold px-3 py-1 rounded-full">Vibrant</span>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Mass Schedule Section -->
-    <section id="mass" class="py-6 bg-gradient-to-br from-primary/5 via-white to-secondary/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 backdrop-blur-sm rounded-full mb-2 border border-primary/20">
-                    <i class="fas fa-church text-primary text-xs"></i>
-                    <span class="text-primary font-semibold text-xs uppercase tracking-wide">Mass Schedule</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-2 leading-tight">Join Us in Worship</h2>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">Experience the Eucharist and grow in faith through our regular Mass celebrations</p>
-            </div>
-
-            <!-- Full-width Schedule Image -->
-            <div class="mb-8">
-                <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500 max-w-6xl mx-auto">
-                    <img src="images/Perpetual Church Schedule.png" alt="Our Mother of Perpetual Help Church Mass Schedule" class="w-full h-auto object-contain max-h-screen" loading="lazy" decoding="async">
-                    <!-- Decorative Elements -->
-                    <div class="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/20">
-                        <i class="fas fa-calendar-alt text-primary text-xl"></i>
-                    </div>
-                    <div class="absolute bottom-6 right-6 w-12 h-12 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
-                        <i class="fas fa-clock text-white text-sm"></i>
-                    </div>
-                    <!-- Corner Accents -->
-                    <div class="absolute top-0 left-0 w-8 h-8 bg-primary rounded-tl-3xl"></div>
-                    <div class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-br-3xl"></div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Events Section -->
-    <section id="events" class="relative pt-6 pb-4 overflow-hidden">
-        <!-- Background Image with Parallax -->
-        <div class="absolute inset-0 parallax-bg">
-            <img src="images/Perpetual Church Inside.jpg" alt="Our Mother of Perpetual Help Church Interior - A place of worship and community" class="w-full h-full object-cover filter brightness-110 contrast-105 scale-110">
-            <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
-            <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
-        </div>
-
-        <!-- Animated Background Elements -->
-        <div class="absolute inset-0 overflow-hidden">
-            <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
-            <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
-            <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
-        </div>
-
-        <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-4">
-                <div class="inline-block px-3 py-1 bg-gradient-to-r from-primary/30 via-secondary/30 to-accent/30 backdrop-blur-sm rounded-full mb-2 border border-white/20">
-                    <span class="text-white font-semibold text-xs uppercase tracking-wide drop-shadow-sm">Events</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-primary mb-2 drop-shadow-lg">Our Events & Activities</h2>
-                <p class="text-sm text-white/95 max-w-2xl mx-auto drop-shadow font-medium">Celebrating faith, community, and fellowship together</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 items-center mb-6">
-                <div>
-                    <h3 class="text-3xl md:text-4xl font-display font-bold text-white mb-4 drop-shadow-lg">Come Together in Faith</h3>
-                    <p class="text-base text-white/90 mb-4 leading-relaxed drop-shadow-md">
-                        Our parish events bring our community together for worship, celebration, learning, and service. From solemn liturgies to joyful gatherings, there's always something happening at Our Mother of Perpetual Help.
-                    </p>
-                    <div class="bg-white/10 backdrop-blur-sm border-l-4 border-white/50 p-3 rounded-r-lg mb-3">
-                        <p class="text-white/90 italic text-sm leading-relaxed">
-                            "For where two or three gather in my name, there am I with them." - Matthew 18:20
-                        </p>
-                    </div>
-                    <div class="space-y-3">
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                                <i class="fas fa-calendar-check text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-white text-sm drop-shadow-md">Regular Celebrations</h4>
-                                <p class="text-white/80 text-sm">Weekly masses, seasonal feasts, and special liturgical events</p>
-                            </div>
-                        </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center">
-                                <i class="fas fa-users text-white text-sm"></i>
-                            </div>
-                            <div>
-                                <h4 class="font-semibold text-white text-sm drop-shadow-md">Community Building</h4>
-                                <p class="text-white/80 text-sm">Fellowship gatherings that strengthen our parish bonds</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-3 gap-6">
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-amber-400/30 to-orange-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-amber-200 text-2xl mx-auto mb-3 shadow-lg">
-                            <i class="fas fa-calendar-alt"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-white mb-1 drop-shadow-lg">50+</div>
-                        <div class="text-amber-300 font-medium text-sm">Events Per Year</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-purple-400/30 to-pink-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-purple-200 text-2xl mx-auto mb-3 shadow-lg">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-white mb-1 drop-shadow-lg">2,000+</div>
-                        <div class="text-purple-300 font-medium text-sm">Participants</div>
-                    </div>
-                    <div class="text-center">
-                        <div class="w-16 h-16 bg-gradient-to-br from-emerald-400/30 to-teal-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-emerald-200 text-2xl mx-auto mb-3 shadow-lg">
-                            <i class="fas fa-star"></i>
-                        </div>
-                        <div class="text-2xl font-bold text-white mb-1 drop-shadow-lg">12</div>
-                        <div class="text-emerald-300 font-medium text-sm">Regular Programs</div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Event Categories -->
-            <div class="grid md:grid-cols-3 gap-8">
-                <!-- Liturgical Events -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-amber-400/40">
-                    <div class="w-16 h-16 bg-gradient-to-br from-amber-400/30 to-orange-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-amber-200 text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-pray"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-white mb-4 drop-shadow-lg">Liturgical Celebrations</h4>
-                    <p class="text-white/90 leading-relaxed mb-6 drop-shadow-md">Solemn masses, feast days, and special liturgical celebrations that nourish our spiritual life.</p>
-                    <ul class="text-left space-y-2 text-sm text-white/90">
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-amber-300 text-xs"></i>
-                            <span>Sunday Masses</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-amber-300 text-xs"></i>
-                            <span>Feast Day Celebrations</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-amber-300 text-xs"></i>
-                            <span>Sacramental Events</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Community Events -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-purple-400/40">
-                    <div class="w-16 h-16 bg-gradient-to-br from-purple-400/30 to-pink-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-purple-200 text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-users"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-white mb-4 drop-shadow-lg">Community Gatherings</h4>
-                    <p class="text-white/90 leading-relaxed mb-6 drop-shadow-md">Fellowship activities, social events, and community meals that strengthen our bonds.</p>
-                    <ul class="text-left space-y-2 text-sm text-white/90">
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-purple-300 text-xs"></i>
-                            <span>Parish Fiesta</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-purple-300 text-xs"></i>
-                            <span>Community Potlucks</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-purple-300 text-xs"></i>
-                            <span>Fellowship Events</span>
-                        </li>
-                    </ul>
-                </div>
-
-                <!-- Educational Events -->
-                <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-emerald-400/40">
-                    <div class="w-16 h-16 bg-gradient-to-br from-emerald-400/30 to-teal-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-emerald-200 text-2xl mx-auto mb-6 shadow-lg">
-                        <i class="fas fa-graduation-cap"></i>
-                    </div>
-                    <h4 class="text-xl font-display font-bold text-white mb-4 drop-shadow-lg">Educational Programs</h4>
-                    <p class="text-white/90 leading-relaxed mb-6 drop-shadow-md">Learning opportunities, workshops, and faith formation sessions for spiritual growth.</p>
-                    <ul class="text-left space-y-2 text-sm text-white/90">
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-emerald-300 text-xs"></i>
-                            <span>Bible Study Groups</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-emerald-300 text-xs"></i>
-                            <span>Youth Programs</span>
-                        </li>
-                        <li class="flex items-center gap-2">
-                            <i class="fas fa-check text-emerald-300 text-xs"></i>
-                            <span>Adult Education</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Sacramental Services & Certificates Section -->
-    <section id="services" class="pt-6 pb-4 bg-gradient-to-br from-secondary/5 via-white to-primary/5">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-4">
-                <div class="inline-block px-3 py-1 bg-primary/10 rounded-full mb-2">
-                    <span class="text-primary font-semibold text-xs uppercase tracking-wide">Sacramental Services</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-2">Our Sacramental Services & Church Certificates</h2>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto">Experience the sacraments of our faith and obtain official church certificates for your spiritual journey</p>
-            </div>
-
-            <div class="grid lg:grid-cols-2 gap-4 mb-4">
-                <!-- Services -->
-                <div>
-                    <h3 class="text-3xl md:text-4xl font-display font-bold text-secondary mb-4 text-center">Our Sacramental Services</h3>
-                    <div class="space-y-4">
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-book-open"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Catechism</h4>
-                                    <p class="text-gray-600">Classes for children, youth, and adults preparing for sacraments (First Communion, Confirmation, RCIA).</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-pray"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Confession</h4>
-                                    <p class="text-gray-600">Reconciliation Schedule: Regular times when priests hear confessions outside of the Mass.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-pray"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Novena to Our Mother of Perpetual Help</h4>
-                                    <p class="text-gray-600">A weekly prayer service dedicated to Our Church, where the faithful gather to offer petitions, thanksgiving, and intercessions.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-music"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Choir and Liturgical Music Ministry</h4>
-                                    <p class="text-gray-600">Service that organizes choirs and provides music for Masses and parish events.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-praying-hands"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Community Outreach</h4>
-                                    <p class="text-gray-600">Programs for the poor, feeding ministries, medical missions, or disaster relief led by the parish.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-pink-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-users-cog"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Counseling and Spiritual Direction</h4>
-                                    <p class="text-gray-600">Guidance and support from priests or pastoral workers for individuals, couples, or families.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-teal-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-church"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Youth and Family Ministry Activities</h4>
-                                    <p class="text-gray-600">Events, retreats, and formation programs for young people and families to strengthen community life.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Certificates -->
-                <div>
-                    <h3 class="text-3xl md:text-4xl font-display font-bold text-secondary mb-4 text-center">Church Certificates</h3>
-                    <div class="space-y-4">
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-certificate"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Confirmation</h4>
-                                    <p class="text-gray-600">A sacrament where baptized Catholics receive the gifts of the Holy Spirit, usually administered by the bishop.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-file-alt"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Mass Offering</h4>
-                                    <p class="text-gray-600">A donation made when requesting a priest to celebrate Mass for a specific intention (e.g., thanksgiving, healing, repose of a soul).</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-cross"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Funeral</h4>
-                                    <p class="text-gray-600">The Catholic rites for the deceased, which include vigil prayers, funeral Mass, and committal at the cemetery.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-certificate"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Mass Card</h4>
-                                    <p class="text-gray-600">A card given when a Mass offering is made, often sent to families as spiritual support (e.g., for a deceased loved one).</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-cross"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Sick Call</h4>
-                                    <p class="text-gray-600">When priests visit the sick or elderly, offering confession, communion, and anointing for healing and spiritual strength.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-ring"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Marriage</h4>
-                                    <p class="text-gray-600">The sacrament where a man and woman enter into a covenant before God, witnessed by the Church.</p>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100">
-                            <div class="flex items-start gap-4">
-                                <div class="w-12 h-12 bg-indigo-600 rounded-full flex items-center justify-center text-white flex-shrink-0">
-                                    <i class="fas fa-water"></i>
-                                </div>
-                                <div class="flex-1">
-                                    <h4 class="text-lg font-display font-bold text-secondary mb-2">Baptism</h4>
-                                    <p class="text-gray-600">The sacrament of initiation into the Church, cleansing original sin and becoming a member of the Christian community.</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="pt-6 pb-4 bg-gradient-to-br from-gray-50 via-white to-primary/5 relative overflow-hidden">
-        <!-- Background Elements -->
-        <div class="absolute inset-0 opacity-5">
-            <div class="absolute top-20 left-20 w-32 h-32 border border-primary/20 rounded-full"></div>
-            <div class="absolute bottom-20 right-20 w-24 h-24 border border-secondary/20 rounded-full"></div>
-            <div class="absolute top-1/2 left-1/3 w-16 h-16 border border-accent/20 rounded-full"></div>
-        </div>
-
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-            <div class="text-center mb-6">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 backdrop-blur-sm rounded-full mb-2 border border-primary/20">
-                    <i class="fas fa-envelope text-primary text-xs"></i>
-                    <span class="text-primary font-semibold text-xs uppercase tracking-wide">Contact Us</span>
-                </div>
-                <h2 class="text-2xl md:text-3xl font-display font-bold text-secondary mb-2 leading-tight">Get In Touch</h2>
-                <p class="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">We'd love to hear from you and welcome you to our parish community. Reach out through any of the methods below.</p>
-            </div>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <!-- Call Us -->
-                <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-                    <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <h3 class="text-base font-display font-bold text-secondary mb-2 text-center">Call Us</h3>
-                    <div class="text-center text-gray-600 text-sm">
-                        <p class="text-sm font-bold">225-4763 / 0916-144-9599</p>
-                    </div>
-                </div>
-
-                <!-- Email Us -->
-                <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-                    <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <h3 class="text-base font-display font-bold text-secondary mb-2 text-center">Email Us</h3>
-                    <div class="text-center text-gray-600 text-sm">
-                        <p class="text-xs font-bold text-accent">redsdgte@gmail.com</p>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-1 text-center">24hr response</p>
-                </div>
-
-                <!-- Office Hours -->
-                <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-                    <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
-                        <i class="fas fa-clock"></i>
-                    </div>
-                    <h3 class="text-base font-display font-bold text-secondary mb-2 text-center">Office Hours</h3>
-                    <div class="text-center text-gray-600 text-sm">
-                        <p class="font-semibold text-green-600 text-xs">Mon-Sun:</p>
-                        <p class="text-xs">8:30AM-12NN, 1:30PM-5PM</p>
-                    </div>
-                </div>
-
-                <!-- Follow Us -->
-                <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
-                    <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
-                        <i class="fas fa-share-alt"></i>
-                    </div>
-                    <h3 class="text-base font-display font-bold text-secondary mb-2 text-center">Follow Us</h3>
-                    <div class="flex justify-center gap-2">
-                        <a href="#" class="w-6 h-6 bg-blue-600 rounded-full flex items-center justify-center text-white text-xs hover:bg-blue-700 transition-colors">
-                            <i class="fab fa-facebook-f"></i>
-                        </a>
-                        <a href="#" class="w-6 h-6 bg-pink-600 rounded-full flex items-center justify-center text-white text-xs hover:bg-pink-700 transition-colors">
-                            <i class="fab fa-instagram"></i>
-                        </a>
-                        <a href="#" class="w-6 h-6 bg-red-600 rounded-full flex items-center justify-center text-white text-xs hover:bg-red-700 transition-colors">
-                            <i class="fab fa-youtube"></i>
-                        </a>
-                    </div>
-                    <p class="text-xs text-gray-500 mt-1 text-center">Stay connected</p>
-                </div>
-            </div>
-
-            <!-- Contact Form and Map Side by Side -->
-            <div class="grid lg:grid-cols-2 gap-4">
-                <!-- Contact Form -->
-                <div class="bg-white rounded-xl p-3 shadow-lg border border-gray-100">
-                    <div class="text-center mb-2">
-                        <h3 class="text-base font-display font-bold text-secondary mb-1">Send Us a Message</h3>
-                        <p class="text-gray-600 text-xs">Have a question or need spiritual guidance? We're here to help.</p>
-                    </div>
-                    <form class="space-y-2">
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Full Name</label>
-                            <input type="text" class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="Your full name">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Email Address</label>
-                            <input type="email" class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="your.email@example.com">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Phone Number</label>
-                            <input type="tel" class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="(035) 123-4567">
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Subject</label>
-                            <select class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
-                                <option>General Inquiry</option>
-                                <option>Sacramental Services</option>
-                                <option>Ministry Opportunities</option>
-                                <option>Event Information</option>
-                                <option>Spiritual Guidance</option>
-                                <option>Other</option>
-                            </select>
-                        </div>
-                        <div>
-                            <label class="block text-xs font-semibold text-gray-700 mb-1">Message</label>
-                            <textarea rows="2" class="w-full px-2 py-1 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all resize-none" placeholder="Share your thoughts, questions, or prayer requests..."></textarea>
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="bg-primary text-white px-3 py-1.5 rounded-full font-bold text-xs hover:bg-primary/90 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5 inline-flex items-center gap-1">
-                                <i class="fas fa-paper-plane text-xs"></i>
-                                Send Message
-                            </button>
-                            <p class="text-xs text-gray-500 mt-1">We respect your privacy and will respond within 24 hours.</p>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Map Section -->
-                <div class="bg-white rounded-xl p-3 shadow-lg border border-gray-100 overflow-hidden">
-                    <h3 class="text-sm font-display font-bold text-secondary mb-2 text-center">Find Us on the Map</h3>
-                    <div class="aspect-video rounded-lg overflow-hidden">
-                        <iframe
-                            src="https://maps.google.com/maps?q=Our%20Mother%20of%20Perpetual%20Help%20Redemptorist%20Church%20Dumaguete%20City&t=&z=15&ie=UTF8&iwloc=&output=embed"
-                            width="100%"
-                            height="100%"
-                            style="border:0;"
-                            allowfullscreen=""
-                            loading="lazy"
-                            referrerpolicy="no-referrer-when-downgrade">
-                        </iframe>
-                    </div>
-                    <div class="text-center mt-2">
-                        <a href="https://maps.app.goo.gl/2JrDxHW47QVu5911A" target="_blank" class="inline-flex items-center gap-1 text-primary font-medium hover:text-primary/80 transition-colors text-xs">
-                            <i class="fas fa-external-link-alt"></i>
-                            Open in Google Maps
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- Call to Action -->
-    <div class="text-center py-6">
-        <div class="bg-gradient-to-r from-primary to-secondary rounded-3xl p-8 text-white shadow-2xl max-w-4xl mx-auto">
-            <h3 class="text-2xl md:text-3xl font-display font-bold mb-4">Ready to Begin Your Spiritual Journey?</h3>
-            <p class="text-lg md:text-xl mb-8 opacity-90">Join our parish community today and access all our sacramental services and certificates</p>
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="register.html" class="bg-white text-secondary px-8 py-4 rounded-full font-semibold text-lg hover:bg-gray-100 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 inline-flex items-center gap-2">
-                    <i class="fas fa-user-plus"></i>
-                    Sign Up Now
-                </a>
-                <a href="login.html" class="border-2 border-white text-white px-8 py-4 rounded-full font-semibold text-lg hover:bg-white hover:text-secondary transition-all duration-300 inline-flex items-center gap-2">
-                    <i class="fas fa-sign-in-alt"></i>
-                    Login to Account
-                </a>
-            </div>
-        </div>
+        <a href="src/pages/public/index.html" class="manual-link">
+            <i class="fas fa-arrow-right mr-2"></i>
+            Enter the Sanctuary
+        </a>
     </div>
 
-    <!-- Back to Top Button -->
-    <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 transform hover:scale-110 opacity-0 pointer-events-none z-40">
-        <i class="fas fa-arrow-up"></i>
-    </button>
-
-    <!-- Footer Section -->
-    <footer class="bg-secondary text-white py-4 shadow-inner">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <!-- Footer content removed as requested -->
-
-            <div class="border-t border-white/10 pt-3 text-center">
-                <p class="text-white/80 text-xs sm:text-sm tracking-wide">
-                    &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
-                </p>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Scripts Section -->
-    <script src="js/script.js"></script>
     <script>
-        // Mobile menu toggle functionality
-        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuBtn.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Close mobile menu when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!mobileMenuBtn.contains(e.target) && !mobileMenu.contains(e.target)) {
-                mobileMenu.classList.add('hidden');
-            }
-        });
-
-
-        // Back to Top Button
-        const backToTopButton = document.getElementById('back-to-top');
-        window.addEventListener('scroll', function() {
-            if (window.pageYOffset > 300) {
-                backToTopButton.classList.remove('opacity-0', 'pointer-events-none');
-                backToTopButton.classList.add('opacity-100', 'pointer-events-auto');
-            } else {
-                backToTopButton.classList.remove('opacity-100', 'pointer-events-auto');
-                backToTopButton.classList.add('opacity-0', 'pointer-events-none');
-            }
-        });
-
-        backToTopButton.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
+        // Add some interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add click effect to the container
+            const container = document.querySelector('.container');
+            container.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
             });
+
+            // Update loading text randomly
+            const loadingTexts = [
+                'Preparing your spiritual journey...',
+                'Connecting with our faith community...',
+                'Opening the doors of our church...',
+                'Welcoming you to our parish...',
+                'Setting up your sacred experience...'
+            ];
+
+            let textIndex = 0;
+            setInterval(() => {
+                textIndex = (textIndex + 1) % loadingTexts.length;
+                document.querySelector('.loading-text').textContent = loadingTexts[textIndex];
+            }, 2000);
         });
-
-        
-        // Auto-hiding Header on Scroll - COMMENTED OUT: Header now stays visible when scrolling down
-        let lastScrollTop = 0;
-        const header = document.getElementById('main-header');
-        const scrollThreshold = 100; // Minimum scroll distance before hiding
-
-        window.addEventListener('scroll', function() {
-            const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-
-            // Only apply effect after scrolling past threshold
-            if (scrollTop > scrollThreshold) {
-                if (scrollTop > lastScrollTop) {
-                    // Scrolling down - hide header
-                    header.style.transform = 'translateY(-100%)';
-                } else {
-                    // Scrolling up - show header
-                    header.style.transform = 'translateY(0)';
-                }
-            } else {
-                // At top of page - always show header
-                header.style.transform = 'translateY(0)';
-            }
-
-            lastScrollTop = scrollTop;
-        });
-        
     </script>
 </body>
 </html>

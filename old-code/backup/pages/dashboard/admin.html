@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Admin Dashboard - Our Mother of Perpetual Help Redemptorist Church">
+    <title>Admin Dashboard - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-100 font-body">
+    <!-- Top Header Section -->
+    <header class="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
+        <div class="flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <button class="lg:hidden text-gray-600 hover:text-gray-800 p-2" id="sidebar-toggle">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                        <img src="images/Perpetual Church Logo.jpg" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-display font-bold text-secondary">Admin Dashboard</h1>
+                        <p class="text-xs text-gray-500">Our Mother of Perpetual Help</p>
+                    </div>
+                </div>
+            </div>
+            <div class="flex items-center gap-4">
+                <div class="hidden md:flex items-center gap-2 text-sm text-gray-600">
+                    <i class="fas fa-clock"></i>
+                    <span id="current-time"></span>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        A
+                    </div>
+                    <span class="hidden sm:block text-sm font-medium text-gray-700">Administrator</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="flex min-h-screen">
+        <!-- Sidebar -->
+        <aside class="w-64 bg-secondary text-white shadow-lg -translate-x-full lg:translate-x-0 lg:opacity-100 transition-transform duration-300 ease-in-out fixed lg:static inset-y-0 left-0 z-30 lg:z-auto" id="sidebar">
+            <div class="flex flex-col h-full">
+                <!-- Sidebar Header -->
+                <div class="p-6 border-b border-gray-600">
+                    <h2 class="text-xl font-display font-bold text-primary">Admin Panel</h2>
+                    <p class="text-sm text-gray-300 mt-1">Management System</p>
+                </div>
+
+                <!-- Navigation Menu -->
+                <nav class="flex-1 px-4 py-6">
+                    <ul class="space-y-2">
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/20 text-white active cursor-pointer" data-section="home">
+                                <i class="fas fa-tachometer-alt w-5 text-center"></i>
+                                <span>Dashboard</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="announcements">
+                                <i class="fas fa-bullhorn w-5 text-center"></i>
+                                <span>Announcements</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="events">
+                                <i class="fas fa-calendar-alt w-5 text-center"></i>
+                                <span>Events</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="service-requests">
+                                <i class="fas fa-calendar-check w-5 text-center"></i>
+                                <span>Service Requests</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="certificate-requests">
+                                <i class="fas fa-file-alt w-5 text-center"></i>
+                                <span>Certificates</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="prayer-requests">
+                                <i class="fas fa-pray w-5 text-center"></i>
+                                <span>Prayer Requests</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="users">
+                                <i class="fas fa-users w-5 text-center"></i>
+                                <span>User Management</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="reports">
+                                <i class="fas fa-chart-bar w-5 text-center"></i>
+                                <span>Reports</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-primary/20 transition-colors text-gray-300 cursor-pointer" data-section="settings">
+                                <i class="fas fa-cog w-5 text-center"></i>
+                                <span>Settings</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+
+                <!-- Sidebar Footer -->
+                <div class="p-4 border-t border-gray-600">
+                    <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-red-600/20 transition-colors text-gray-300 cursor-pointer" data-section="logout">
+                        <i class="fas fa-sign-out-alt w-5 text-center"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile -->
+        <div class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300" id="sidebar-overlay"></div>
+
+        <!-- Main Content Section -->
+        <main class="flex-1 p-6" id="main-content">
+            <!-- Dashboard Home -->
+            <div class="dashboard-section active" id="home-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Admin Dashboard</h1>
+                    <p class="text-gray-600">Manage parish operations and monitor system activity</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Home section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Announcements Section -->
+            <div class="dashboard-section hidden" id="announcements-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Announcements Management</h1>
+                    <p class="text-gray-600">Create and manage parish announcements</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Announcements section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div class="dashboard-section hidden" id="events-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Events Management</h1>
+                    <p class="text-gray-600">Create and manage parish events</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Events section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Service Requests Section -->
+            <div class="dashboard-section hidden" id="service-requests-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Service Requests</h1>
+                    <p class="text-gray-600">Review and manage sacramental service requests</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Service requests section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Certificate Requests Section -->
+            <div class="dashboard-section hidden" id="certificate-requests-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Certificate Requests</h1>
+                    <p class="text-gray-600">Process baptismal, confirmation, and marriage certificate requests</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Certificate requests section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Prayer Requests Section -->
+            <div class="dashboard-section hidden" id="prayer-requests-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Prayer Requests</h1>
+                    <p class="text-gray-600">Monitor and manage community prayer intentions</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Prayer requests section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- User Management Section -->
+            <div class="dashboard-section hidden" id="users-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">User Management</h1>
+                    <p class="text-gray-600">Manage registered parishioners and their accounts</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">User management section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div class="dashboard-section hidden" id="reports-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Reports & Analytics</h1>
+                    <p class="text-gray-600">View system reports and parish statistics</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Reports section content would go here...</p>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div class="dashboard-section hidden" id="settings-section">
+                <div class="mb-8">
+                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">System Settings</h1>
+                    <p class="text-gray-600">Configure system preferences and settings</p>
+                </div>
+
+                <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-500">Settings section content would go here...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts Section -->
+    <script src="js/script.js"></script>
+    <script>
+        // Load admin data and update dashboard
+        function loadAdminData() {
+            const currentUser = JSON.parse(localStorage.getItem('currentUser'));
+            if (!currentUser || currentUser.role !== 'admin') {
+                window.location.href = 'admin-login.html';
+                return;
+            }
+
+            // Update header with admin data
+            const adminNameElement = document.querySelector('.hidden.sm\\:block.text-sm.font-medium.text-gray-700');
+            const adminAvatarElement = document.querySelector('.bg-red-500.rounded-full');
+
+            if (adminNameElement) {
+                adminNameElement.textContent = currentUser.name || 'Administrator';
+            }
+
+            if (adminAvatarElement) {
+                adminAvatarElement.textContent = (currentUser.name || 'A').charAt(0).toUpperCase();
+            }
+
+            // Load dynamic stats
+            loadDashboardStats();
+        }
+
+        // Load dashboard statistics
+        function loadDashboardStats() {
+            const users = JSON.parse(localStorage.getItem('churchUsers')) || [];
+            const serviceRequests = JSON.parse(localStorage.getItem('serviceRequests')) || [];
+            const certificateRequests = JSON.parse(localStorage.getItem('certificateRequests')) || [];
+
+            // Update user stats
+            const totalUsersElement = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 .font-bold.text-secondary');
+            const pendingRequestsElement = document.querySelector('.grid.grid-cols-1.md\\:grid-cols-2.lg\\:grid-cols-4 .font-bold.text-orange-600');
+
+            if (totalUsersElement) {
+                totalUsersElement.textContent = users.length;
+            }
+
+            if (pendingRequestsElement) {
+                const pendingCount = serviceRequests.filter(r => r.status === 'pending').length +
+                                   certificateRequests.filter(r => r.status === 'pending').length;
+                pendingRequestsElement.textContent = pendingCount;
+            }
+        }
+
+        // Handle announcement form submission
+        function handleAnnouncementSubmit(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const announcement = {
+                id: Date.now(),
+                title: formData.get('title'),
+                content: formData.get('content'),
+                author: JSON.parse(localStorage.getItem('currentUser')).name,
+                createdAt: new Date().toISOString(),
+                status: 'published'
+            };
+
+            // Store announcements
+            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+            announcements.unshift(announcement);
+            localStorage.setItem('announcements', JSON.stringify(announcements));
+
+            alert('Announcement published successfully!');
+            form.reset();
+
+            // Refresh announcements list
+            loadAnnouncements();
+        }
+
+        // Handle event form submission
+        function handleEventSubmit(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const event = {
+                id: Date.now(),
+                title: formData.get('title'),
+                date: formData.get('date'),
+                time: formData.get('time'),
+                location: formData.get('location'),
+                description: formData.get('description'),
+                category: formData.get('category'),
+                createdAt: new Date().toISOString(),
+                status: 'active'
+            };
+
+            // Store events
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            events.push(event);
+            localStorage.setItem('events', JSON.stringify(events));
+
+            alert('Event created successfully!');
+            form.reset();
+
+            // Refresh events list
+            loadEvents();
+        }
+
+        // Load announcements for display
+        function loadAnnouncements() {
+            const announcements = JSON.parse(localStorage.getItem('announcements')) || [];
+            const container = document.querySelector('#announcements-section .space-y-4');
+
+            if (container && announcements.length > 0) {
+                container.innerHTML = announcements.slice(0, 2).map(announcement => `
+                    <div class="border-l-4 border-primary pl-4">
+                        <h4 class="font-semibold text-gray-800">${announcement.title}</h4>
+                        <p class="text-sm text-gray-600">Posted: ${new Date(announcement.createdAt).toLocaleDateString()}</p>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Load events for display
+        function loadEvents() {
+            const events = JSON.parse(localStorage.getItem('events')) || [];
+            const container = document.getElementById('events-list');
+
+            if (container && events.length > 0) {
+                container.innerHTML = events.slice(0, 3).map(event => `
+                    <div class="border border-gray-200 rounded-lg p-4">
+                        <div class="flex items-center gap-3 mb-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-primary"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-gray-800">${event.title}</h4>
+                                <p class="text-sm text-gray-500">${new Date(event.date).toLocaleDateString()}</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button class="bg-secondary text-white px-3 py-1 rounded text-sm hover:bg-secondary/90">Edit</button>
+                            <button class="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Handle settings form submission
+        function handleSettingsSubmit(e) {
+            e.preventDefault();
+
+            const form = e.target;
+            const formData = new FormData(form);
+
+            const settings = {
+                churchName: formData.get('churchName'),
+                churchAddress: formData.get('churchAddress'),
+                contactEmail: formData.get('contactEmail'),
+                updatedAt: new Date().toISOString()
+            };
+
+            localStorage.setItem('churchSettings', JSON.stringify(settings));
+            alert('Settings saved successfully!');
+        }
+
+        // Current time display functionality
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.toLocaleTimeString('en-US', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
+
+        // Initialize admin dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            loadAdminData();
+            loadAnnouncements();
+            loadEvents();
+            updateTime();
+            setInterval(updateTime, 1000);
+
+            // Add form event listeners
+            const announcementForm = document.querySelector('#announcements-section form');
+            const eventForm = document.querySelector('#events-section form');
+            const settingsForm = document.querySelector('#settings-section form');
+
+            if (announcementForm) announcementForm.addEventListener('submit', handleAnnouncementSubmit);
+            if (eventForm) eventForm.addEventListener('submit', handleEventSubmit);
+            if (settingsForm) settingsForm.addEventListener('submit', handleSettingsSubmit);
+        });
+    </script>
+</body>
+</html>
