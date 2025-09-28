@@ -192,14 +192,14 @@
                 </div>
 
                 <!-- Form -->
-                <div class="p-5">
-                    <form class="space-y-3" id="user-register-form">
-                        <div class="grid grid-cols-2 gap-3">
+                <div class="p-4 sm:p-5">
+                    <form class="space-y-3 sm:space-y-4" id="user-register-form">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                             <div>
                                 <label for="first-name" class="block text-sm font-semibold text-slate-700 mb-1.5">First Name</label>
                                 <div class="relative">
                                     <input type="text" id="first-name" name="firstName" required
-                                                class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
+                                                class="input-focus w-full pl-8 pr-3 py-2.5 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
                                                 placeholder="First name">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
                                         <i class="fas fa-user text-xs"></i>
@@ -210,7 +210,7 @@
                                 <label for="last-name" class="block text-sm font-semibold text-slate-700 mb-1.5">Last Name</label>
                                 <div class="relative">
                                     <input type="text" id="last-name" name="lastName" required
-                                            class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
+                                            class="input-focus w-full pl-8 pr-3 py-2.5 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
                                             placeholder="Last name">
                                     <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
                                         <i class="fas fa-user text-xs"></i>
@@ -293,24 +293,24 @@
             </div>
 
             <!-- Trust Indicators -->
-            <div class="mt-6 text-center">
-                <div class="flex items-center justify-center gap-6 text-sm text-slate-500">
+            <div class="mt-4 sm:mt-6 text-center">
+                <div class="flex flex-wrap items-center justify-center gap-3 sm:gap-6 text-sm text-slate-500">
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center shadow-sm">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center shadow-sm">
                             <i class="fas fa-shield-alt text-white text-xs"></i>
                         </div>
                         <span class="font-medium">Secure</span>
                     </div>
-                    <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    <div class="hidden sm:block w-1 h-1 bg-slate-300 rounded-full"></div>
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
                             <i class="fas fa-user-friends text-white text-xs"></i>
                         </div>
                         <span class="font-medium">Community</span>
                     </div>
-                    <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    <div class="hidden sm:block w-1 h-1 bg-slate-300 rounded-full"></div>
                     <div class="flex items-center gap-2">
-                        <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-violet-500 rounded-lg flex items-center justify-center shadow-sm">
+                        <div class="w-7 h-7 sm:w-8 sm:h-8 bg-gradient-to-br from-purple-400 to-violet-500 rounded-lg flex items-center justify-center shadow-sm">
                             <i class="fas fa-heart text-white text-xs"></i>
                         </div>
                         <span class="font-medium">Welcoming</span>

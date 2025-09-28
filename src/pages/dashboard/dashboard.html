@@ -30,32 +30,32 @@
 </head>
 <body class="bg-gray-100 font-body">
     <!-- Top Header Section -->
-    <header class="bg-white shadow-sm border-b border-gray-200 px-4 py-3">
+    <header class="bg-white shadow-sm border-b border-gray-200 px-3 sm:px-4 py-3">
         <div class="flex items-center justify-between">
-            <div class="flex items-center gap-4">
-                <button class="lg:hidden text-gray-600 hover:text-gray-800 p-2" id="sidebar-toggle">
+            <div class="flex items-center gap-2 sm:gap-4">
+                <button class="lg:hidden text-gray-600 hover:text-gray-800 p-2 hover:bg-gray-100 rounded-lg transition-colors active:scale-95" id="sidebar-toggle" aria-label="Toggle sidebar">
                     <i class="fas fa-bars text-xl"></i>
                 </button>
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+                <div class="flex items-center gap-2 sm:gap-3">
+                    <div class="w-6 h-6 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
                         <img src="../../assets/images/Perpetual Church Logo.jpg" alt="Church Logo" class="w-full h-full rounded-full object-cover">
                     </div>
-                    <div>
-                        <h1 class="text-lg font-display font-bold text-secondary">Parish Dashboard</h1>
-                        <p class="text-xs text-gray-500">Welcome back, John</p>
+                    <div class="min-w-0">
+                        <h1 class="text-sm sm:text-lg font-display font-bold text-secondary truncate">Parish Dashboard</h1>
+                        <p class="text-xs text-gray-500 hidden sm:block">Welcome back, John</p>
                     </div>
                 </div>
             </div>
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2 sm:gap-4">
                 <div class="hidden md:flex items-center gap-2 text-sm text-gray-600">
                     <i class="fas fa-clock"></i>
                     <span id="current-time"></span>
                 </div>
                 <div class="flex items-center gap-2">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                    <div class="w-7 h-7 sm:w-8 sm:h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0">
                         J
                     </div>
-                    <span class="hidden sm:block text-sm font-medium text-gray-700">John Doe</span>
+                    <span class="hidden sm:block text-sm font-medium text-gray-700 truncate">John Doe</span>
                 </div>
             </div>
         </div>
@@ -63,57 +63,64 @@
 
     <div class="flex min-h-screen">
         <!-- Sidebar Section -->
-        <aside class="w-64 bg-white shadow-lg -translate-x-full lg:translate-x-0 lg:opacity-100 transition-transform duration-300 ease-in-out fixed lg:static inset-y-0 left-0 z-30 lg:z-auto border-r border-gray-200" id="sidebar">
+        <aside class="w-64 sm:w-72 bg-white shadow-lg -translate-x-full lg:translate-x-0 lg:opacity-100 transition-transform duration-300 ease-in-out fixed lg:static inset-y-0 left-0 z-30 lg:z-auto border-r border-gray-200" id="sidebar">
             <div class="flex flex-col h-full">
                 <!-- Sidebar Header -->
-                <div class="p-6 border-b border-gray-200">
-                    <h2 class="text-xl font-display font-bold text-secondary">Dashboard</h2>
-                    <p class="text-sm text-gray-500 mt-1">My Parish Portal</p>
+                <div class="p-4 sm:p-6 border-b border-gray-200">
+                    <div class="flex items-center gap-3 mb-2">
+                        <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center flex-shrink-0">
+                            <img src="../../assets/images/Perpetual Church Logo.jpg" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h2 class="text-lg sm:text-xl font-display font-bold text-secondary">Dashboard</h2>
+                            <p class="text-xs sm:text-sm text-gray-500">My Parish Portal</p>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Navigation Menu -->
-                <nav class="flex-1 px-4 py-6">
-                    <ul class="space-y-2">
+                <nav class="flex-1 px-3 sm:px-4 py-4 sm:py-6">
+                    <ul class="space-y-1 sm:space-y-2">
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary cursor-pointer" data-section="home">
-                                <i class="fas fa-home w-5 text-center"></i>
-                                <span>Home</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg bg-primary/10 text-primary border-r-4 border-primary cursor-pointer active:scale-95 transition-transform" data-section="home">
+                                <i class="fas fa-home w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Home</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="announcements">
-                                <i class="fas fa-bullhorn w-5 text-center"></i>
-                                <span>Announcements</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="announcements">
+                                <i class="fas fa-bullhorn w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Announcements</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="events">
-                                <i class="fas fa-calendar-alt w-5 text-center"></i>
-                                <span>Events</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="events">
+                                <i class="fas fa-calendar-alt w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Events</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="schedule-service">
-                                <i class="fas fa-calendar-plus w-5 text-center"></i>
-                                <span>Schedule Service</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="schedule-service">
+                                <i class="fas fa-calendar-plus w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Schedule Service</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="request-certificate">
-                                <i class="fas fa-file-alt w-5 text-center"></i>
-                                <span>Request Certificate</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="request-certificate">
+                                <i class="fas fa-file-alt w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Request Certificate</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="prayer-requests">
-                                <i class="fas fa-pray w-5 text-center"></i>
-                                <span>Prayer Requests</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="prayer-requests">
+                                <i class="fas fa-pray w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">Prayer Requests</span>
                             </a>
                         </li>
                         <li>
-                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer" data-section="profile">
-                                <i class="fas fa-user-edit w-5 text-center"></i>
-                                <span>My Profile</span>
+                            <a href="javascript:void(0)" class="sidebar-link flex items-center gap-3 px-3 sm:px-4 py-3 sm:py-3 rounded-lg hover:bg-gray-100 transition-colors text-gray-700 cursor-pointer active:scale-95" data-section="profile">
+                                <i class="fas fa-user-edit w-5 text-center text-sm sm:text-base"></i>
+                                <span class="text-sm sm:text-base">My Profile</span>
                             </a>
                         </li>
                     </ul>
@@ -133,12 +140,12 @@
         <div class="fixed inset-0 bg-black bg-opacity-50 z-20 lg:hidden opacity-0 pointer-events-none transition-opacity duration-300" id="sidebar-overlay"></div>
 
         <!-- Main Content Section -->
-        <main class="flex-1 p-6" id="main-content">
+        <main class="flex-1 p-4 sm:p-6" id="main-content">
             <!-- Dashboard Home -->
             <div class="dashboard-section active" id="home-section">
-                <div class="mb-8">
-                    <h1 class="text-3xl font-display font-bold text-secondary mb-2">Dashboard Overview</h1>
-                    <p class="text-gray-600">Manage your church services and stay connected with our community</p>
+                <div class="mb-6 sm:mb-8">
+                    <h1 class="text-2xl sm:text-3xl font-display font-bold text-secondary mb-2">Dashboard Overview</h1>
+                    <p class="text-sm sm:text-base text-gray-600">Manage your church services and stay connected with our community</p>
                 </div>
 
                 <div class="bg-white rounded-xl shadow-sm border border-gray-200 p-6">

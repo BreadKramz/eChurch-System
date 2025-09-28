@@ -177,28 +177,56 @@
                 </nav>
 
                 <!-- Mobile Menu Button -->
-                <button type="button" class="lg:hidden text-2xl text-primary p-2 hover:bg-primary/10 rounded-lg transition-colors" id="mobile-menu-btn" aria-label="Open mobile menu">
-                    <i class="fas fa-bars"></i>
+                <button type="button" class="lg:hidden text-2xl text-primary p-3 hover:bg-primary/10 rounded-lg transition-all duration-200 active:scale-95" id="mobile-menu-btn" aria-label="Open mobile menu">
+                    <i class="fas fa-bars transition-transform duration-200"></i>
                 </button>
             </div>
         </div>
 
         <!-- Mobile Menu -->
-        <div class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg" id="mobile-menu">
-            <div class="px-4 py-6 space-y-4">
-                <a href="#home" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Home</a>
-                <div class="border-t border-gray-100 my-2"></div>
-                <a href="#about" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">About Us</a>
-                <div class="border-t border-gray-100 my-2"></div>
-                <a href="#ministries" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Ministries</a>
-                <div class="border-t border-gray-100 my-2"></div>
-                <a href="#events" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Events</a>
-                <div class="border-t border-gray-100 my-2"></div>
-                <a href="#services" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Services</a>
-                <div class="border-t border-gray-100 my-2"></div>
-                <a href="#contact" class="block font-medium text-gray-700 hover:text-primary transition-colors py-2" onclick="closeMobileMenu()">Contact Us</a>
+        <div class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg transform transition-transform duration-300 ease-in-out" id="mobile-menu">
+            <!-- Mobile Menu Header -->
+            <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
+                        <img src="../../assets/images/Perpetual Church Logo.jpg" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <span class="font-display font-bold text-secondary text-sm">Menu</span>
+                </div>
+                <button class="text-gray-400 hover:text-gray-600 p-2 hover:bg-gray-100 rounded-lg transition-colors" onclick="closeMobileMenu()" aria-label="Close menu">
+                    <i class="fas fa-times text-lg"></i>
+                </button>
+            </div>
+            <div class="px-4 py-6 space-y-2">
+                <a href="#home" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-home text-primary text-sm"></i>
+                    <span>Home</span>
+                </a>
+                <a href="#about" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-church text-primary text-sm"></i>
+                    <span>About Us</span>
+                </a>
+                <a href="#ministries" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-hands-helping text-primary text-sm"></i>
+                    <span>Ministries</span>
+                </a>
+                <a href="#events" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-calendar-alt text-primary text-sm"></i>
+                    <span>Events</span>
+                </a>
+                <a href="#services" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-certificate text-primary text-sm"></i>
+                    <span>Services</span>
+                </a>
+                <a href="#contact" class="flex items-center gap-3 font-medium text-gray-700 hover:text-primary hover:bg-primary/5 transition-all py-3 px-2 rounded-lg" onclick="closeMobileMenu()">
+                    <i class="fas fa-envelope text-primary text-sm"></i>
+                    <span>Contact Us</span>
+                </a>
                 <div class="border-t border-gray-100 my-4"></div>
-                <a href="../auth/register.html" class="block bg-primary text-white px-6 py-3 rounded-full font-medium text-center hover:bg-primary/90 transition-colors">Sign Up</a>
+                <a href="../auth/register.html" class="flex items-center justify-center gap-2 bg-primary text-white px-6 py-3 rounded-full font-medium hover:bg-primary/90 transition-all shadow-lg hover:shadow-xl transform hover:scale-105">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Sign Up</span>
+                </a>
             </div>
         </div>
     </header>
@@ -221,56 +249,56 @@
 
         <!-- Main Content Container -->
         <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center space-y-10">
+            <div class="text-center space-y-6 sm:space-y-8 lg:space-y-10">
 
                 <!-- Main Heading -->
-                <div class="space-y-6">
-                    <h1 class="text-5xl md:text-6xl xl:text-7xl font-display font-bold text-white leading-tight drop-shadow-2xl">
+                <div class="space-y-4 sm:space-y-6">
+                    <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-white leading-tight drop-shadow-2xl">
                         Our Mother of <span class="text-primary drop-shadow-lg">Perpetual Help</span>
                     </h1>
-                    <div class="w-24 h-1 bg-primary rounded-full mx-auto"></div>
+                    <div class="w-16 sm:w-20 lg:w-24 h-0.5 sm:h-1 bg-primary rounded-full mx-auto"></div>
                 </div>
 
                 <!-- Church Identity -->
-                <div class="space-y-4">
-                    <h2 class="text-xl md:text-2xl xl:text-3xl font-display font-light text-white/90 drop-shadow-lg">
+                <div class="space-y-3 sm:space-y-4">
+                    <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-display font-light text-white/90 drop-shadow-lg px-2">
                         Redemptorist Church • Dumaguete City
                     </h2>
-                    <p class="text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto drop-shadow-md">
+                    <p class="text-sm sm:text-base md:text-lg text-white/80 leading-relaxed max-w-2xl mx-auto drop-shadow-md px-4">
                         Serving the community with faith and love since 1974. Discover spiritual nourishment, meaningful connections, and compassionate service in the heart of Dumaguete City.
                     </p>
                 </div>
 
                 <!-- Call to Action Buttons -->
-                <div class="flex flex-col sm:flex-row gap-6 justify-center items-center pt-6">
-                    <a href="../auth/register.html" class="hero-button bg-primary text-white px-10 py-5 rounded-full font-bold text-lg shadow-2xl inline-flex items-center gap-3 min-w-[240px] justify-center">
-                            <i class="fas fa-user-plus text-xl"></i>
+                <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-4 sm:pt-6">
+                    <a href="../auth/register.html" class="hero-button bg-primary text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-full font-bold text-base sm:text-lg shadow-2xl inline-flex items-center gap-2 sm:gap-3 min-w-[200px] sm:min-w-[240px] justify-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-user-plus text-lg sm:text-xl"></i>
                             <span>Join Our Community</span>
                         </a>
-                        <a href="#about" class="hero-button bg-white/10 backdrop-blur-md border-2 border-white/30 text-white px-10 py-5 rounded-full font-bold text-lg shadow-xl inline-flex items-center gap-3 min-w-[240px] justify-center">
-                            <i class="fas fa-book-open text-xl"></i>
+                        <a href="#about" class="hero-button bg-white/10 backdrop-blur-md border-2 border-white/30 text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-full font-bold text-base sm:text-lg shadow-xl inline-flex items-center gap-2 sm:gap-3 min-w-[200px] sm:min-w-[240px] justify-center transform hover:scale-105 transition-transform">
+                            <i class="fas fa-book-open text-lg sm:text-xl"></i>
                             <span>Discover Our Story</span>
                         </a>
                 </div>
 
                 <!-- Trust Indicators -->
-                <div class="flex flex-wrap justify-center gap-4 pt-8">
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-users text-primary text-2xl"></i>
+                <div class="flex flex-wrap justify-center gap-3 sm:gap-4 pt-6 sm:pt-8 px-2">
+                    <div class="flex items-center gap-2 sm:gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-white/10 min-w-[140px] sm:min-w-[160px]">
+                        <i class="fas fa-users text-primary text-xl sm:text-2xl"></i>
                         <div class="text-left">
                             <div class="text-lg font-bold">5,000+</div>
                             <div class="text-xs font-medium">Parishioners</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-clock text-secondary text-2xl"></i>
+                    <div class="flex items-center gap-2 sm:gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-white/10 min-w-[140px] sm:min-w-[160px]">
+                        <i class="fas fa-clock text-secondary text-xl sm:text-2xl"></i>
                         <div class="text-left">
                             <div class="text-lg font-bold">50+</div>
                             <div class="text-xs font-medium">Years of Service</div>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-6 py-3 shadow-lg border border-white/10">
-                        <i class="fas fa-heart text-accent text-2xl"></i>
+                    <div class="flex items-center gap-2 sm:gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-white/10 min-w-[140px] sm:min-w-[160px]">
+                        <i class="fas fa-heart text-accent text-xl sm:text-2xl"></i>
                         <div class="text-left">
                             <div class="text-lg font-bold">Daily</div>
                             <div class="text-xs font-medium">Mass Celebrations</div>
