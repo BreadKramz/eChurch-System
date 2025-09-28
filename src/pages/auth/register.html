@@ -45,15 +45,61 @@
         .animate-fade-in {
             animation: fadeIn 1.2s ease-out forwards;
         }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow:
+                0 8px 32px rgba(139, 69, 19, 0.1),
+                0 2px 8px rgba(0, 0, 0, 0.1),
+                inset 0 1px 0 rgba(255, 255, 255, 0.3);
+        }
+
+        .input-focus {
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .input-focus:focus {
+            transform: translateY(-1px);
+            box-shadow:
+                0 4px 12px rgba(139, 69, 19, 0.15),
+                0 0 0 3px rgba(139, 69, 19, 0.1);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #8B4513 0%, #A0522D 100%);
+            box-shadow: 0 4px 12px rgba(139, 69, 19, 0.3);
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(139, 69, 19, 0.4);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0);
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
-                transform: translateY(50px) scale(0.95);
+                transform: translateY(30px) scale(0.98);
             }
             to {
                 opacity: 1;
                 transform: translateY(0) scale(1);
             }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-10px) rotate(1deg); }
+        }
+
+        .float-icon {
+            animation: float 6s ease-in-out infinite;
         }
     </style>
 </head>
@@ -128,106 +174,107 @@
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
         </div>
 
-        <div class="max-w-md w-full relative z-10">
+        <div class="max-w-lg w-full relative z-10">
             <!-- Registration Card -->
-            <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl overflow-hidden border border-white/20 animate-fade-in">
+            <div class="glass-card rounded-2xl overflow-hidden animate-fade-in">
                 <!-- Header -->
-                <div class="bg-gradient-to-r from-primary to-secondary text-white p-8 text-center relative overflow-hidden">
+                <div class="bg-gradient-to-br from-slate-800 via-slate-700 to-slate-900 text-white p-6 text-center relative overflow-hidden">
                     <!-- Decorative Elements -->
-                    <div class="absolute top-4 right-4 w-8 h-8 bg-white/10 rounded-full"></div>
-                    <div class="absolute bottom-4 left-4 w-6 h-6 bg-white/10 rounded-full"></div>
+                    <div class="absolute top-3 right-3 w-6 h-6 bg-white/10 rounded-full float-icon"></div>
+                    <div class="absolute bottom-3 left-3 w-4 h-4 bg-white/10 rounded-full float-icon" style="animation-delay: 2s;"></div>
+                    <div class="absolute top-1/2 right-4 w-2 h-2 bg-white/5 rounded-full float-icon" style="animation-delay: 4s;"></div>
 
-                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-4 shadow-lg ring-4 ring-white/10">
-                        <i class="fas fa-user-plus"></i>
+                    <div class="w-14 h-14 bg-gradient-to-br from-emerald-400 to-teal-500 rounded-xl flex items-center justify-center text-2xl mx-auto mb-3 shadow-lg ring-2 ring-white/20 float-icon">
+                        <i class="fas fa-user-plus text-slate-900"></i>
                     </div>
-                    <h2 class="text-2xl font-display font-bold mb-2 drop-shadow-lg">Create Account</h2>
-                    <p class="text-white/90 drop-shadow-md">Join our parish community</p>
+                    <h2 class="text-xl font-display font-bold mb-1 tracking-tight">Join Our Parish</h2>
+                    <p class="text-slate-300 text-sm font-medium">Create your account to get started</p>
                 </div>
 
                 <!-- Form -->
-                <div class="p-8 space-y-6">
-                    <form class="space-y-6" id="user-register-form">
-                        <div class="grid grid-cols-2 gap-4">
+                <div class="p-5">
+                    <form class="space-y-3" id="user-register-form">
+                        <div class="grid grid-cols-2 gap-3">
                             <div>
-                                <label for="first-name" class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <label for="first-name" class="block text-sm font-semibold text-slate-700 mb-1.5">First Name</label>
                                 <div class="relative">
                                     <input type="text" id="first-name" name="firstName" required
-                                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
-                                            placeholder="Enter first name">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                        <i class="fas fa-user"></i>
+                                                class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
+                                                placeholder="First name">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                        <i class="fas fa-user text-xs"></i>
                                     </div>
                                 </div>
                             </div>
                             <div>
-                                <label for="last-name" class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <label for="last-name" class="block text-sm font-semibold text-slate-700 mb-1.5">Last Name</label>
                                 <div class="relative">
                                     <input type="text" id="last-name" name="lastName" required
-                                            class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
-                                            placeholder="Enter last name">
-                                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                        <i class="fas fa-user"></i>
+                                            class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
+                                            placeholder="Last name">
+                                    <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                        <i class="fas fa-user text-xs"></i>
                                     </div>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <label for="email" class="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
+                            <label for="email" class="block text-sm font-semibold text-slate-700 mb-1.5">Email Address</label>
                             <div class="relative">
                                 <input type="email" id="email" name="email" required
-                                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
+                                        class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
                                         placeholder="your.email@example.com">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                    <i class="fas fa-envelope"></i>
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                    <i class="fas fa-envelope text-xs"></i>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <label for="contact-number" class="block text-sm font-medium text-gray-700 mb-2">Contact Number</label>
+                            <label for="contact-number" class="block text-sm font-semibold text-slate-700 mb-1.5">Contact Number</label>
                             <div class="relative">
                                 <input type="tel" id="contact-number" name="contactNumber" required
-                                        class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
+                                        class="input-focus w-full pl-8 pr-3 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
                                         placeholder="(035) 123-4567">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                    <i class="fas fa-phone"></i>
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                    <i class="fas fa-phone text-xs"></i>
                                 </div>
                             </div>
                         </div>
 
                         <div>
-                            <label for="password" class="block text-sm font-medium text-gray-700 mb-2">Password</label>
+                            <label for="password" class="block text-sm font-semibold text-slate-700 mb-1.5">Password</label>
                             <div class="relative">
                                 <input type="password" id="password" name="password" required minlength="6"
-                                        class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
-                                        placeholder="Enter password">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                    <i class="fas fa-lock"></i>
+                                        class="input-focus w-full pl-8 pr-8 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
+                                        placeholder="Create password">
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                    <i class="fas fa-lock text-xs"></i>
                                 </div>
-                                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors" id="toggle-password">
-                                    <i class="fas fa-eye"></i>
+                                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors" id="toggle-password">
+                                    <i class="fas fa-eye text-xs"></i>
                                 </button>
                             </div>
-                            <p class="text-xs text-gray-500 mt-1">Minimum 6 characters</p>
+                            <p class="text-xs text-slate-500 mt-1">Minimum 6 characters</p>
                         </div>
 
                         <div>
-                            <label for="confirm-password" class="block text-sm font-medium text-gray-700 mb-2">Confirm Password</label>
+                            <label for="confirm-password" class="block text-sm font-semibold text-slate-700 mb-1.5">Confirm Password</label>
                             <div class="relative">
                                 <input type="password" id="confirm-password" name="confirm-password" required minlength="6"
-                                        class="w-full pl-10 pr-10 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary transition-all duration-300 bg-white hover:border-primary/50"
+                                        class="input-focus w-full pl-8 pr-8 py-2 bg-white border border-slate-200 rounded-lg focus:ring-0 focus:border-amber-400 transition-all duration-300 text-slate-900 placeholder-slate-400 text-sm"
                                         placeholder="Confirm password">
-                                <div class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400 transition-colors">
-                                    <i class="fas fa-lock"></i>
+                                <div class="absolute inset-y-0 left-0 flex items-center pl-2.5 text-slate-400">
+                                    <i class="fas fa-lock text-xs"></i>
                                 </div>
-                                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors" id="toggle-confirm-password">
-                                    <i class="fas fa-eye"></i>
+                                <button type="button" class="absolute inset-y-0 right-0 flex items-center pr-2.5 text-slate-400 hover:text-slate-600 focus:outline-none transition-colors" id="toggle-confirm-password">
+                                    <i class="fas fa-eye text-xs"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <button type="submit" class="w-full bg-primary text-white py-3 px-6 rounded-lg font-semibold text-lg hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5">
+                        <button type="submit" class="btn-primary w-full text-white py-2.5 px-6 rounded-lg font-semibold text-sm hover:shadow-2xl">
                             <i class="fas fa-user-plus mr-2"></i>
                             Create Account
                         </button>
@@ -235,13 +282,39 @@
                 </div>
 
                 <!-- Footer -->
-                <div class="bg-gray-50 px-8 py-6 text-center border-t border-gray-100">
-                    <p class="text-gray-600 mb-4">Already have an account?
-                        <a href="login.html" class="text-primary font-semibold hover:text-primary/80 transition-colors">Login here</a>
-                    </p>
-                    <p class="text-gray-600">Need help?
-                        <a href="contact.html" class="text-secondary font-semibold hover:text-secondary/80 transition-colors">Contact our parish office</a>
-                    </p>
+                <div class="bg-gradient-to-r from-slate-50 to-slate-100 px-5 py-3 border-t border-slate-200/50">
+                    <div class="text-center">
+                        <p class="text-slate-600 text-sm">
+                            Already have an account?
+                            <a href="login.html" class="text-amber-600 font-semibold hover:text-amber-700 transition-colors ml-1">Sign in here</a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Trust Indicators -->
+            <div class="mt-6 text-center">
+                <div class="flex items-center justify-center gap-6 text-sm text-slate-500">
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-emerald-400 to-green-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-shield-alt text-white text-xs"></i>
+                        </div>
+                        <span class="font-medium">Secure</span>
+                    </div>
+                    <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-blue-400 to-indigo-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-user-friends text-white text-xs"></i>
+                        </div>
+                        <span class="font-medium">Community</span>
+                    </div>
+                    <div class="w-1 h-1 bg-slate-300 rounded-full"></div>
+                    <div class="flex items-center gap-2">
+                        <div class="w-8 h-8 bg-gradient-to-br from-purple-400 to-violet-500 rounded-lg flex items-center justify-center shadow-sm">
+                            <i class="fas fa-heart text-white text-xs"></i>
+                        </div>
+                        <span class="font-medium">Welcoming</span>
+                    </div>
                 </div>
             </div>
         </div>
