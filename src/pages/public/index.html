@@ -42,7 +42,6 @@
         }
     </script>
     <style>
-        /* Custom animations */
         .animate-fade-in {
             animation: fadeIn 1.2s ease-out forwards;
         }
@@ -90,7 +89,6 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         }
 
-        /* Smooth transitions for all interactive elements */
         * {
             transition: all 0.3s ease;
         }
@@ -113,7 +111,6 @@
             background: #654321;
         }
 
-        /* Enhanced button hover effects */
         .btn-primary:hover {
             transform: translateY(-2px);
             box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
@@ -135,7 +132,6 @@
             background-clip: text;
         }
 
-        /* Subtle float and glow helpers for media */
         .float-slow { animation: float 10s ease-in-out infinite; }
         .glow-pulse { animation: glow 6s ease-in-out infinite; }
     </style>
@@ -156,7 +152,6 @@
                     </div>
                 </div>
 
-                <!-- Desktop Navigation -->
                 <nav class="hidden lg:flex">
                     <ul class="flex items-center gap-6 text-sm">
                         <li><a href="#home" class="font-medium text-gray-700 hover:text-primary transition-colors relative py-2 after:content-[''] after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-primary after:transition-all hover:after:w-full">Home</a></li>
@@ -175,16 +170,13 @@
                     </ul>
                 </nav>
 
-                <!-- Mobile Menu Button -->
                 <button type="button" class="lg:hidden text-2xl text-primary p-3 hover:bg-primary/10 rounded-lg transition-all duration-200 active:scale-95" id="mobile-menu-btn" aria-label="Open mobile menu">
                     <i class="fas fa-bars transition-transform duration-200"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Mobile Menu -->
         <div class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg transform transition-transform duration-300 ease-in-out" id="mobile-menu">
-            <!-- Mobile Menu Header -->
             <div class="flex items-center justify-between px-4 py-3 border-b border-gray-100">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white">
@@ -230,27 +222,23 @@
         </div>
     </header>
 
-    <!-- Hero Section - Full Screen -->
     <section id="home" class="relative h-screen flex items-center justify-center overflow-hidden pt-20">
-        <!-- Background Image with Parallax -->
+
         <div class="absolute inset-0 parallax-bg">
             <img src="../../assets/images/8913603064_c178069305_b.jpg" alt="Our Mother of Perpetual Help Redemptorist Church - A beacon of faith and community" class="w-full h-full object-cover filter brightness-110 contrast-105 scale-110">
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
         </div>
 
-        <!-- Animated Background Elements -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse"></div>
             <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
             <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-accent/10 rounded-full blur-2xl animate-pulse" style="animation-delay: 2s;"></div>
         </div>
 
-        <!-- Main Content Container -->
         <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center space-y-6 sm:space-y-8 lg:space-y-10">
 
-                <!-- Main Heading -->
                 <div class="space-y-4 sm:space-y-6">
                     <h1 class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-display font-bold text-white leading-tight drop-shadow-2xl">
                         Our Mother of <span class="text-primary drop-shadow-lg">Perpetual Help</span>
@@ -258,7 +246,6 @@
                     <div class="w-16 sm:w-20 lg:w-24 h-0.5 sm:h-1 bg-primary rounded-full mx-auto"></div>
                 </div>
 
-                <!-- Church Identity -->
                 <div class="space-y-3 sm:space-y-4">
                     <h2 class="text-lg sm:text-xl md:text-2xl lg:text-3xl font-display font-light text-white/90 drop-shadow-lg px-2">
                         Redemptorist Church • Dumaguete City
@@ -268,7 +255,6 @@
                     </p>
                 </div>
 
-                <!-- Call to Action Buttons -->
                 <div class="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center items-center pt-4 sm:pt-6">
                     <a href="../auth/register.html" class="hero-button bg-primary text-white px-6 sm:px-8 lg:px-10 py-3 sm:py-4 lg:py-5 rounded-full font-bold text-base sm:text-lg shadow-2xl inline-flex items-center gap-2 sm:gap-3 min-w-[200px] sm:min-w-[240px] justify-center transform hover:scale-105 transition-transform">
                             <i class="fas fa-user-plus text-lg sm:text-xl"></i>
@@ -280,7 +266,6 @@
                         </a>
                 </div>
 
-                <!-- Trust Indicators -->
                 <div class="flex flex-wrap justify-center gap-3 sm:gap-4 pt-6 sm:pt-8 px-2">
                     <div class="flex items-center gap-2 sm:gap-3 text-white/90 bg-white/10 backdrop-blur-sm rounded-full px-4 sm:px-6 py-2 sm:py-3 shadow-lg border border-white/10 min-w-[140px] sm:min-w-[160px]">
                         <i class="fas fa-users text-primary text-xl sm:text-2xl"></i>
@@ -307,13 +292,10 @@
             </div>
         </div>
 
-        <!-- Overlay for better text contrast -->
         <div class="absolute inset-0 bg-black/20 pointer-events-none"></div>
     </section>
 
-    <!-- About Us Section -->
     <section id="about" class="py-6 bg-gradient-to-br from-white via-gray-50/30 to-primary/5 relative overflow-hidden">
-        <!-- Background Pattern -->
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-10 left-10 w-32 h-32 border border-primary/20 rounded-full"></div>
             <div class="absolute bottom-20 right-20 w-24 h-24 border border-secondary/20 rounded-full"></div>
@@ -372,12 +354,10 @@
                 </div>
 
                 <div class="relative">
-                    <!-- Main Image Container -->
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500">
                         <div class="absolute inset-0 bg-gradient-to-br from-primary/20 via-transparent to-secondary/20"></div>
                         <img src="../../assets/images/Mother-of-Perpetual-Help.jpg" alt="Our Lady of Perpetual Help - Patroness of Our Church" loading="lazy" decoding="async" class="w-full h-64 lg:h-80 object-cover relative z-10">
 
-                        <!-- Decorative Elements -->
                         <div class="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/20">
                             <i class="fas fa-cross text-primary text-xl"></i>
                         </div>
@@ -385,12 +365,10 @@
                             <i class="fas fa-star text-white text-sm"></i>
                         </div>
 
-                        <!-- Corner Accents -->
                         <div class="absolute top-0 left-0 w-8 h-8 bg-primary rounded-tl-3xl"></div>
                         <div class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-br-3xl"></div>
                     </div>
 
-                    <!-- Floating Quote Card -->
                     <div class="absolute -bottom-8 -left-8 bg-white rounded-2xl shadow-2xl p-6 max-w-sm border border-gray-100 hover:shadow-3xl transition-all duration-300">
                         <div class="flex items-start gap-4">
                             <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0">
@@ -407,14 +385,12 @@
                 </div>
             </div>
 
-            <!-- Mission & Vision -->
             <div class="text-center mb-6">
                 <h3 class="text-xl md:text-2xl font-display font-bold text-secondary mb-2">Our Mission & Vision</h3>
                 <p class="text-sm text-gray-600 max-w-2xl mx-auto">Guiding principles that shape our community and service</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-3 mb-6">
-                <!-- Mission -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-cross"></i>
@@ -423,7 +399,6 @@
                     <p class="text-gray-600 leading-relaxed">To proclaim the Gospel of Jesus Christ through worship, education, and service, fostering a community of faith that transforms lives and builds a better world.</p>
                 </div>
 
-                <!-- Vision -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-heart"></i>
@@ -432,7 +407,6 @@
                     <p class="text-gray-600 leading-relaxed">To be a welcoming parish where everyone experiences God's love, grows in faith, and actively participates in building God's kingdom through service to others.</p>
                 </div>
 
-                <!-- Values -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-hands-helping"></i>
@@ -463,14 +437,12 @@
                 </div>
             </div>
 
-            <!-- Leadership -->
             <div class="text-center mb-6">
                 <h3 class="text-xl md:text-2xl font-display font-bold text-secondary mb-2">Our Leadership</h3>
                 <p class="text-sm text-gray-600 max-w-2xl mx-auto">Dedicated servants guiding our parish community with faith and wisdom</p>
             </div>
 
             <div class="grid md:grid-cols-3 gap-3">
-                <!-- Leader 1 -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-primary/20">
                         <img src="../../assets/images/Fr._Gaspe-removebg-preview.png" alt="Fr. Nestor Gaspe, C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
@@ -480,7 +452,6 @@
                     <p class="text-gray-600 leading-relaxed">Leading our parish with wisdom, compassion, and dedication to serving God's people through spiritual guidance and pastoral care.</p>
                 </div>
 
-                <!-- Leader 2 -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-secondary/20">
                         <img src="../../assets/images/Fr._James-removebg-preview.png" alt="Fr. James Philip Narisma, C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
@@ -490,7 +461,6 @@
                     <p class="text-gray-600 leading-relaxed">Supporting our community through sacramental ministry, spiritual guidance, and compassionate service to all parishioners.</p>
                 </div>
 
-                <!-- Leader 3 -->
                 <div class="bg-white rounded-2xl p-8 text-center shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100">
                     <div class="w-24 h-24 bg-white rounded-full overflow-hidden flex items-center justify-center mx-auto mb-6 shadow-lg ring-4 ring-accent/20">
                         <img src="../../assets/images/Fr._Eliodoro-removebg-preview.png" alt="Fr. Eliodoro Reteracion C.Ss.R." loading="lazy" decoding="async" class="w-full h-full object-contain p-1">
@@ -503,9 +473,7 @@
         </div>
     </section>
 
-    <!-- Ministries Section -->
     <section id="ministries" class="py-6 bg-gradient-to-br from-secondary/5 via-white to-primary/5 relative overflow-hidden">
-        <!-- Background Elements -->
         <div class="absolute inset-0 opacity-10">
             <div class="absolute top-20 right-20 w-40 h-40 border-2 border-primary/30 rounded-full"></div>
             <div class="absolute bottom-10 left-10 w-28 h-28 border-2 border-secondary/30 rounded-full"></div>
@@ -568,12 +536,10 @@
                 </div>
 
                 <div class="relative">
-                    <!-- Main Image Container -->
                     <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500">
                         <div class="absolute inset-0 bg-gradient-to-br from-secondary/20 via-transparent to-primary/20"></div>
                         <img src="../../assets/images/image.png" alt="Community Service and Ministry Work - Our Mother of Perpetual Help Church" loading="lazy" decoding="async" class="w-full h-64 lg:h-80 object-cover relative z-10">
 
-                        <!-- Decorative Elements -->
                         <div class="absolute top-6 right-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-secondary/20">
                             <i class="fas fa-hands-helping text-secondary text-xl"></i>
                         </div>
@@ -581,11 +547,9 @@
                             <i class="fas fa-star text-white text-sm"></i>
                         </div>
 
-                        <!-- Corner Accents -->
                         <div class="absolute top-0 right-0 w-8 h-8 bg-secondary rounded-tr-3xl"></div>
                         <div class="absolute bottom-0 left-0 w-8 h-8 bg-primary rounded-bl-3xl"></div>
 
-                        <!-- Overlay Content -->
                         <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-3xl"></div>
                         <div class="absolute bottom-8 left-8 right-8 text-white">
                             <h3 class="text-3xl md:text-4xl font-display font-bold mb-4 text-shadow-lg">Start Serving Today</h3>
@@ -599,9 +563,7 @@
                 </div>
             </div>
 
-            <!-- Ministry Categories -->
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-                <!-- Worship Ministry -->
                 <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-primary/30">
                     <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-primary/20">
                         <i class="fas fa-pray"></i>
@@ -611,7 +573,6 @@
                     <span class="inline-block bg-primary/10 text-primary text-xs font-semibold px-3 py-1 rounded-full">Active</span>
                 </div>
 
-                <!-- Education Ministry -->
                 <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-secondary/30">
                     <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-secondary/20">
                         <i class="fas fa-graduation-cap"></i>
@@ -621,7 +582,6 @@
                     <span class="inline-block bg-secondary/10 text-secondary text-xs font-semibold px-3 py-1 rounded-full">Growing</span>
                 </div>
 
-                <!-- Charity Ministry -->
                 <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-accent/30">
                     <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-accent/20">
                         <i class="fas fa-hands-helping"></i>
@@ -631,7 +591,6 @@
                     <span class="inline-block bg-accent/10 text-accent text-xs font-semibold px-3 py-1 rounded-full">Essential</span>
                 </div>
 
-                <!-- Youth Ministry -->
                 <div class="group bg-white rounded-2xl p-6 text-center shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-2 border border-gray-100 ring-1 ring-gray-100 hover:ring-green-600/30">
                     <div class="w-16 h-16 bg-green-600 rounded-full flex items-center justify-center text-white text-2xl mx-auto mb-4 shadow-lg ring-4 ring-green-600/20">
                         <i class="fas fa-users"></i>
@@ -644,7 +603,6 @@
         </div>
     </section>
 
-    <!-- Mass Schedule Section -->
     <section id="mass" class="py-6 bg-gradient-to-br from-primary/5 via-white to-secondary/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-6">
@@ -656,18 +614,15 @@
                 <p class="text-sm text-gray-600 max-w-2xl mx-auto leading-relaxed">Experience the Eucharist and grow in faith through our regular Mass celebrations</p>
             </div>
 
-            <!-- Full-width Schedule Image -->
             <div class="mb-8">
                 <div class="relative rounded-3xl overflow-hidden shadow-2xl bg-white border-4 border-white transform hover:scale-105 transition-all duration-500 max-w-6xl mx-auto">
                     <img src="../../assets/images/Perpetual Church Schedule.png" alt="Our Mother of Perpetual Help Church Mass Schedule" class="w-full h-auto object-contain max-h-screen" loading="lazy" decoding="async">
-                    <!-- Decorative Elements -->
                     <div class="absolute top-6 left-6 w-16 h-16 bg-white/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg border border-primary/20">
                         <i class="fas fa-calendar-alt text-primary text-xl"></i>
                     </div>
                     <div class="absolute bottom-6 right-6 w-12 h-12 bg-primary/90 backdrop-blur-sm rounded-full flex items-center justify-center shadow-lg">
                         <i class="fas fa-clock text-white text-sm"></i>
                     </div>
-                    <!-- Corner Accents -->
                     <div class="absolute top-0 left-0 w-8 h-8 bg-primary rounded-tl-3xl"></div>
                     <div class="absolute bottom-0 right-0 w-8 h-8 bg-secondary rounded-br-3xl"></div>
                 </div>
@@ -676,16 +631,13 @@
         </div>
     </section>
 
-    <!-- Events Section -->
     <section id="events" class="relative pt-6 pb-4 overflow-hidden">
-        <!-- Background Image with Parallax -->
         <div class="absolute inset-0 parallax-bg">
             <img src="../../assets/images/Perpetual Church Inside.jpg" alt="Our Mother of Perpetual Help Church Interior - A place of worship and community" class="w-full h-full object-cover filter brightness-110 contrast-105 scale-110">
             <div class="absolute inset-0 bg-gradient-to-r from-black/80 via-black/60 to-black/40"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/20"></div>
         </div>
 
-        <!-- Animated Background Elements -->
         <div class="absolute inset-0 overflow-hidden">
             <div class="absolute top-1/4 left-1/4 w-64 h-64 bg-primary/10 rounded-full blur-xl animate-pulse"></div>
             <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
@@ -759,9 +711,7 @@
                 </div>
             </div>
 
-            <!-- Event Categories -->
             <div class="grid md:grid-cols-3 gap-8">
-                <!-- Liturgical Events -->
                 <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-amber-400/40">
                     <div class="w-16 h-16 bg-gradient-to-br from-amber-400/30 to-orange-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-amber-200 text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-pray"></i>
@@ -784,7 +734,6 @@
                     </ul>
                 </div>
 
-                <!-- Community Events -->
                 <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-purple-400/40">
                     <div class="w-16 h-16 bg-gradient-to-br from-purple-400/30 to-pink-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-purple-200 text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-users"></i>
@@ -807,7 +756,6 @@
                     </ul>
                 </div>
 
-                <!-- Educational Events -->
                 <div class="bg-white/10 backdrop-blur-md rounded-2xl p-8 text-center shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:-translate-y-2 border border-emerald-400/40">
                     <div class="w-16 h-16 bg-gradient-to-br from-emerald-400/30 to-teal-500/30 backdrop-blur-sm rounded-full flex items-center justify-center text-emerald-200 text-2xl mx-auto mb-6 shadow-lg">
                         <i class="fas fa-graduation-cap"></i>
@@ -833,7 +781,6 @@
         </div>
     </section>
 
-    <!-- Sacramental Services & Certificates Section -->
     <section id="services" class="pt-6 pb-4 bg-gradient-to-br from-secondary/5 via-white to-primary/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center mb-4">
@@ -845,7 +792,6 @@
             </div>
 
             <div class="grid lg:grid-cols-2 gap-4 mb-4">
-                <!-- Services -->
                 <div>
                     <h3 class="text-3xl md:text-4xl font-display font-bold text-secondary mb-4 text-center">Our Sacramental Services</h3>
                     <div class="space-y-4">
@@ -935,7 +881,6 @@
                     </div>
                 </div>
 
-                <!-- Certificates -->
                 <div>
                     <h3 class="text-3xl md:text-4xl font-display font-bold text-secondary mb-4 text-center">Church Certificates</h3>
                     <div class="space-y-4">
@@ -1029,9 +974,7 @@
         </div>
     </section>
 
-    <!-- Contact Section -->
     <section id="contact" class="pt-6 pb-4 bg-gradient-to-br from-gray-50 via-white to-primary/5 relative overflow-hidden">
-        <!-- Background Elements -->
         <div class="absolute inset-0 opacity-5">
             <div class="absolute top-20 left-20 w-32 h-32 border border-primary/20 rounded-full"></div>
             <div class="absolute bottom-20 right-20 w-24 h-24 border border-secondary/20 rounded-full"></div>
@@ -1049,7 +992,6 @@
             </div>
 
             <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
-                <!-- Call Us -->
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
                     <div class="w-12 h-12 bg-secondary rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
                         <i class="fas fa-phone"></i>
@@ -1060,7 +1002,6 @@
                     </div>
                 </div>
 
-                <!-- Email Us -->
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
                     <div class="w-12 h-12 bg-accent rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
                         <i class="fas fa-envelope"></i>
@@ -1072,7 +1013,6 @@
                     <p class="text-xs text-gray-500 mt-1 text-center">24hr response</p>
                 </div>
 
-                <!-- Office Hours -->
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
                     <div class="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
                         <i class="fas fa-clock"></i>
@@ -1084,7 +1024,6 @@
                     </div>
                 </div>
 
-                <!-- Follow Us -->
                 <div class="bg-white rounded-xl p-4 shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100">
                     <div class="w-12 h-12 bg-purple-600 rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
                         <i class="fas fa-share-alt"></i>
@@ -1105,9 +1044,7 @@
                 </div>
             </div>
 
-            <!-- Contact Form and Map Side by Side -->
             <div class="grid lg:grid-cols-2 gap-4">
-                <!-- Contact Form -->
                 <div class="bg-white rounded-xl p-3 shadow-lg border border-gray-100">
                     <div class="text-center mb-2">
                         <h3 class="text-base font-display font-bold text-secondary mb-1">Send Us a Message</h3>
@@ -1176,7 +1113,6 @@
         </div>
     </section>
 
-    <!-- Call to Action -->
     <!-- <div class="text-center py-6">
         <div class="bg-gradient-to-r from-primary to-secondary rounded-3xl p-8 text-white shadow-2xl max-w-4xl mx-auto">
             <h3 class="text-2xl md:text-3xl font-display font-bold mb-4">Ready to Begin Your Spiritual Journey?</h3>
@@ -1194,12 +1130,10 @@
         </div>
     </div> -->
 
-    <!-- Back to Top Button -->
     <button id="back-to-top" class="fixed bottom-8 right-8 bg-primary text-white w-12 h-12 rounded-full shadow-lg hover:bg-primary/90 transition-all duration-300 transform hover:scale-110 opacity-0 pointer-events-none z-40">
         <i class="fas fa-arrow-up"></i>
     </button>
 
-    <!-- Footer Section -->
     <footer class="bg-secondary text-white py-4 shadow-inner">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Footer content removed as requested -->
@@ -1212,7 +1146,6 @@
         </div>
     </footer>
 
-    <!-- Scripts Section -->
     <script src="../../assets/js/script.js"></script>
     <script src="../../assets/js/public.js"></script>
 </body>
