@@ -249,6 +249,7 @@ function handlePrayerRequest(e) {
 
         const prayerRequest = {
             id: Date.now(),
+            userEmail: JSON.parse(localStorage.getItem('currentUser')).email,
             name: formData.get('name') || 'Anonymous',
             intention: formData.get('intention'),
             isPublic: formData.get('makePublic') === 'on',
