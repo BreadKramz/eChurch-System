@@ -53,7 +53,11 @@
                 </div>
                 <div class="text-white">
                     <h3 class="font-display font-bold text-sm leading-tight">Admin Panel</h3>
-                    <p class="text-xs opacity-90">Administrator</p>
+                    <p class="text-xs opacity-90 hidden md:block">Administrator</p>
+                    <div class="md:hidden">
+                        <p class="text-xs opacity-90">Administrator</p>
+                        <p class="text-xs opacity-75">Admin</p>
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,19 +91,20 @@
     <div class="md:ml-64 min-h-screen admin-main">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200 px-4 md:px-6 py-4">
-            <div class="flex items-center justify-between">
-                <div class="flex items-center gap-4">
-                    <!-- Mobile Menu Button -->
-                    <button class="md:hidden text-2xl text-red-600 p-2 hover:bg-red-50 rounded-lg transition-all duration-200 btn-mobile" id="mobile-menu-btn">
-                        <i class="fas fa-bars"></i>
-                    </button>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-display font-bold text-red-600">Our Mother of Perpetual Help</h1>
-                        <p class="text-gray-600 text-sm mt-1">Redemptorist Church • Dumaguete City</p>
-                    </div>
+            <div class="flex items-center justify-between w-full px-2">
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-2xl text-red-600 p-2 hover:bg-red-50 rounded-lg transition-all duration-200 flex-shrink-0" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Church Name - Centered -->
+                <div class="flex-1 text-center min-w-0 mx-2">
+                    <h1 class="text-lg font-display font-bold text-red-600 truncate">Our Mother of Perpetual Help</h1>
+                    <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
                 </div>
-                <div class="flex items-center gap-4">
-                    <!-- Profile Dropdown -->
+
+                <!-- Profile with Name and Role -->
+                <div class="flex-shrink-0">
                     <div class="relative">
                         <button class="flex items-center gap-3 hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200" id="profile-dropdown-btn">
                             <div class="text-right">
@@ -390,6 +395,7 @@
                     // Close mobile menu if open
                     if (window.innerWidth < 768) {
                         sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.remove('open');
                     }
                 });
             });
@@ -401,6 +407,24 @@
                     sidebar.classList.toggle('open');
                 });
             }
+
+            // Close sidebar when clicking outside on mobile
+            document.addEventListener('click', function(e) {
+                if (window.innerWidth < 768) {
+                    const sidebar = document.getElementById('sidebar');
+                    const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                    if (sidebar && mobileMenuBtn) {
+                        // Check if click is outside both sidebar and button
+                        const isClickOutside = !sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target);
+                        console.log('Mobile click outside check:', { isClickOutside, target: e.target.tagName });
+                        if (isClickOutside) {
+                            console.log('Closing sidebar');
+                            sidebar.classList.add('-translate-x-full');
+                            sidebar.classList.remove('open');
+                        }
+                    }
+                }
+            });
 
             // Profile dropdown
             const profileBtn = document.getElementById('profile-dropdown-btn');

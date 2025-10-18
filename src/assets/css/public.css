@@ -149,6 +149,35 @@
         padding-right: 1rem;
     }
 
+    /* Header alignment fixes for mobile */
+    .dashboard-header-mobile {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .dashboard-header-mobile .header-left {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dashboard-header-mobile .header-center {
+        flex: 1;
+        text-align: center;
+        min-width: 0;
+    }
+
+    .dashboard-header-mobile .header-right {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        flex-shrink: 0;
+    }
+
     /* Compact request cards on mobile */
     .request-card-mobile {
         flex-direction: column;
@@ -181,6 +210,47 @@
         margin-left: 0;
         padding-left: 1rem;
         padding-right: 1rem;
+    }
+
+    /* Admin header alignment fixes for mobile */
+    .admin-header-mobile {
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: space-between !important;
+        width: 100% !important;
+        position: relative !important;
+    }
+
+    .admin-header-mobile .header-left {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-start !important;
+        flex-shrink: 0 !important;
+        position: absolute !important;
+        left: 0 !important;
+        z-index: 10 !important;
+    }
+
+    .admin-header-mobile .header-center {
+        position: absolute !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        text-align: center !important;
+        flex: 1 !important;
+        min-width: 0 !important;
+        overflow: hidden !important;
+        z-index: 5 !important;
+    }
+
+    .admin-header-mobile .header-right {
+        display: flex !important;
+        align-items: center !important;
+        justify-content: flex-end !important;
+        flex-shrink: 0 !important;
+        position: absolute !important;
+        right: 0 !important;
+        z-index: 10 !important;
     }
 
     /* Better modal sizing on mobile */
