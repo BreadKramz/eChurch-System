@@ -1,0 +1,160 @@
+.animate-fade-in {
+    animation: fadeIn 1.2s ease-out forwards;
+}
+
+.parallax-bg img {
+    transition: transform 0.1s ease-out;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(50px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-20px); }
+}
+
+@keyframes glow {
+    0%, 100% { box-shadow: 0 0 20px rgba(139, 69, 19, 0.3); }
+    50% { box-shadow: 0 0 40px rgba(139, 69, 19, 0.6); }
+}
+
+.hero-logo {
+    animation: float 3s ease-in-out infinite;
+}
+
+.hero-heading {
+    animation: fadeIn 1.5s ease-out forwards;
+}
+
+/* Clean button hover effects */
+.hero-button {
+    transition: all 0.3s ease;
+}
+
+.hero-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+}
+
+* {
+    transition: all 0.3s ease;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #8B4513;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #654321;
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 25px rgba(139, 69, 19, 0.3);
+}
+
+/* Subtle text shadow for better readability */
+.text-shadow {
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.text-shadow-lg {
+    text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+}
+
+.gradient-text {
+    background: linear-gradient(135deg, #8B4513, #2c3e50);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.float-slow { animation: float 10s ease-in-out infinite; }
+.glow-pulse { animation: glow 6s ease-in-out infinite; }
+
+/* Mobile-specific improvements */
+@media (max-width: 768px) {
+    .hero-button {
+        font-size: 0.9rem;
+        padding: 0.75rem 1.5rem;
+        min-width: 160px;
+    }
+
+    .hero-button i {
+        font-size: 1rem;
+    }
+
+    /* Improve touch targets */
+    button, a[role="button"], .clickable {
+        min-height: 44px;
+        min-width: 44px;
+    }
+
+    /* Better spacing for mobile */
+    .space-y-6 > * + * {
+        margin-top: 1rem;
+    }
+
+    .space-y-8 > * + * {
+        margin-top: 1.5rem;
+    }
+
+    /* Improve readability on mobile */
+    .text-shadow {
+        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+    }
+
+    .text-shadow-lg {
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-button {
+        font-size: 0.85rem;
+        padding: 0.625rem 1.25rem;
+        min-width: 140px;
+    }
+
+    .hero-button i {
+        font-size: 0.9rem;
+    }
+
+    /* Even better touch targets for small screens */
+    button, a[role="button"], .clickable {
+        min-height: 40px;
+        min-width: 40px;
+    }
+
+    /* Reduce animation intensity on mobile for better performance */
+    .animate-fade-in {
+        animation-duration: 0.8s;
+    }
+
+    .hero-logo {
+        animation-duration: 4s;
+    }
+
+    .hero-heading {
+        animation-duration: 1.2s;
+    }
+}

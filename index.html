@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Our Mother of Perpetual Help - Loading...</title>
+    <meta http-equiv="refresh" content="4; url=src/pages/public/index.html">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="src/assets/css/loading.css">
+</head>
+<body>
+    <div class="container" role="main" aria-label="Loading screen for Our Mother of Perpetual Help Church">
+        <div class="floating-elements">
+            <div class="floating-element" aria-hidden="true">✝️</div>
+            <div class="floating-element" aria-hidden="true">🙏</div>
+            <div class="floating-element" aria-hidden="true">⛪</div>
+            <div class="floating-element" aria-hidden="true">🕊️</div>
+            <div class="floating-element" aria-hidden="true">✨</div>
+        </div>
+
+        <div class="logo-container">
+            <img src="src/assets/images/Perpetual Church Logo.png" alt="Our Mother of Perpetual Help Church Logo" class="church-logo">
+            <h1 class="church-name">Our Mother of Perpetual Help</h1>
+            <div class="church-subtitle">Redemptorist Church • Dumaguete City</div>
+        </div>
+
+        <div class="loading-container">
+            <div class="loading-ring" aria-hidden="true"></div>
+            <div class="loading-dots" aria-hidden="true">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="timer" id="timer" aria-live="polite">4</div>
+            <div class="progress-container">
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+                <div class="progress-text" id="progressText">Loading... 0%</div>
+            </div>
+            <div class="loading-text" id="loadingText">Preparing your spiritual journey...</div>
+        </div>
+
+        <div class="welcome-message">
+            <p>Welcome to our digital parish community. We're setting everything up for you to experience God's love and connect with our faith family.</p>
+        </div>
+
+        <a href="src/pages/public/index.html" class="manual-link" aria-label="Skip loading and enter the sanctuary">
+            <i class="fas fa-arrow-right mr-2" aria-hidden="true"></i>
+            Enter the Sanctuary
+        </a>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const container = document.querySelector('.container');
+            const progressFill = document.getElementById('progressFill');
+            const progressText = document.getElementById('progressText');
+            const loadingText = document.getElementById('loadingText');
+            const timer = document.getElementById('timer');
+
+            // Add click effect to the container
+            container.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+
+            // Loading texts
+            const loadingTexts = [
+                'Preparing your spiritual journey...',
+                'Connecting with our faith community...',
+                'Opening the doors of our church...',
+                'Welcoming you to our parish...',
+                'Setting up your sacred experience...'
+            ];
+
+            let textIndex = 0;
+            let progress = 0;
+            let timeLeft = 4;
+            const totalTime = 4000; // 4 seconds
+            const interval = 50; // Update every 50ms
+            const steps = totalTime / interval;
+            const progressIncrement = 100 / steps;
+
+            const loadingInterval = setInterval(() => {
+                progress += progressIncrement;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(loadingInterval);
+                    // Add fade out effect before redirect
+                    container.style.animation = 'fadeOut 0.5s ease-out forwards';
+                    setTimeout(() => {
+                        window.location.href = 'src/pages/public/index.html';
+                    }, 500);
+                }
+
+                progressFill.style.width = progress + '%';
+                progressFill.setAttribute('aria-valuenow', Math.round(progress));
+                progressText.textContent = `Loading... ${Math.round(progress)}%`;
+
+                // Update timer
+                const newTimeLeft = Math.ceil((100 - progress) / (100 / 4));
+                if (newTimeLeft !== timeLeft && newTimeLeft >= 0) {
+                    timeLeft = newTimeLeft;
+                    timer.textContent = timeLeft;
+                }
+
+                // Change loading text every 20% progress
+                if (Math.round(progress) % 20 === 0 && Math.round(progress) > 0) {
+                    textIndex = (textIndex + 1) % loadingTexts.length;
+                    loadingText.textContent = loadingTexts[textIndex];
+                }
+            }, interval);
+
+            // Preload the next page
+            const link = document.createElement('link');
+            link.rel = 'preload';
+            link.href = 'src/pages/public/index.html';
+            link.as = 'document';
+            document.head.appendChild(link);
+
+            // Add fade out keyframe
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes fadeOut {
+                    0% { opacity: 1; transform: scale(1); }
+                    100% { opacity: 0; transform: scale(0.95); }
+                }
+            `;
+            document.head.appendChild(style);
+        });
+    </script>
+</body>
+</html>
