@@ -191,8 +191,17 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Show success message
                     showSuccessMessage('Account Created Successfully!', 'Welcome to our church community!');
                 } else {
-                    // Show error message
-                    showErrorMessage('Registration Failed', result.error || 'An error occurred during registration.');
+                    // Handle specific error messages
+                    let errorMessage = result.error || 'An error occurred during registration.';
+
+                    // Convert database errors to user-friendly messages
+                    if (errorMessage.includes('duplicate key value violates unique constraint "users_email_key"')) {
+                        errorMessage = 'This email address is already registered. Please use a different email or try logging in.';
+                    } else if (errorMessage.includes('duplicate key') || errorMessage.includes('already exists')) {
+                        errorMessage = 'This email address is already registered. Please use a different email or try logging in.';
+                    }
+
+                    showErrorMessage('Registration Failed', errorMessage);
                 }
             } catch (error) {
                 console.error('Registration error:', error);
