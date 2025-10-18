@@ -32,9 +32,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
-            if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
-                sidebar.classList.add('-translate-x-full');
-                sidebar.classList.remove('open');
+            if (window.innerWidth < 768) {
+                const sidebar = document.getElementById('sidebar');
+                const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+                if (sidebar && mobileMenuBtn) {
+                    // Check if click is outside both sidebar and button
+                    const isClickOutside = !sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target);
+                    if (isClickOutside) {
+                        sidebar.classList.add('-translate-x-full');
+                        sidebar.classList.remove('open');
+                    }
+                }
             }
         });
     }
@@ -539,6 +547,7 @@ document.addEventListener('DOMContentLoaded', async function() {
             const sidebar = document.getElementById('sidebar');
             if (sidebar && window.innerWidth < 768) {
                 sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('open');
             }
         });
     });

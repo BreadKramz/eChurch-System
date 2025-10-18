@@ -46,19 +46,36 @@
     <!-- Header -->
     <header class="bg-white shadow-lg border-b border-gray-100">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex justify-between items-center h-20">
-                <div class="flex items-center gap-4">
-                    <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+            <div class="flex justify-center items-center h-20">
+                <!-- Centered Mobile Header -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer flex-shrink-0">
                         <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
                     </div>
-                    <div>
-                        <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
-                        <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
+                    <div class="min-w-0">
+                        <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
+                        <p class="text-sm text-gray-600 font-body truncate">Redemptorist Church • Dumaguete City</p>
                     </div>
+                    <a href="../../pages/public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium flex-shrink-0 ml-2">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
                 </div>
-                <a href="../../pages/public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium">
-                    <i class="fas fa-arrow-left mr-2"></i>Back to Home
-                </a>
+
+                <!-- Desktop Header -->
+                <div class="hidden lg:flex items-center justify-between w-full">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                            <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
+                            <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
+                        </div>
+                    </div>
+                    <a href="../../pages/public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                    </a>
+                </div>
             </div>
         </div>
     </header>
@@ -279,11 +296,15 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-secondary text-white py-6 mt-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-white/80 text-sm">
-                &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
-            </p>
+    <footer class="bg-secondary text-white py-4 shadow-inner mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer content removed as requested -->
+
+            <div class="border-t border-white/10 pt-3 text-center">
+                <p class="text-white/80 text-xs sm:text-sm tracking-wide">
+                    &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
+                </p>
+            </div>
         </div>
     </footer>
 
