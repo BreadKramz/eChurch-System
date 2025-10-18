@@ -49,7 +49,7 @@
         <div class="flex items-center justify-center h-20 px-4 bg-gradient-to-r from-red-600 to-red-700 border-b border-gray-200">
             <div class="flex items-center gap-3">
                 <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white">
-                    <i class="fas fa-cog text-xl"></i>
+                    <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
                 </div>
                 <div class="text-white">
                     <h3 class="font-display font-bold text-sm leading-tight">Admin Panel</h3>
@@ -70,10 +70,6 @@
                 <span class="font-medium">User Management</span>
             </a>
 
-            <a href="#analytics" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-200 group" id="nav-analytics">
-                <i class="fas fa-chart-bar text-red-600 text-lg"></i>
-                <span class="font-medium">Analytics</span>
-            </a>
 
             <a href="#settings" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-red-50 hover:text-red-600 transition-all duration-200 group" id="nav-settings">
                 <i class="fas fa-cogs text-red-600 text-lg"></i>
@@ -93,8 +89,8 @@
                         <i class="fas fa-bars"></i>
                     </button>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-display font-bold text-red-600">Admin Panel</h1>
-                        <p class="text-gray-600 text-sm mt-1">Our Mother of Perpetual Help • Dumaguete City</p>
+                        <h1 class="text-xl md:text-2xl font-display font-bold text-red-600">Our Mother of Perpetual Help</h1>
+                        <p class="text-gray-600 text-sm mt-1">Redemptorist Church • Dumaguete City</p>
                     </div>
                 </div>
                 <div class="flex items-center gap-4">
@@ -111,14 +107,39 @@
                             <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200" id="dropdown-icon"></i>
                         </button>
 
+                        <!-- Logout Confirmation Modal -->
+                        <div id="admin-logout-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+                            <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-sign-out-alt text-red-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirm Logout</h3>
+                                <p class="text-gray-600 mb-6">Are you sure you want to log out of the admin panel?</p>
+                                <div class="flex gap-3">
+                                    <button
+                                        onclick="closeAdminLogoutModal()"
+                                        class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-all duration-300"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onclick="confirmAdminLogout()"
+                                        class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
                         <!-- Dropdown Menu -->
                         <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 hidden" id="profile-dropdown">
-                            <a href="#profile" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors duration-200">
+                            <button onclick="showAdminProfile()" class="w-full flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-red-600 transition-colors duration-200">
                                 <i class="fas fa-user-shield text-red-600"></i>
                                 <span>Admin Profile</span>
-                            </a>
+                            </button>
                             <hr class="border-gray-200 my-1">
-                            <button onclick="adminLogout()" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
+                            <button onclick="showAdminLogoutModal()" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
                                 <i class="fas fa-sign-out-alt"></i>
                                 <span>Logout</span>
                             </button>
@@ -128,200 +149,164 @@
             </div>
         </header>
         <!-- Dashboard Content -->
-        <main class="p-4 md:p-6">
+        <main class="p-3 md:p-4">
             <div class="max-w-7xl mx-auto">
                 <!-- Content Display Area -->
-                <div id="content-area" class="bg-white rounded-lg shadow-lg border border-gray-100 p-6 md:p-8">
+                <div id="content-area" class="bg-white rounded-lg shadow-lg border border-gray-100 p-4 md:p-6">
                     <!-- Dashboard Overview -->
                     <div id="dashboard-content">
-                        <div class="text-center py-8 mb-8">
-                            <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-tachometer-alt text-red-600 text-4xl"></i>
+                        <div class="text-center py-4 mb-6">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-tachometer-alt text-red-600 text-3xl"></i>
                             </div>
-                            <h2 class="text-3xl font-display font-bold text-gray-900 mb-4">Admin Dashboard</h2>
-                            <p class="text-gray-600 text-lg max-w-2xl mx-auto">
+                            <h2 class="text-2xl font-display font-bold text-gray-900 mb-3">Admin Dashboard</h2>
+                            <p class="text-gray-600 text-base max-w-xl mx-auto mb-6">
                                 Welcome to the administrative control panel. Manage users, view analytics, and configure system settings.
                             </p>
                         </div>
 
-                        <!-- Quick Stats -->
-                        <div class="grid md:grid-cols-3 gap-6 mb-8">
-                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-2xl p-6 text-center border border-blue-200">
-                                <div class="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center text-white text-xl mx-auto mb-3">
+                        <!-- Quick Stats - Compact -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-xl p-4 text-center border border-blue-200">
+                                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
                                     <i class="fas fa-users"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-blue-900" id="total-users">0</div>
-                                <div class="text-blue-700 font-medium">Total Users</div>
+                                <div class="text-lg font-bold text-blue-900" id="total-users">0</div>
+                                <div class="text-blue-700 font-medium text-xs">Total Users</div>
                             </div>
-                            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-2xl p-6 text-center border border-green-200">
-                                <div class="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center text-white text-xl mx-auto mb-3">
+                            <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center border border-green-200">
+                                <div class="w-8 h-8 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
                                     <i class="fas fa-user-plus"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-green-900" id="recent-users">0</div>
-                                <div class="text-green-700 font-medium">Recent (7 days)</div>
+                                <div class="text-lg font-bold text-green-900" id="recent-users">0</div>
+                                <div class="text-green-700 font-medium text-xs">Recent (7 days)</div>
                             </div>
-                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-2xl p-6 text-center border border-purple-200">
-                                <div class="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white text-xl mx-auto mb-3">
+                            <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center border border-purple-200">
+                                <div class="w-8 h-8 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
                                     <i class="fas fa-chart-line"></i>
                                 </div>
-                                <div class="text-2xl font-bold text-purple-900" id="active-sessions">0</div>
-                                <div class="text-purple-700 font-medium">Active Sessions</div>
+                                <div class="text-lg font-bold text-purple-900" id="active-sessions">0</div>
+                                <div class="text-purple-700 font-medium text-xs">Active Sessions</div>
                             </div>
                         </div>
 
-                        <!-- Quick Actions -->
-                        <div class="grid md:grid-cols-2 gap-6">
-                            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                                <div class="flex items-center gap-4 mb-4">
-                                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-users-cog text-red-600 text-xl"></i>
+                        <!-- Quick Actions - Compact -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-users-cog text-red-600 text-sm"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-900">User Management</h3>
-                                        <p class="text-gray-600 text-sm">Manage user accounts and permissions</p>
+                                        <h4 class="text-sm font-bold text-gray-900">User Management</h4>
+                                        <p class="text-gray-600 text-xs">Manage user accounts</p>
                                     </div>
                                 </div>
                                 <button
                                     onclick="showSection('users')"
-                                    class="w-full bg-red-600 text-white py-3 px-4 rounded-xl font-bold hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                    class="w-full bg-red-600 text-white py-2 px-3 rounded-lg font-bold text-sm hover:bg-red-700 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5"
                                 >
-                                    <i class="fas fa-arrow-right mr-2"></i>Manage Users
+                                    <i class="fas fa-arrow-right mr-1"></i>Manage
                                 </button>
                             </div>
 
-                            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                                <div class="flex items-center gap-4 mb-4">
-                                    <div class="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-chart-bar text-blue-600 text-xl"></i>
-                                    </div>
-                                    <div>
-                                        <h3 class="text-lg font-bold text-gray-900">Analytics</h3>
-                                        <p class="text-gray-600 text-sm">View system statistics and reports</p>
-                                    </div>
-                                </div>
-                                <button
-                                    onclick="showSection('analytics')"
-                                    class="w-full bg-blue-600 text-white py-3 px-4 rounded-xl font-bold hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
-                                >
-                                    <i class="fas fa-arrow-right mr-2"></i>View Analytics
-                                </button>
-                            </div>
                         </div>
                     </div>
 
                     <!-- User Management Section -->
                     <div id="users-content" class="hidden">
-                        <div class="flex items-center justify-between mb-6">
-                            <div class="flex items-center gap-4">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-3">
                                 <button onclick="showSection('dashboard')" class="text-red-600 hover:text-red-700 transition-colors">
-                                    <i class="fas fa-arrow-left text-xl"></i>
+                                    <i class="fas fa-arrow-left text-lg"></i>
                                 </button>
                                 <div>
-                                    <h2 class="text-2xl font-display font-bold text-gray-900">User Management</h2>
-                                    <p class="text-gray-600">Administrative controls for user accounts</p>
+                                    <h2 class="text-xl font-display font-bold text-gray-900">User Management</h2>
+                                    <p class="text-gray-600 text-sm">Administrative controls for user accounts</p>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- Action Buttons -->
-                        <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <!-- Action Buttons - Compact -->
+                        <div class="grid grid-cols-2 gap-4 mb-6">
                             <!-- Delete All Users -->
-                            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                                <div class="flex items-center gap-4 mb-4">
-                                    <div class="w-12 h-12 bg-red-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-trash-alt text-red-600 text-xl"></i>
+                            <div class="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-8 h-8 bg-red-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-trash-alt text-red-600 text-sm"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-900">Delete All Users</h3>
-                                        <p class="text-gray-600 text-sm">Permanently remove all user accounts</p>
+                                        <h4 class="text-sm font-bold text-gray-900">Delete All Users</h4>
+                                        <p class="text-gray-600 text-xs">Remove all accounts</p>
                                     </div>
                                 </div>
                                 <button
                                     onclick="deleteAllUsers()"
-                                    class="w-full bg-red-600 text-white py-3 px-4 rounded-xl font-bold hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                    class="w-full bg-red-600 text-white py-2 px-3 rounded-lg font-bold text-sm hover:bg-red-700 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5"
                                 >
-                                    <i class="fas fa-trash-alt mr-2"></i>Delete All Accounts
+                                    <i class="fas fa-trash-alt mr-1"></i>Delete All
                                 </button>
                             </div>
 
                             <!-- Delete Specific User -->
-                            <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                                <div class="flex items-center gap-4 mb-4">
-                                    <div class="w-12 h-12 bg-orange-100 rounded-full flex items-center justify-center">
-                                        <i class="fas fa-user-minus text-orange-600 text-xl"></i>
+                            <div class="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <div class="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
+                                        <i class="fas fa-user-minus text-orange-600 text-sm"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-lg font-bold text-gray-900">Delete Specific User</h3>
-                                        <p class="text-gray-600 text-sm">Remove a single user account by email</p>
+                                        <h4 class="text-sm font-bold text-gray-900">Delete Specific User</h4>
+                                        <p class="text-gray-600 text-xs">Remove by email</p>
                                     </div>
                                 </div>
-                                <div class="space-y-3">
+                                <div class="space-y-2">
                                     <input
                                         type="email"
                                         id="delete-email"
-                                        placeholder="Enter user email address"
-                                        class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900"
+                                        placeholder="Enter email"
+                                        class="w-full px-2 py-1.5 border border-gray-300 rounded text-sm focus:ring-2 focus:ring-orange-500 focus:border-transparent transition-all duration-200 text-gray-900"
                                     >
                                     <button
                                         onclick="deleteUserByEmail()"
-                                        class="w-full bg-orange-600 text-white py-2 px-4 rounded-lg font-bold hover:bg-orange-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                                        class="w-full bg-orange-600 text-white py-1.5 px-3 rounded text-sm font-bold hover:bg-orange-700 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5"
                                     >
-                                        <i class="fas fa-user-minus mr-2"></i>Delete User
+                                        <i class="fas fa-user-minus mr-1"></i>Delete User
                                     </button>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- User List -->
-                        <div class="bg-white rounded-2xl p-6 shadow-lg border border-gray-100">
-                            <div class="flex items-center justify-between mb-6">
-                                <div class="flex items-center gap-4">
-                                    <div class="w-12 h-12 bg-red-600 rounded-full flex items-center justify-center text-white">
-                                        <i class="fas fa-list text-xl"></i>
+                        <!-- User List - Compact -->
+                        <div class="bg-white rounded-xl p-4 shadow-lg border border-gray-100">
+                            <div class="flex items-center justify-between mb-4">
+                                <div class="flex items-center gap-3">
+                                    <div class="w-8 h-8 bg-red-600 rounded-full flex items-center justify-center text-white">
+                                        <i class="fas fa-list text-sm"></i>
                                     </div>
                                     <div>
-                                        <h3 class="text-xl font-bold text-gray-900">Registered Users</h3>
-                                        <p class="text-gray-600">Complete list of all user accounts</p>
+                                        <h4 class="text-lg font-bold text-gray-900">Registered Users</h4>
+                                        <p class="text-gray-600 text-sm">All user accounts</p>
                                     </div>
                                 </div>
                                 <button
                                     onclick="refreshUserList()"
-                                    class="bg-red-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                                    class="bg-red-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-red-700 transition-all duration-300"
                                 >
-                                    <i class="fas fa-sync-alt mr-2"></i>Refresh
+                                    <i class="fas fa-sync-alt mr-1"></i>Refresh
                                 </button>
                             </div>
 
-                            <div id="user-list" class="space-y-3 max-h-96 overflow-y-auto">
+                            <div id="user-list" class="space-y-2 max-h-80 overflow-y-auto">
                                 <!-- User items will be populated here -->
-                                <div class="text-center text-gray-500 py-8">
-                                    <i class="fas fa-users text-4xl mb-4 text-gray-300"></i>
-                                    <p>Loading user list...</p>
+                                <div class="text-center text-gray-500 py-6">
+                                    <i class="fas fa-users text-3xl mb-3 text-gray-300"></i>
+                                    <p class="text-sm">Loading user list...</p>
                                 </div>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Analytics Section -->
-                    <div id="analytics-content" class="hidden">
-                        <div class="flex items-center justify-between mb-6">
-                            <button onclick="showSection('dashboard')" class="text-red-600 hover:text-red-700 transition-colors">
-                                <i class="fas fa-arrow-left text-xl"></i>
-                            </button>
-                            <div>
-                                <h2 class="text-2xl font-display font-bold text-gray-900">Analytics</h2>
-                                <p class="text-gray-600">System statistics and reports</p>
-                            </div>
-                        </div>
 
-                        <div class="text-center py-16">
-                            <div class="w-24 h-24 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-6">
-                                <i class="fas fa-chart-bar text-blue-600 text-4xl"></i>
-                            </div>
-                            <h3 class="text-xl font-bold text-gray-900 mb-4">Analytics Dashboard</h3>
-                            <p class="text-gray-600">Advanced analytics and reporting features coming soon.</p>
-                        </div>
-                    </div>
 
                     <!-- Settings Section -->
                     <div id="settings-content" class="hidden">
@@ -348,15 +333,8 @@
         </main>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-secondary text-white py-6 mt-8">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <p class="text-white/80 text-sm">
-                &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
-            </p>
-        </div>
-    </footer>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/js/supabase.js"></script>
     <script src="../../assets/js/admin-utils.js"></script>
     <script>
         // Initialize admin panel
@@ -429,7 +407,7 @@
 
         // Show different sections
         function showSection(sectionName) {
-            const sections = ['dashboard', 'users', 'analytics', 'settings'];
+            const sections = ['dashboard', 'users', 'settings'];
             const navLinks = document.querySelectorAll('#sidebar nav a');
 
             // Hide all sections
@@ -453,29 +431,313 @@
             });
         }
 
-        // Admin logout
-        function adminLogout() {
+        // Show admin logout confirmation modal
+        function showAdminLogoutModal() {
+            const modal = document.getElementById('admin-logout-modal');
+            if (modal) {
+                modal.classList.remove('hidden');
+            }
+        }
+
+        // Close admin logout confirmation modal
+        function closeAdminLogoutModal() {
+            const modal = document.getElementById('admin-logout-modal');
+            if (modal) {
+                modal.classList.add('hidden');
+            }
+        }
+
+        // Show admin profile modal
+        function showAdminProfile() {
+            // Create and show profile modal
+            const modal = document.createElement('div');
+            modal.id = 'admin-profile-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-md mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-shield text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Admin Profile</h3>
+                    <p class="text-gray-600 mb-6">Administrator account information and settings</p>
+                    <div class="text-left bg-gray-50 rounded-lg p-4 mb-6">
+                        <div class="space-y-2 text-sm">
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Role:</span>
+                                <span class="font-medium text-gray-900">Administrator</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Email:</span>
+                                <span class="font-medium text-gray-900">admin@ompchurchdumaguete.com</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-gray-600">Access Level:</span>
+                                <span class="font-medium text-gray-900">Full Administrative</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button
+                        onclick="closeAdminProfileModal()"
+                        class="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                    >
+                        Close
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+
+            // Close dropdown
+            document.getElementById('profile-dropdown').classList.add('hidden');
+        }
+
+        // Close admin profile modal
+        function closeAdminProfileModal() {
+            const modal = document.getElementById('admin-profile-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Show delete user confirmation modal
+        function showDeleteUserModal(email) {
+            // Create and show delete confirmation modal
+            const modal = document.createElement('div');
+            modal.id = 'delete-user-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-user-minus text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Delete User</h3>
+                    <p class="text-gray-600 mb-6">Are you sure you want to delete the user with email: <strong>${email}</strong>?</p>
+                    <div class="flex gap-3">
+                        <button
+                            onclick="closeDeleteUserModal()"
+                            class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-all duration-300"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onclick="confirmDeleteUser('${email}')"
+                            class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                        >
+                            Delete
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Close delete user confirmation modal
+        function closeDeleteUserModal() {
+            const modal = document.getElementById('delete-user-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Confirm delete user
+        async function confirmDeleteUser(email) {
+            try {
+                const result = await AdminUtils.deleteUserByEmail(email);
+                if (result.success) {
+                    document.getElementById('delete-email').value = '';
+                    await updateStats();
+                    await refreshUserList();
+                    closeDeleteUserModal();
+                    showDeleteSuccessModal(1, false, email);
+                } else {
+                    closeDeleteUserModal();
+                    showUserNotFoundModal(email);
+                }
+            } catch (error) {
+                console.error('Error deleting user:', error);
+                closeDeleteUserModal();
+                showUserNotFoundModal(email);
+            }
+        }
+
+        // Confirm admin logout
+        function confirmAdminLogout() {
             localStorage.removeItem('admin_session');
             window.location.href = '../public/index.html';
         }
 
         // Update statistics
-        function updateStats() {
-            const stats = AdminUtils.getUserStats();
-            document.getElementById('total-users').textContent = stats.totalUsers;
-            document.getElementById('recent-users').textContent = stats.recentUsers;
+        async function updateStats() {
+            try {
+                const stats = await AdminUtils.getUserStats();
+                document.getElementById('total-users').textContent = stats.totalUsers;
+                document.getElementById('recent-users').textContent = stats.recentUsers;
 
-            // Check for active session
-            const currentUser = localStorage.getItem('current_user');
-            document.getElementById('active-sessions').textContent = currentUser ? '1' : '0';
+                // Check for active session
+                const currentUser = localStorage.getItem('current_user');
+                document.getElementById('active-sessions').textContent = currentUser ? '1' : '0';
+            } catch (error) {
+                console.error('Error updating stats:', error);
+                document.getElementById('total-users').textContent = '0';
+                document.getElementById('recent-users').textContent = '0';
+                document.getElementById('active-sessions').textContent = '0';
+            }
+        }
+
+        // Show delete all users confirmation modal
+        function showDeleteAllUsersModal() {
+            // Create and show delete all confirmation modal
+            const modal = document.createElement('div');
+            modal.id = 'delete-all-users-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-trash-alt text-red-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Delete All Users</h3>
+                    <p class="text-gray-600 mb-6">Are you sure you want to delete ALL users? This action cannot be undone.</p>
+                    <div class="flex gap-3">
+                        <button
+                            onclick="closeDeleteAllUsersModal()"
+                            class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-all duration-300"
+                        >
+                            Cancel
+                        </button>
+                        <button
+                            onclick="confirmDeleteAllUsers()"
+                            class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                        >
+                            Delete All
+                        </button>
+                    </div>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Close delete all users confirmation modal
+        function closeDeleteAllUsersModal() {
+            const modal = document.getElementById('delete-all-users-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Confirm delete all users
+        async function confirmDeleteAllUsers() {
+            try {
+                const result = await AdminUtils.deleteAllUsers();
+                await updateStats();
+                await refreshUserList();
+                closeDeleteAllUsersModal();
+
+                // Show success modal
+                showDeleteSuccessModal(result.deletedCount || 0, true);
+            } catch (error) {
+                console.error('Error deleting all users:', error);
+                closeDeleteAllUsersModal();
+                showDeleteSuccessModal(0, true);
+            }
         }
 
         // Delete all users
         function deleteAllUsers() {
-            if (confirm('Are you sure you want to delete ALL users? This action cannot be undone.')) {
-                AdminUtils.deleteAllUsers();
-                updateStats();
-                refreshUserList();
+            showDeleteAllUsersModal();
+        }
+
+        // Show email required modal
+        function showEmailRequiredModal() {
+            const modal = document.createElement('div');
+            modal.id = 'email-required-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-envelope text-blue-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Email Required</h3>
+                    <p class="text-gray-600 mb-6">Please enter an email address.</p>
+                    <button
+                        onclick="closeEmailRequiredModal()"
+                        class="bg-blue-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300"
+                    >
+                        OK
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Show delete success modal
+        function showDeleteSuccessModal(count, isAllUsers, email = '') {
+            const modal = document.createElement('div');
+            modal.id = 'delete-success-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            const message = isAllUsers
+                ? `Successfully deleted ${count} user account(s). All user data has been permanently removed.`
+                : `User account "${email}" has been successfully deleted.`;
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-check text-green-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">Deletion Successful</h3>
+                    <p class="text-gray-600 mb-6">${message}</p>
+                    <button
+                        onclick="closeDeleteSuccessModal()"
+                        class="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-all duration-300"
+                    >
+                        OK
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Show user not found modal
+        function showUserNotFoundModal(email) {
+            const modal = document.createElement('div');
+            modal.id = 'user-not-found-modal';
+            modal.className = 'fixed inset-0 bg-black/50 flex items-center justify-center z-50';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                    <div class="w-16 h-16 bg-yellow-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-exclamation-triangle text-yellow-600 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-gray-900 mb-2">User Not Found</h3>
+                    <p class="text-gray-600 mb-6">User account "${email}" was not found in the system.</p>
+                    <button
+                        onclick="closeUserNotFoundModal()"
+                        class="bg-yellow-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-yellow-700 transition-all duration-300"
+                    >
+                        OK
+                    </button>
+                </div>
+            `;
+            document.body.appendChild(modal);
+        }
+
+        // Close delete success modal
+        function closeDeleteSuccessModal() {
+            const modal = document.getElementById('delete-success-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Close user not found modal
+        function closeUserNotFoundModal() {
+            const modal = document.getElementById('user-not-found-modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+
+        // Close email required modal
+        function closeEmailRequiredModal() {
+            const modal = document.getElementById('email-required-modal');
+            if (modal) {
+                modal.remove();
             }
         }
 
@@ -483,50 +745,57 @@
         function deleteUserByEmail() {
             const email = document.getElementById('delete-email').value.trim();
             if (email) {
-                if (confirm(`Are you sure you want to delete the user with email: ${email}?`)) {
-                    AdminUtils.deleteUserByEmail(email);
-                    document.getElementById('delete-email').value = '';
-                    updateStats();
-                    refreshUserList();
-                }
+                showDeleteUserModal(email);
             } else {
-                alert('Please enter an email address.');
+                showEmailRequiredModal();
             }
         }
 
         // Refresh user list
-        function refreshUserList() {
-            const stats = AdminUtils.getUserStats();
-            const userList = document.getElementById('user-list');
+        async function refreshUserList() {
+            try {
+                const stats = await AdminUtils.getUserStats();
+                const userList = document.getElementById('user-list');
 
-            if (stats.users.length === 0) {
+                if (stats.users.length === 0) {
+                    userList.innerHTML = `
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-users text-4xl mb-4 text-gray-300"></i>
+                            <p>No registered users found.</p>
+                            <p class="text-sm mt-2">Users will appear here once they register.</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                userList.innerHTML = stats.users.map(user => `
+                    <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-gray-100 transition-all duration-200">
+                        <div class="flex items-center gap-4">
+                            <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                                ${user.name.charAt(0).toUpperCase()}
+                            </div>
+                            <div>
+                                <div class="font-semibold text-gray-900">${user.name}</div>
+                                <div class="text-sm text-gray-600">${user.email}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Joined</div>
+                            <div class="text-sm font-medium text-gray-700">${user.createdAt}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error refreshing user list:', error);
+                const userList = document.getElementById('user-list');
                 userList.innerHTML = `
                     <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-users text-4xl mb-4 text-gray-300"></i>
-                        <p>No registered users found.</p>
-                        <p class="text-sm mt-2">Users will appear here once they register.</p>
+                        <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-400"></i>
+                        <p>Error loading user list.</p>
+                        <p class="text-sm mt-2">Please try refreshing the page.</p>
                     </div>
                 `;
-                return;
             }
-
-            userList.innerHTML = stats.users.map(user => `
-                <div class="flex items-center justify-between p-4 bg-gray-50 rounded-xl border border-gray-100 hover:bg-gray-100 transition-all duration-200">
-                    <div class="flex items-center gap-4">
-                        <div class="w-10 h-10 bg-red-600 rounded-full flex items-center justify-center text-white text-sm font-bold">
-                            ${user.name.charAt(0).toUpperCase()}
-                        </div>
-                        <div>
-                            <div class="font-semibold text-gray-900">${user.name}</div>
-                            <div class="text-sm text-gray-600">${user.email}</div>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-sm text-gray-500">Joined</div>
-                        <div class="text-sm font-medium text-gray-700">${user.createdAt}</div>
-                    </div>
-                </div>
-            `).join('');
         }
     </script>
 </body>

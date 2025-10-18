@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Display user name
     const userNameElement = document.getElementById('user-name');
     if (userNameElement) {
-        userNameElement.textContent = `${user.firstName} ${user.lastName}`;
+        const firstName = user.first_name || user.firstName || 'User';
+        const lastName = user.last_name || user.lastName || '';
+        userNameElement.textContent = `${firstName} ${lastName}`.trim();
     }
 
     // Mobile menu toggle

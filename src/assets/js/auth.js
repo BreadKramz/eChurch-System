@@ -119,29 +119,8 @@ function validatePasswordMatch() {
     }
 }
 
-// Simple hash function for demo purposes (not secure for production)
-function simpleHash(str) {
-    let hash = 0;
-    for (let i = 0; i < str.length; i++) {
-        const char = str.charCodeAt(i);
-        hash = ((hash << 5) - hash) + char;
-        hash = hash & hash; // Convert to 32-bit integer
-    }
-    return hash.toString();
-}
 
-// Load users from localStorage
-function loadUsers() {
-    const users = localStorage.getItem('church_users');
-    return users ? JSON.parse(users) : [];
-}
-
-// Save users to localStorage
-function saveUsers(users) {
-    localStorage.setItem('church_users', JSON.stringify(users));
-}
-
-// Registration form handler
+// Registration form handler with Supabase integration
 document.addEventListener('DOMContentLoaded', function() {
     // Registration form
     const registerForm = document.getElementById('registerForm');
@@ -168,8 +147,8 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Form submission
-        registerForm.addEventListener('submit', function(e) {
+        // Form submission with Supabase
+        registerForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
@@ -177,32 +156,56 @@ document.addEventListener('DOMContentLoaded', function() {
                 firstName: formData.get('firstName').trim(),
                 lastName: formData.get('lastName').trim(),
                 email: formData.get('email').toLowerCase().trim(),
-                contactNumber: formData.get('contactNumber').trim(),
-                password: simpleHash(formData.get('password')),
-                createdAt: new Date().toISOString(),
-                id: Date.now()
+                phone: formData.get('contactNumber').trim(),
+                password: formData.get('password'),
+                confirmPassword: formData.get('confirmPassword')
             };
 
-            // Load existing users
-            const users = loadUsers();
-
-            // Check if email already exists
-            const existingUser = users.find(user => user.email === userData.email);
-            if (existingUser) {
-                showErrorMessage('Registration Failed', 'An account with this email already exists. Please use a different email or try logging in.');
+            // Client-side validation
+            if (!userData.firstName || !userData.lastName || !userData.email || !userData.phone || !userData.password) {
+                showErrorMessage('Validation Error', 'All fields are required.');
                 return;
             }
 
-            // Add new user
-            users.push(userData);
-            saveUsers(users);
+            if (userData.password !== userData.confirmPassword) {
+                showErrorMessage('Validation Error', 'Passwords do not match.');
+                return;
+            }
 
-            // Show success message
-            showSuccessMessage('Account Created Successfully!', 'Welcome to our church community!');
+            if (userData.password.length < 6) {
+                showErrorMessage('Validation Error', 'Password must be at least 6 characters long.');
+                return;
+            }
+
+            // Disable form during submission
+            const submitBtn = document.getElementById('register-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Creating Account...';
+
+            try {
+                // Create user in Supabase
+                const result = await SupabaseUsers.createUser(userData);
+
+                if (result.success) {
+                    // Show success message
+                    showSuccessMessage('Account Created Successfully!', 'Welcome to our church community!');
+                } else {
+                    // Show error message
+                    showErrorMessage('Registration Failed', result.error || 'An error occurred during registration.');
+                }
+            } catch (error) {
+                console.error('Registration error:', error);
+                showErrorMessage('Registration Failed', 'Network error. Please try again.');
+            } finally {
+                // Re-enable form
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
+            }
         });
     }
 
-    // Login form
+    // Login form with Supabase integration
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         const togglePasswordBtn = document.getElementById('toggle-password');
@@ -217,35 +220,53 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
 
-        // Form submission
-        loginForm.addEventListener('submit', function(e) {
+        // Form submission with Supabase
+        loginForm.addEventListener('submit', async function(e) {
             e.preventDefault();
 
             const formData = new FormData(this);
             const email = formData.get('email').toLowerCase().trim();
-            const password = simpleHash(formData.get('password'));
+            const password = formData.get('password');
 
-            // Load users
-            const users = loadUsers();
+            // Client-side validation
+            if (!email || !password) {
+                showErrorMessage('Validation Error', 'Email and password are required.');
+                return;
+            }
 
-            // Find user
-            const user = users.find(u => u.email === email && u.password === password);
+            // Disable form during submission
+            const submitBtn = document.getElementById('login-btn');
+            const originalText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Signing In...';
 
-            if (user) {
-                // Store current user session
-                localStorage.setItem('current_user', JSON.stringify(user));
+            try {
+                // Authenticate user with Supabase
+                const result = await SupabaseUsers.authenticateUser(email, password);
 
-                // Show success message and redirect
-                showSuccessMessage('Login Successful!', 'Welcome back! Redirecting to your dashboard...');
-                setTimeout(() => {
-                    window.location.href = '../dashboard/dashboard.html';
-                }, 3000);
-            } else {
+                if (result.success) {
+                    // Store current user session
+                    localStorage.setItem('current_user', JSON.stringify(result.user));
+
+                    // Show success message and redirect
+                    showSuccessMessage('Login Successful!', 'Welcome back! Redirecting to your dashboard...');
+                    setTimeout(() => {
+                        window.location.href = '../dashboard/dashboard.html';
+                    }, 3000);
+                } else {
+                    // Show user-friendly error message
+                    showErrorMessage('Login Failed', 'Invalid email or password. Please try again.');
+                }
+            } catch (error) {
+                console.error('Login error:', error);
+                // Show user-friendly error message instead of technical error
                 showErrorMessage('Login Failed', 'Invalid email or password. Please try again.');
+            } finally {
+                // Re-enable form
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = originalText;
             }
         });
-
-        // Remember me functionality removed
     }
 
     // Add entrance animation to auth forms
