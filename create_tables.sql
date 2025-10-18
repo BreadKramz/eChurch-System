@@ -3,7 +3,7 @@
 
 -- Users table for authentication and user management
 CREATE TABLE IF NOT EXISTS public.users (
-    id SERIAL PRIMARY KEY,
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     first_name TEXT NOT NULL,
     last_name TEXT NOT NULL,
     email TEXT UNIQUE NOT NULL,
@@ -40,7 +40,7 @@ CREATE POLICY "Allow user deletion" ON public.users
     FOR DELETE USING (true); -- Allow all deletions for now (admin controlled)
 
 -- Create RPC function for deleting users by ID
-CREATE OR REPLACE FUNCTION delete_user_by_id(user_id INTEGER)
+CREATE OR REPLACE FUNCTION delete_user_by_id(user_id UUID)
 RETURNS BOOLEAN
 LANGUAGE plpgsql
 SECURITY DEFINER
@@ -60,6 +60,42 @@ BEGIN
     END IF;
 END;
 $$;
+
+-- Service requests table for user service requests
+CREATE TABLE IF NOT EXISTS public.service_requests (
+    id SERIAL PRIMARY KEY,
+    user_id UUID REFERENCES public.users(id) ON DELETE CASCADE,
+    request_type TEXT NOT NULL CHECK (request_type IN ('confirmation', 'mass-offering', 'funeral', 'mass-card', 'sick-call', 'marriage', 'baptism', 'baptism-service', 'confirmation-service', 'communion', 'marriage-service', 'anointing', 'funeral-service')),
+    details TEXT,
+    preferred_date DATE,
+    status TEXT DEFAULT 'pending' CHECK (status IN ('pending', 'processing', 'completed', 'cancelled')),
+    admin_notes TEXT,
+    processed_by UUID REFERENCES public.users(id),
+    processed_at TIMESTAMP WITH TIME ZONE,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_service_requests_user_id ON public.service_requests(user_id);
+CREATE INDEX IF NOT EXISTS idx_service_requests_status ON public.service_requests(status);
+CREATE INDEX IF NOT EXISTS idx_service_requests_type ON public.service_requests(request_type);
+CREATE INDEX IF NOT EXISTS idx_service_requests_created_at ON public.service_requests(created_at);
+CREATE INDEX IF NOT EXISTS idx_service_requests_processed_by ON public.service_requests(processed_by);
+
+-- Enable Row Level Security (RLS) for service requests
+ALTER TABLE public.service_requests ENABLE ROW LEVEL SECURITY;
+
+-- Create policies for service requests table
+-- Allow all operations for now (disable RLS temporarily for testing)
+-- DROP POLICY IF EXISTS "Allow authenticated users to create service requests" ON public.service_requests;
+-- DROP POLICY IF EXISTS "Users can view their own service requests" ON public.service_requests;
+-- DROP POLICY IF EXISTS "Admins can view all service requests" ON public.service_requests;
+-- DROP POLICY IF EXISTS "Admins can update service requests" ON public.service_requests;
+-- DROP POLICY IF EXISTS "Admins can delete service requests" ON public.service_requests;
+
+-- Temporarily disable RLS to test functionality
+ALTER TABLE public.service_requests DISABLE ROW LEVEL SECURITY;
 
 -- Insert a default admin user (you can change the password later)
 -- Note: This uses plain text password for simplicity - in production, use proper hashing

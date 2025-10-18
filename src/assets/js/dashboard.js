@@ -27,12 +27,14 @@ document.addEventListener('DOMContentLoaded', function() {
     if (mobileMenuBtn && sidebar) {
         mobileMenuBtn.addEventListener('click', function() {
             sidebar.classList.toggle('-translate-x-full');
+            sidebar.classList.toggle('open');
         });
 
         // Close sidebar when clicking outside on mobile
         document.addEventListener('click', function(e) {
             if (!sidebar.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
                 sidebar.classList.add('-translate-x-full');
+                sidebar.classList.remove('open');
             }
         });
     }
@@ -47,6 +49,11 @@ document.addEventListener('DOMContentLoaded', function() {
             mainContent.style.opacity = '1';
             mainContent.style.transform = 'translateY(0)';
         }, 200);
+    }
+
+    // Load my requests when the page loads (for sidebar navigation)
+    if (window.location.hash === '#my-requests') {
+        setTimeout(() => loadMyRequests(), 100);
     }
 });
 
@@ -368,18 +375,123 @@ document.addEventListener('DOMContentLoaded', async function() {
         'services': {
             icon: 'fas fa-certificate',
             title: 'Services',
-            description: 'View and manage your sacramental services, certificates, and church records.'
+            content: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">Church Services</h2>
+                    </div>
+
+                    <div class="flex justify-center gap-4">
+                        <button onclick="showCertificateSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
+                            <h3 class="text-base font-display font-bold text-secondary">Certificate Request</h3>
+                        </button>
+
+                        <button onclick="showServiceSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
+                            <h3 class="text-base font-display font-bold text-secondary">Sacramental Service</h3>
+                        </button>
+                    </div>
+
+                    <!-- Certificate Request Form (Hidden by default) -->
+                    <div id="certificate-form" class="hidden bg-white rounded-xl p-6 shadow-lg border border-gray-100 mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-display font-bold text-secondary">Certificate Request Form</h3>
+                            <button onclick="hideCertificateSection()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Certificate Type *</label>
+                                <select id="certificate-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    <option value="">Select Certificate Type</option>
+                                    <option value="confirmation">Confirmation Certificate</option>
+                                    <option value="mass-offering">Mass Offering Certificate</option>
+                                    <option value="funeral">Funeral Certificate</option>
+                                    <option value="mass-card">Mass Card Certificate</option>
+                                    <option value="sick-call">Sick Call Certificate</option>
+                                    <option value="marriage">Marriage Certificate</option>
+                                    <option value="baptism">Baptism Certificate</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Additional Details</label>
+                                <textarea id="certificate-details" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Please provide any additional information..."></textarea>
+                            </div>
+                            <button onclick="requestCertificate()" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-all duration-300">
+                                <i class="fas fa-paper-plane mr-2"></i>Submit Certificate Request
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Service Request Form (Hidden by default) -->
+                    <div id="service-form" class="hidden bg-white rounded-xl p-6 shadow-lg border border-gray-100 mt-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-xl font-display font-bold text-secondary">Service Request Form</h3>
+                            <button onclick="hideServiceSection()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times text-xl"></i>
+                            </button>
+                        </div>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Sacramental Service *</label>
+                                <select id="service-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                                    <option value="">Select Sacramental Service</option>
+                                    <option value="baptism-service">Baptism Service</option>
+                                    <option value="confirmation-service">Confirmation Service</option>
+                                    <option value="communion">First Holy Communion</option>
+                                    <option value="marriage-service">Marriage / Matrimony Service</option>
+                                    <option value="anointing">Anointing of the Sick</option>
+                                    <option value="funeral-service">Funeral Rites / Burial Masses</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Preferred Date</label>
+                                <input type="date" id="service-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-gray-700 mb-2">Additional Details</label>
+                                <textarea id="service-details" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-all duration-200" placeholder="Please provide any additional information..."></textarea>
+                            </div>
+                            <button onclick="requestService()" class="w-full bg-green-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-green-700 transition-all duration-300">
+                                <i class="fas fa-paper-plane mr-2"></i>Submit Service Request
+                            </button>
+                        </div>
+                    </div>
+
+
+                </div>
+            `
+        },
+        'announcements': {
+            icon: 'fas fa-bullhorn',
+            title: 'Announcements',
+            description: 'Stay updated with the latest church announcements, news, and important updates from our parish.'
+        },
+        'my-requests': {
+            icon: 'fas fa-list',
+            title: 'My Requests',
+            content: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">My Service Requests</h2>
+                        <p class="text-gray-600">Track the status of all your submitted service requests</p>
+                    </div>
+
+                    <div id="my-requests-list" class="space-y-4">
+                        <!-- User's requests will be loaded here -->
+                        <div class="text-center text-gray-500 py-8">
+                            <i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary"></i>
+                            <p>Loading your requests...</p>
+                        </div>
+                    </div>
+                </div>
+            `
         },
         'events': {
-            icon: 'fas fa-calendar-alt',
+            icon: 'fas fa-bullhorn',
             title: 'Events',
-            description: 'Browse upcoming church events, register for activities, and view your participation history.'
+            description: 'Stay updated with the latest church announcements, news, and important updates from our parish.'
         },
-        'prayers': {
-            icon: 'fas fa-pray',
-            title: 'Prayer Requests',
-            description: 'Submit prayer intentions, view community prayers, and track your spiritual requests.'
-        }
     };
 
     sidebarLinks.forEach(link => {
@@ -402,6 +514,11 @@ document.addEventListener('DOMContentLoaded', async function() {
                 if (content.content) {
                     // Custom content (like profile page)
                     contentArea.innerHTML = content.content;
+
+                    // Load my requests if this is the my-requests section
+                    if (section === 'my-requests') {
+                        setTimeout(() => loadMyRequests(), 100);
+                    }
                 } else {
                     // Default content structure
                     contentArea.innerHTML = `
@@ -794,6 +911,222 @@ function showErrorMessage(title, message) {
 function closeSuccessModal() {
     const modal = document.getElementById('success-modal');
     if (modal) modal.remove();
+}
+
+// Service section navigation functions
+function showCertificateSection() {
+    document.getElementById('certificate-form').classList.remove('hidden');
+    document.getElementById('service-form').classList.add('hidden');
+}
+
+function hideCertificateSection() {
+    document.getElementById('certificate-form').classList.add('hidden');
+}
+
+function showServiceSection() {
+    document.getElementById('service-form').classList.remove('hidden');
+    document.getElementById('certificate-form').classList.add('hidden');
+}
+
+function hideServiceSection() {
+    document.getElementById('service-form').classList.add('hidden');
+}
+
+// Service request functions with Supabase integration
+async function requestCertificate() {
+    const certificateType = document.getElementById('certificate-type').value;
+    const details = document.getElementById('certificate-details').value.trim();
+
+    if (!certificateType) {
+        showErrorMessage('Selection Required', 'Please select a certificate type first.');
+        return;
+    }
+
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+        if (!currentUser.id) {
+            showErrorMessage('Authentication Error', 'Please log in again.');
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('service_requests')
+            .insert({
+                user_id: currentUser.id,
+                request_type: certificateType,
+                details: details || null,
+                status: 'pending'
+            })
+            .select();
+
+        if (error) throw error;
+
+        const typeNames = {
+            'confirmation': 'Confirmation Certificate',
+            'mass-offering': 'Mass Offering Certificate',
+            'funeral': 'Funeral Certificate',
+            'mass-card': 'Mass Card Certificate',
+            'sick-call': 'Sick Call Certificate',
+            'marriage': 'Marriage Certificate',
+            'baptism': 'Baptism Certificate'
+        };
+
+        showSuccessMessage('Certificate Request Submitted', `Your ${typeNames[certificateType]} request has been submitted successfully. You will be contacted soon.`);
+        hideCertificateSection();
+
+        // Clear form
+        document.getElementById('certificate-type').value = '';
+        document.getElementById('certificate-details').value = '';
+
+    } catch (error) {
+        console.error('Error submitting certificate request:', error);
+        console.error('Error details:', error.message);
+        console.error('Error code:', error.code);
+        showErrorMessage('Submission Failed', `Failed to submit certificate request. Error: ${error.message}`);
+    }
+}
+
+async function requestService() {
+    const serviceType = document.getElementById('service-type').value;
+    const preferredDate = document.getElementById('service-date').value;
+    const details = document.getElementById('service-details').value.trim();
+
+    if (!serviceType) {
+        showErrorMessage('Selection Required', 'Please select a service type first.');
+        return;
+    }
+
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+        if (!currentUser.id) {
+            showErrorMessage('Authentication Error', 'Please log in again.');
+            return;
+        }
+
+        const { data, error } = await supabaseClient
+            .from('service_requests')
+            .insert({
+                user_id: currentUser.id,
+                request_type: serviceType,
+                preferred_date: preferredDate || null,
+                details: details || null,
+                status: 'pending'
+            })
+            .select();
+
+        if (error) throw error;
+
+        const typeNames = {
+            'baptism-service': 'Baptism Service',
+            'confirmation-service': 'Confirmation Service',
+            'communion': 'First Holy Communion',
+            'marriage-service': 'Marriage / Matrimony Service',
+            'anointing': 'Anointing of the Sick',
+            'funeral-service': 'Funeral Rites / Burial Masses'
+        };
+
+        showSuccessMessage('Service Request Submitted', `Your ${typeNames[serviceType]} request has been submitted successfully. You will be contacted soon.`);
+        hideServiceSection();
+
+        // Clear form
+        document.getElementById('service-type').value = '';
+        document.getElementById('service-date').value = '';
+        document.getElementById('service-details').value = '';
+
+    } catch (error) {
+        console.error('Error submitting service request:', error);
+        console.error('Error details:', error.message);
+        console.error('Error code:', error.code);
+        showErrorMessage('Submission Failed', `Failed to submit service request. Error: ${error.message}`);
+    }
+}
+
+
+// Load user's service requests
+async function loadMyRequests() {
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+        if (!currentUser.id) {
+            showErrorMessage('Authentication Error', 'Please log in again.');
+            return;
+        }
+
+        const { data: requests, error } = await supabaseClient
+            .from('service_requests')
+            .select('*')
+            .eq('user_id', currentUser.id)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const myRequestsList = document.getElementById('my-requests-list');
+
+        if (requests.length === 0) {
+            myRequestsList.innerHTML = `
+                <div class="text-center text-gray-500 py-8">
+                    <i class="fas fa-inbox text-4xl mb-3 text-gray-300"></i>
+                    <p class="text-lg font-medium">No requests found</p>
+                    <p class="text-sm">You haven't submitted any service requests yet.</p>
+                </div>
+            `;
+            return;
+        }
+
+        const statusColors = {
+            'pending': 'bg-yellow-100 text-yellow-800',
+            'processing': 'bg-blue-100 text-blue-800',
+            'completed': 'bg-green-100 text-green-800',
+            'cancelled': 'bg-red-100 text-red-800'
+        };
+
+        const typeLabels = {
+            'confirmation': 'Confirmation Certificate',
+            'mass-offering': 'Mass Offering Certificate',
+            'funeral': 'Funeral Certificate',
+            'mass-card': 'Mass Card Certificate',
+            'sick-call': 'Sick Call Certificate',
+            'marriage': 'Marriage Certificate',
+            'baptism': 'Baptism Certificate',
+            'baptism-service': 'Baptism Service',
+            'confirmation-service': 'Confirmation Service',
+            'communion': 'First Holy Communion',
+            'marriage-service': 'Marriage Service',
+            'anointing': 'Anointing of the Sick',
+            'funeral-service': 'Funeral Service'
+        };
+
+        myRequestsList.innerHTML = requests.map(request => `
+            <div class="request-card-mobile flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all duration-200">
+                <div class="flex items-center gap-3 flex-1 min-w-0">
+                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                        ${typeLabels[request.request_type]?.charAt(0) || 'R'}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <h4 class="font-medium text-gray-900 text-sm truncate">${typeLabels[request.request_type] || request.request_type}</h4>
+                        <p class="text-xs text-gray-600">Submitted: ${new Date(request.created_at).toLocaleDateString()}</p>
+                        ${request.preferred_date ? `<p class="text-xs text-gray-500">Preferred: ${new Date(request.preferred_date).toLocaleDateString()}</p>` : ''}
+                    </div>
+                </div>
+                <div class="flex items-center gap-2 flex-shrink-0">
+                    <span class="status-badge inline-block px-2 py-1 text-xs font-medium rounded-full ${statusColors[request.status] || 'bg-gray-100 text-gray-800'}">
+                        ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                    </span>
+                    ${request.admin_notes ? '<i class="fas fa-sticky-note text-blue-600 text-sm" title="Admin notes available"></i>' : ''}
+                </div>
+            </div>
+        `).join('');
+
+    } catch (error) {
+        console.error('Error loading user requests:', error);
+        const myRequestsList = document.getElementById('my-requests-list');
+        myRequestsList.innerHTML = `
+            <div class="text-center text-gray-500 py-8">
+                <i class="fas fa-exclamation-triangle text-4xl mb-3 text-yellow-400"></i>
+                <p class="text-lg font-medium">Error loading requests</p>
+                <p class="text-sm">Please try again later.</p>
+            </div>
+        `;
+    }
 }
 
 // Close error modal

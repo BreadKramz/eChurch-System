@@ -79,12 +79,77 @@ async function getUserStats() {
     }
 }
 
+// Get service request statistics
+async function getServiceRequestStats() {
+    try {
+        const { data: requests, error } = await supabaseClient
+            .from('service_requests')
+            .select(`
+                *,
+                users:user_id (
+                    first_name,
+                    last_name,
+                    email
+                )
+            `)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        const totalRequests = requests.length;
+        const pendingRequests = requests.filter(req => req.status === 'pending').length;
+        const processingRequests = requests.filter(req => req.status === 'processing').length;
+
+        return {
+            totalRequests,
+            pendingRequests,
+            processingRequests,
+            requests: requests.map(request => ({
+                id: request.id,
+                userName: request.users ? `${request.users.first_name} ${request.users.last_name}` : 'Anonymous',
+                userEmail: request.users?.email || 'N/A',
+                requestType: request.request_type,
+                status: request.status,
+                createdAt: new Date(request.created_at).toLocaleDateString(),
+                details: request.details,
+                preferredDate: request.preferred_date ? new Date(request.preferred_date).toLocaleDateString() : null
+            }))
+        };
+    } catch (error) {
+        console.error('Error getting service request stats:', error);
+        return { totalRequests: 0, pendingRequests: 0, processingRequests: 0, requests: [] };
+    }
+}
+
+// Update service request status
+async function updateServiceRequestStatus(requestId, newStatus) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('service_requests')
+            .update({
+                status: newStatus,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', requestId)
+            .select();
+
+        if (error) throw error;
+
+        return { success: true, data };
+    } catch (error) {
+        console.error('Error updating service request status:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Export functions for use in browser console or other scripts
 if (typeof window !== 'undefined') {
     window.AdminUtils = {
         getAllUsers,
         deleteAllUsers,
         deleteUserByEmail,
-        getUserStats
+        getUserStats,
+        getServiceRequestStats,
+        updateServiceRequestStatus
     };
 }

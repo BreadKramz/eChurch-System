@@ -44,7 +44,7 @@
 </head>
 <body class="font-body bg-gray-50">
     <!-- Sidebar -->
-    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r border-gray-200 transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r border-gray-200 dashboard-sidebar transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
         <!-- Sidebar Header -->
         <div class="flex items-center justify-center h-20 px-4 bg-gradient-to-r from-primary to-secondary border-b border-gray-200">
             <div class="flex items-center gap-3">
@@ -65,9 +65,9 @@
                 <span class="font-medium">Dashboard</span>
             </a>
 
-            <a href="#services" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
-                <i class="fas fa-certificate text-primary text-lg"></i>
-                <span class="font-medium">Services</span>
+            <a href="#announcements" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-bullhorn text-primary text-lg"></i>
+                <span class="font-medium">Announcements</span>
             </a>
 
             <a href="#events" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
@@ -75,22 +75,28 @@
                 <span class="font-medium">Events</span>
             </a>
 
-            <a href="#prayers" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
-                <i class="fas fa-pray text-primary text-lg"></i>
-                <span class="font-medium">Prayer Requests</span>
+            <a href="#services" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-certificate text-primary text-lg"></i>
+                <span class="font-medium">Services</span>
             </a>
+
+            <a href="#my-requests" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-list text-primary text-lg"></i>
+                <span class="font-medium">My Requests</span>
+            </a>
+
         </nav>
 
     </div>
 
     <!-- Main Content -->
-    <div class="md:ml-64 min-h-screen">
+    <div class="md:ml-64 min-h-screen dashboard-main">
         <!-- Top Header -->
         <header class="bg-white shadow-sm border-b border-gray-200 px-4 md:px-6 py-4">
             <div class="flex items-center justify-between">
                 <div class="flex items-center gap-4">
                     <!-- Mobile Menu Button -->
-                    <button class="md:hidden text-2xl text-primary p-2 hover:bg-primary/10 rounded-lg transition-all duration-200" id="mobile-menu-btn">
+                    <button class="md:hidden text-2xl text-primary p-2 hover:bg-primary/10 rounded-lg transition-all duration-200 btn-mobile" id="mobile-menu-btn">
                         <i class="fas fa-bars"></i>
                     </button>
                     <div>
