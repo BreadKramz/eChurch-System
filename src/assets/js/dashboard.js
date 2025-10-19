@@ -59,8 +59,17 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200);
     }
 
-    // Load content when the page loads based on hash
-    if (window.location.hash === '#my-requests') {
+    // Load dashboard stats and content when the page loads
+    if (window.location.hash === '#dashboard' || window.location.hash === '') {
+        setTimeout(() => {
+            loadDashboardStats();
+            // Set default dashboard content
+            const contentArea = document.getElementById('content-area');
+            if (contentArea && !contentArea.innerHTML.trim()) {
+                showSection('dashboard');
+            }
+        }, 100);
+    } else if (window.location.hash === '#my-requests') {
         setTimeout(() => loadMyRequests(), 100);
     } else if (window.location.hash === '#announcements') {
         setTimeout(() => loadAnnouncements(), 100);
@@ -377,7 +386,84 @@ document.addEventListener('DOMContentLoaded', async function() {
         'dashboard': {
             icon: 'fas fa-tachometer-alt',
             title: 'Dashboard',
-            description: 'Welcome to your dashboard! Use the sidebar to navigate between different sections.'
+            content: `
+                <div class="max-w-4xl mx-auto">
+                    <!-- Quick Stats -->
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-4 mb-8">
+                        <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-xl p-4 text-center border border-green-200">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
+                                <i class="fas fa-calendar-check"></i>
+                            </div>
+                            <div class="text-lg font-bold text-green-900" id="user-events-count">0</div>
+                            <div class="text-green-700 font-medium text-xs">Upcoming Events</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-xl p-4 text-center border border-purple-200">
+                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
+                                <i class="fas fa-bullhorn"></i>
+                            </div>
+                            <div class="text-lg font-bold text-purple-900" id="user-announcements-count">0</div>
+                            <div class="text-purple-700 font-medium text-xs">Announcements</div>
+                        </div>
+                        <div class="bg-gradient-to-br from-orange-50 to-orange-100 rounded-xl p-4 text-center border border-orange-200">
+                            <div class="w-10 h-10 bg-orange-500 rounded-full flex items-center justify-center text-white text-sm mx-auto mb-2">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="text-lg font-bold text-orange-900" id="user-pending-count">0</div>
+                            <div class="text-orange-700 font-medium text-xs">Pending Requests</div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions -->
+                    <div class="grid md:grid-cols-2 gap-6 mb-8">
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-certificate text-primary text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-display font-bold text-secondary">Request Services</h3>
+                                    <p class="text-gray-600 text-sm">Submit requests for certificates, sacraments, and church services</p>
+                                </div>
+                            </div>
+                            <button class="w-full bg-primary text-white py-3 px-4 rounded-lg font-medium hover:bg-primary/90 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5" id="request-services-btn">
+                                <i class="fas fa-plus mr-2"></i>Request Services
+                            </button>
+                        </div>
+
+                        <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                            <div class="flex items-center gap-4 mb-4">
+                                <div class="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                                    <i class="fas fa-list text-green-600 text-xl"></i>
+                                </div>
+                                <div>
+                                    <h3 class="text-lg font-display font-bold text-secondary">My Requests</h3>
+                                    <p class="text-gray-600 text-sm">Track the status of all your submitted service requests</p>
+                                </div>
+                            </div>
+                            <button class="w-full bg-green-600 text-white py-3 px-4 rounded-lg font-medium hover:bg-green-700 transition-all duration-300 shadow hover:shadow-md transform hover:-translate-y-0.5" id="view-my-requests-btn">
+                                <i class="fas fa-eye mr-2"></i>View My Requests
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                        <div class="flex items-center gap-3 mb-6">
+                            <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-history text-primary text-sm"></i>
+                            </div>
+                            <h3 class="text-lg font-display font-bold text-secondary">Recent Activity</h3>
+                        </div>
+
+                        <div id="recent-activity" class="space-y-3">
+                            <div class="text-center text-gray-500 py-6">
+                                <i class="fas fa-spinner fa-spin text-2xl mb-3 text-primary"></i>
+                                <p>Loading recent activity...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         },
         'profile': {
             icon: 'fas fa-user',
@@ -572,7 +658,9 @@ document.addEventListener('DOMContentLoaded', async function() {
                     contentArea.innerHTML = content.content;
 
                     // Load content based on section
-                    if (section === 'my-requests') {
+                    if (section === 'dashboard') {
+                        setTimeout(() => loadDashboardStats(), 100);
+                    } else if (section === 'my-requests') {
                         setTimeout(() => loadMyRequests(), 100);
                     } else if (section === 'announcements') {
                         setTimeout(() => loadAnnouncements(), 100);
@@ -604,10 +692,16 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     });
 
-    // Set default active state (Dashboard)
+    // Set default active state (Dashboard) and load content
     const dashboardLink = document.querySelector('#sidebar nav a[href="#dashboard"]');
     if (dashboardLink) {
         dashboardLink.click();
+        // Ensure dashboard content is loaded
+        setTimeout(() => {
+            if (!document.getElementById('content-area').innerHTML.trim()) {
+                showSection('dashboard');
+            }
+        }, 200);
     }
 
     // Load announcements for users
@@ -819,7 +913,6 @@ document.addEventListener('DOMContentLoaded', async function() {
     document.addEventListener('submit', async function(e) {
         if (e.target && e.target.id === 'profile-form') {
             console.log('Profile form submitted via event delegation');
-            e.preventDefault();
             e.preventDefault();
             console.log('Profile form submitted');
 
@@ -1094,6 +1187,31 @@ document.addEventListener('DOMContentLoaded', async function() {
                 applyUserFilter(filterType);
             }
         });
+
+        // Handle dashboard action buttons
+        if (e.target && (e.target.id === 'request-services-btn' || e.target.closest('#request-services-btn'))) {
+            e.preventDefault();
+            console.log('Request Services button clicked');
+            // Find the sidebar link and click it
+            const servicesLink = document.querySelector('#sidebar nav a[href="#services"]');
+            if (servicesLink) {
+                servicesLink.click();
+            } else {
+                console.error('Services link not found');
+            }
+        }
+
+        if (e.target && (e.target.id === 'view-my-requests-btn' || e.target.closest('#view-my-requests-btn'))) {
+            e.preventDefault();
+            console.log('View My Requests button clicked');
+            // Find the sidebar link and click it
+            const requestsLink = document.querySelector('#sidebar nav a[href="#my-requests"]');
+            if (requestsLink) {
+                requestsLink.click();
+            } else {
+                console.error('My Requests link not found');
+            }
+        }
     });
 
     // Reset profile form function
@@ -1124,6 +1242,147 @@ document.addEventListener('DOMContentLoaded', async function() {
                 });
         }
     };
+
+    // Load dashboard statistics
+    async function loadDashboardStats() {
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+            if (!currentUser.id) {
+                console.error('No user ID found');
+                return;
+            }
+
+            // Load announcements count
+            const announcementsResult = await AdminUtils.getAllAnnouncements();
+            const activeAnnouncements = announcementsResult.success ?
+                announcementsResult.data.filter(a => a.status === 'active').length : 0;
+
+            // Load events count
+            const eventsResult = await AdminUtils.getAllEvents();
+            const upcomingEvents = eventsResult.success ?
+                eventsResult.data.filter(e => e.status === 'upcoming').length : 0;
+
+            // Load user's pending requests count
+            const { data: userRequests, error } = await supabaseClient
+                .from('service_requests')
+                .select('status')
+                .eq('user_id', currentUser.id);
+
+            console.log('User requests data:', userRequests);
+            console.log('User requests error:', error);
+
+            let pendingRequests = 0;
+            if (error) {
+                console.error('Error fetching user requests:', error);
+                pendingRequests = 0;
+            } else if (userRequests && Array.isArray(userRequests)) {
+                pendingRequests = userRequests.filter(r => r.status === 'pending').length;
+                console.log('Filtered pending requests:', userRequests.filter(r => r.status === 'pending'));
+                console.log('All request statuses:', userRequests.map(r => ({ id: r.id, status: r.status })));
+            } else {
+                console.log('No user requests found or invalid data structure');
+                pendingRequests = 0;
+            }
+
+            console.log('Final pending requests count:', pendingRequests);
+
+            // Update the stats
+            const announcementsCount = document.getElementById('user-announcements-count');
+            const eventsCount = document.getElementById('user-events-count');
+            const pendingCount = document.getElementById('user-pending-count');
+
+            if (announcementsCount) announcementsCount.textContent = activeAnnouncements;
+            if (eventsCount) eventsCount.textContent = upcomingEvents;
+            if (pendingCount) pendingCount.textContent = pendingRequests;
+
+            // Load recent activity
+            loadRecentActivity();
+
+        } catch (error) {
+            console.error('Error loading dashboard stats:', error);
+        }
+    }
+
+    // Load recent activity
+    async function loadRecentActivity() {
+        try {
+            const currentUser = JSON.parse(localStorage.getItem('current_user') || '{}');
+            if (!currentUser.id) return;
+
+            // Get recent requests (last 5)
+            const { data: recentRequests, error } = await supabaseClient
+                .from('service_requests')
+                .select('*')
+                .eq('user_id', currentUser.id)
+                .order('created_at', { ascending: false })
+                .limit(5);
+
+            const activityContainer = document.getElementById('recent-activity');
+
+            if (error || !recentRequests || recentRequests.length === 0) {
+                activityContainer.innerHTML = `
+                    <div class="text-center text-gray-500 py-6">
+                        <i class="fas fa-history text-3xl mb-3 text-gray-300"></i>
+                        <p class="text-sm">No recent activity</p>
+                        <p class="text-xs">Your recent requests and updates will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const typeLabels = {
+                'confirmation': 'Confirmation Certificate',
+                'mass-offering': 'Mass Offering Certificate',
+                'funeral': 'Funeral Certificate',
+                'mass-card': 'Mass Card Certificate',
+                'sick-call': 'Sick Call Certificate',
+                'marriage': 'Marriage Certificate',
+                'baptism': 'Baptism Certificate',
+                'baptism-service': 'Baptism Service',
+                'confirmation-service': 'Confirmation Service',
+                'communion': 'First Holy Communion',
+                'marriage-service': 'Marriage Service',
+                'anointing': 'Anointing of the Sick',
+                'funeral-service': 'Funeral Service'
+            };
+
+            const statusColors = {
+                'pending': 'text-yellow-600',
+                'processing': 'text-blue-600',
+                'completed': 'text-green-600',
+                'cancelled': 'text-red-600'
+            };
+
+            activityContainer.innerHTML = recentRequests.map(request => `
+                <div class="flex items-center gap-3 p-3 bg-white rounded-lg border border-gray-100 hover:bg-gray-50 transition-all duration-200">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0 ${
+                        request.status === 'completed' ? 'bg-green-500' :
+                        request.status === 'processing' ? 'bg-blue-500' :
+                        request.status === 'cancelled' ? 'bg-red-500' : 'bg-yellow-500'
+                    }">
+                        ${typeLabels[request.request_type]?.charAt(0) || 'R'}
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate">${typeLabels[request.request_type] || request.request_type}</p>
+                        <p class="text-xs text-gray-500">${new Date(request.created_at).toLocaleDateString()}</p>
+                    </div>
+                    <span class="text-xs font-medium ${statusColors[request.status] || 'text-gray-600'} capitalize">
+                        ${request.status}
+                    </span>
+                </div>
+            `).join('');
+
+        } catch (error) {
+            console.error('Error loading recent activity:', error);
+            const activityContainer = document.getElementById('recent-activity');
+            activityContainer.innerHTML = `
+                <div class="text-center text-gray-500 py-6">
+                    <i class="fas fa-exclamation-triangle text-3xl mb-3 text-yellow-400"></i>
+                    <p class="text-sm">Error loading activity</p>
+                </div>
+            `;
+        }
+    }
 
     // Reset password form function
     window.resetPasswordForm = function() {
