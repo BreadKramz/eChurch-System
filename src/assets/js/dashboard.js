@@ -563,14 +563,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             icon: 'fas fa-bullhorn',
             title: 'Announcements',
             content: `
-                <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-4">
-                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">Announcements</h2>
-                        <div id="announcements-container" class="space-y-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-6">Church Announcements</h2>
+
+                        <!-- Announcements Grid -->
+                        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="announcements-container">
                             <!-- Announcements will be loaded here -->
-                            <div class="text-center text-gray-500 py-8">
-                                <i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary"></i>
-                                <p>Loading announcements...</p>
+                            <div class="col-span-full text-center text-gray-500 py-12">
+                                <i class="fas fa-spinner fa-spin text-4xl mb-4 text-primary"></i>
+                                <p class="text-lg">Loading announcements...</p>
                             </div>
                         </div>
                     </div>
@@ -620,14 +622,16 @@ document.addEventListener('DOMContentLoaded', async function() {
             icon: 'fas fa-calendar-alt',
             title: 'Events',
             content: `
-                <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-4">
-                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">Events</h2>
-                        <div id="events-container" class="space-y-4">
+                <div class="max-w-6xl mx-auto">
+                    <div class="text-center mb-8">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-6">Church Events</h2>
+
+                        <!-- Events Grid -->
+                        <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3" id="events-container">
                             <!-- Events will be loaded here -->
-                            <div class="text-center text-gray-500 py-8">
-                                <i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary"></i>
-                                <p>Loading events...</p>
+                            <div class="col-span-full text-center text-gray-500 py-12">
+                                <i class="fas fa-spinner fa-spin text-4xl mb-4 text-primary"></i>
+                                <p class="text-lg">Loading events...</p>
                             </div>
                         </div>
                     </div>
@@ -712,10 +716,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (!result.success || !result.data || result.data.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-bullhorn text-4xl mb-4 text-gray-300"></i>
-                        <p class="text-lg font-medium">No announcements yet</p>
-                        <p class="text-sm">Check back later for church announcements.</p>
+                    <div class="col-span-full text-center text-gray-500 py-12">
+                        <i class="fas fa-bullhorn text-5xl mb-4 text-gray-300"></i>
+                        <p class="text-xl font-medium">No announcements yet</p>
+                        <p class="text-base">Check back later for church announcements.</p>
                     </div>
                 `;
                 return;
@@ -726,20 +730,20 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (activeAnnouncements.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-bullhorn text-4xl mb-4 text-gray-300"></i>
-                        <p class="text-lg font-medium">No active announcements</p>
-                        <p class="text-sm">Check back later for church announcements.</p>
+                    <div class="col-span-full text-center text-gray-500 py-12">
+                        <i class="fas fa-bullhorn text-5xl mb-4 text-gray-300"></i>
+                        <p class="text-xl font-medium">No active announcements</p>
+                        <p class="text-base">Check back later for church announcements.</p>
                     </div>
                 `;
                 return;
             }
 
             const priorityColors = {
-                'low': 'border-l-blue-500 bg-blue-50',
-                'normal': 'border-l-green-500 bg-green-50',
-                'high': 'border-l-yellow-500 bg-yellow-50',
-                'urgent': 'border-l-red-500 bg-red-50'
+                'low': 'border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100',
+                'normal': 'border-l-green-500 bg-gradient-to-br from-green-50 to-green-100',
+                'high': 'border-l-yellow-500 bg-gradient-to-br from-yellow-50 to-yellow-100',
+                'urgent': 'border-l-red-500 bg-gradient-to-br from-red-50 to-red-100'
             };
 
             const priorityIcons = {
@@ -750,30 +754,40 @@ document.addEventListener('DOMContentLoaded', async function() {
             };
 
             container.innerHTML = activeAnnouncements.map(announcement => `
-                <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 ${priorityColors[announcement.priority] || 'border-l-gray-500 bg-gray-50'} hover:shadow-xl transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-100') : 'bg-gray-100'}">
-                                <i class="${priorityIcons[announcement.priority] || 'fas fa-bullhorn text-gray-600'} text-xl"></i>
+                <div class="bg-white rounded-2xl p-6 shadow-xl border-l-4 ${priorityColors[announcement.priority] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'} hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 transform">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg">
+                                    <i class="${priorityIcons[announcement.priority] || 'fas fa-bullhorn text-gray-600'} text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <h3 class="text-xl font-display font-bold text-gray-900 leading-tight">${announcement.title}</h3>
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'text-').replace(' to-', '').replace('-50', '-800') : 'bg-gray-200 text-gray-800'} capitalize shadow-sm">
+                                        ${announcement.priority}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-2">
-                                <h3 class="text-xl font-display font-bold text-gray-900">${announcement.title}</h3>
-                                <span class="inline-block px-2 py-1 text-xs font-medium rounded-full ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-100').replace(' bg-', ' text-').replace('-50', '-700') : 'bg-gray-100 text-gray-700'} capitalize">
-                                    ${announcement.priority}
-                                </span>
-                            </div>
+                        <div class="ml-18">
                             <p class="text-gray-700 text-base leading-relaxed mb-4">${announcement.content}</p>
-                            <div class="flex items-center justify-between text-sm text-gray-500">
-                                <span>Posted by ${announcement.users ? `${announcement.users.first_name} ${announcement.users.last_name}` : 'Church Administration'}</span>
-                                <span>${new Date(announcement.created_at).toLocaleDateString('en-US', {
-                                    year: 'numeric',
-                                    month: 'long',
-                                    day: 'numeric',
-                                    hour: '2-digit',
-                                    minute: '2-digit'
-                                })}</span>
+                            <div class="flex items-center justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-user text-primary"></i>
+                                    ${announcement.users ? `${announcement.users.first_name} ${announcement.users.last_name}` : 'Church Administration'}
+                                </span>
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-calendar text-primary"></i>
+                                    ${new Date(announcement.created_at).toLocaleDateString('en-US', {
+                                        year: 'numeric',
+                                        month: 'short',
+                                        day: 'numeric',
+                                        hour: '2-digit',
+                                        minute: '2-digit'
+                                    })}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -784,10 +798,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error('Error loading announcements:', error);
             const container = document.getElementById('announcements-container');
             container.innerHTML = `
-                <div class="text-center text-gray-500 py-8">
-                    <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-400"></i>
-                    <p class="text-lg font-medium">Error loading announcements</p>
-                    <p class="text-sm">Please try refreshing the page.</p>
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    <i class="fas fa-exclamation-triangle text-5xl mb-4 text-yellow-400"></i>
+                    <p class="text-xl font-medium">Error loading announcements</p>
+                    <p class="text-base">Please try refreshing the page.</p>
                 </div>
             `;
         }
@@ -801,10 +815,10 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (!result.success || !result.data || result.data.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-calendar-alt text-4xl mb-4 text-gray-300"></i>
-                        <p class="text-lg font-medium">No events scheduled</p>
-                        <p class="text-sm">Check back later for upcoming church events.</p>
+                    <div class="col-span-full text-center text-gray-500 py-12">
+                        <i class="fas fa-calendar-alt text-5xl mb-4 text-gray-300"></i>
+                        <p class="text-xl font-medium">No events scheduled</p>
+                        <p class="text-base">Check back later for upcoming church events.</p>
                     </div>
                 `;
                 return;
@@ -815,21 +829,21 @@ document.addEventListener('DOMContentLoaded', async function() {
 
             if (activeEvents.length === 0) {
                 container.innerHTML = `
-                    <div class="text-center text-gray-500 py-8">
-                        <i class="fas fa-calendar-alt text-4xl mb-4 text-gray-300"></i>
-                        <p class="text-lg font-medium">No upcoming events</p>
-                        <p class="text-sm">Check back later for upcoming church events.</p>
+                    <div class="col-span-full text-center text-gray-500 py-12">
+                        <i class="fas fa-calendar-alt text-5xl mb-4 text-gray-300"></i>
+                        <p class="text-xl font-medium">No upcoming events</p>
+                        <p class="text-base">Check back later for upcoming church events.</p>
                     </div>
                 `;
                 return;
             }
 
             const categoryColors = {
-                'mass': 'border-l-yellow-500 bg-yellow-50',
-                'service': 'border-l-blue-500 bg-blue-50',
-                'meeting': 'border-l-purple-500 bg-purple-50',
-                'celebration': 'border-l-pink-500 bg-pink-50',
-                'general': 'border-l-green-500 bg-green-50'
+                'mass': 'border-l-yellow-500 bg-gradient-to-br from-yellow-50 to-yellow-100',
+                'service': 'border-l-blue-500 bg-gradient-to-br from-blue-50 to-blue-100',
+                'meeting': 'border-l-purple-500 bg-gradient-to-br from-purple-50 to-purple-100',
+                'celebration': 'border-l-pink-500 bg-gradient-to-br from-pink-50 to-pink-100',
+                'general': 'border-l-green-500 bg-gradient-to-br from-green-50 to-green-100'
             };
 
             const categoryIcons = {
@@ -841,31 +855,35 @@ document.addEventListener('DOMContentLoaded', async function() {
             };
 
             const statusColors = {
-                'upcoming': 'bg-green-100 text-green-800',
-                'ongoing': 'bg-blue-100 text-blue-800',
-                'completed': 'bg-gray-100 text-gray-800'
+                'upcoming': 'bg-green-200 text-green-900',
+                'ongoing': 'bg-blue-200 text-blue-900',
+                'completed': 'bg-gray-200 text-gray-900'
             };
 
             container.innerHTML = activeEvents.map(event => `
-                <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 ${categoryColors[event.category] || 'border-l-gray-500 bg-gray-50'} hover:shadow-xl transition-all duration-300">
-                    <div class="flex items-start gap-4">
-                        <div class="flex-shrink-0">
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${categoryColors[event.category] ? categoryColors[event.category].replace('border-l-', 'bg-').replace('-500', '-100') : 'bg-gray-100'}">
-                                <i class="${categoryIcons[event.category] || 'fas fa-calendar-alt text-gray-600'} text-xl"></i>
+                <div class="bg-white rounded-2xl p-6 shadow-xl border-l-4 ${categoryColors[event.category] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'} hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 transform">
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-start gap-4">
+                            <div class="flex-shrink-0">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${categoryColors[event.category] ? categoryColors[event.category].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg">
+                                    <i class="${categoryIcons[event.category] || 'fas fa-calendar-alt text-gray-600'} text-2xl"></i>
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-3 mb-3">
+                                    <h3 class="text-xl font-display font-bold text-gray-900 leading-tight">${event.title}</h3>
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${statusColors[event.status] || 'bg-gray-200 text-gray-900'} shadow-sm">
+                                        ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                                    </span>
+                                </div>
                             </div>
                         </div>
-                        <div class="flex-1 min-w-0">
-                            <div class="flex items-center gap-2 mb-2">
-                                <h3 class="text-xl font-display font-bold text-gray-900">${event.title}</h3>
-                                <span class="inline-block px-2 py-1 text-xs font-medium rounded-full ${statusColors[event.status] || 'bg-gray-100 text-gray-800'}">
-                                    ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
-                                </span>
-                            </div>
-                            ${event.description ? `<p class="text-gray-700 text-base leading-relaxed mb-3">${event.description}</p>` : ''}
-                            <div class="grid md:grid-cols-2 gap-4 mb-4">
-                                <div class="flex items-center gap-2 text-sm text-gray-600">
-                                    <i class="fas fa-calendar text-primary"></i>
-                                    <span>${new Date(event.event_date).toLocaleDateString('en-US', {
+                        <div class="ml-18">
+                            ${event.description ? `<p class="text-gray-700 text-base leading-relaxed mb-4">${event.description}</p>` : ''}
+                            <div class="grid gap-3 mb-4">
+                                <div class="flex items-center gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+                                    <i class="fas fa-calendar text-primary text-lg"></i>
+                                    <span class="font-medium">${new Date(event.event_date).toLocaleDateString('en-US', {
                                         weekday: 'long',
                                         year: 'numeric',
                                         month: 'long',
@@ -873,23 +891,27 @@ document.addEventListener('DOMContentLoaded', async function() {
                                     })}</span>
                                 </div>
                                 ${event.event_time ? `
-                                <div class="flex items-center gap-2 text-sm text-gray-600">
-                                    <i class="fas fa-clock text-primary"></i>
-                                    <span>${event.event_time}</span>
+                                <div class="flex items-center gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+                                    <i class="fas fa-clock text-primary text-lg"></i>
+                                    <span class="font-medium">${event.event_time}</span>
                                 </div>
                                 ` : ''}
                                 ${event.location ? `
-                                <div class="flex items-center gap-2 text-sm text-gray-600 md:col-span-2">
-                                    <i class="fas fa-map-marker-alt text-primary"></i>
-                                    <span>${event.location}</span>
+                                <div class="flex items-center gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
+                                    <i class="fas fa-map-marker-alt text-primary text-lg"></i>
+                                    <span class="font-medium">${event.location}</span>
                                 </div>
                                 ` : ''}
                             </div>
-                            <div class="flex items-center justify-between text-sm text-gray-500">
-                                <span class="capitalize px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
-                                    ${event.category}
+                            <div class="flex items-center justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-tag text-primary"></i>
+                                    <span class="capitalize font-medium px-2 py-1 bg-gray-100 rounded-full text-xs">${event.category}</span>
                                 </span>
-                                <span>Posted by ${event.users ? `${event.users.first_name} ${event.users.last_name}` : 'Church Administration'}</span>
+                                <span class="flex items-center gap-2">
+                                    <i class="fas fa-user text-primary"></i>
+                                    ${event.users ? `${event.users.first_name} ${event.users.last_name}` : 'Church Administration'}
+                                </span>
                             </div>
                         </div>
                     </div>
@@ -900,10 +922,10 @@ document.addEventListener('DOMContentLoaded', async function() {
             console.error('Error loading events:', error);
             const container = document.getElementById('events-container');
             container.innerHTML = `
-                <div class="text-center text-gray-500 py-8">
-                    <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-400"></i>
-                    <p class="text-lg font-medium">Error loading events</p>
-                    <p class="text-sm">Please try refreshing the page.</p>
+                <div class="col-span-full text-center text-gray-500 py-12">
+                    <i class="fas fa-exclamation-triangle text-5xl mb-4 text-yellow-400"></i>
+                    <p class="text-xl font-medium">Error loading events</p>
+                    <p class="text-base">Please try refreshing the page.</p>
                 </div>
             `;
         }
@@ -1212,6 +1234,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                 console.error('My Requests link not found');
             }
         }
+
     });
 
     // Reset profile form function

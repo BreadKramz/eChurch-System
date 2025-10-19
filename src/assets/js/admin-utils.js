@@ -202,6 +202,42 @@ async function updateAnnouncementStatus(id, status) {
     }
 }
 
+async function updateAnnouncement(id, announcementData) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('announcements')
+            .update({
+                title: announcementData.title,
+                content: announcementData.content,
+                priority: announcementData.priority,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', id)
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error updating announcement:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function deleteAnnouncement(id) {
+    try {
+        const { error } = await supabaseClient
+            .from('announcements')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting announcement:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Event management functions
 async function createEvent(eventData) {
     try {
@@ -265,6 +301,45 @@ async function updateEventStatus(id, status) {
     }
 }
 
+async function updateEvent(id, eventData) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('events')
+            .update({
+                title: eventData.title,
+                description: eventData.description,
+                event_date: eventData.eventDate,
+                event_time: eventData.eventTime,
+                location: eventData.location,
+                category: eventData.category,
+                updated_at: new Date().toISOString()
+            })
+            .eq('id', id)
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error updating event:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function deleteEvent(id) {
+    try {
+        const { error } = await supabaseClient
+            .from('events')
+            .delete()
+            .eq('id', id);
+
+        if (error) throw error;
+        return { success: true };
+    } catch (error) {
+        console.error('Error deleting event:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Export functions for use in browser console or other scripts
 if (typeof window !== 'undefined') {
     window.AdminUtils = {
@@ -277,8 +352,12 @@ if (typeof window !== 'undefined') {
         createAnnouncement,
         getAllAnnouncements,
         updateAnnouncementStatus,
+        updateAnnouncement,
+        deleteAnnouncement,
         createEvent,
         getAllEvents,
-        updateEventStatus
+        updateEventStatus,
+        updateEvent,
+        deleteEvent
     };
 }
