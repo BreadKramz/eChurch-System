@@ -50,7 +50,7 @@
                 <!-- Centered Mobile Header -->
                 <div class="flex items-center gap-3 lg:hidden">
                     <div id="admin-trigger" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer flex-shrink-0" title="Click 5 times for admin access">
-                        <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                        <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover" style="pointer-events: none;">
                     </div>
                     <div class="min-w-0">
                         <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
@@ -65,7 +65,7 @@
                 <div class="hidden lg:flex items-center justify-between w-full">
                     <div class="flex items-center gap-4">
                         <div id="admin-trigger" class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg cursor-pointer" title="Click 5 times for admin access">
-                            <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                            <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover" style="pointer-events: none;">
                         </div>
                         <div>
                             <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
@@ -221,32 +221,35 @@
     <script src="../../assets/js/supabase.js"></script>
     <script src="../../assets/js/auth.js"></script>
     <script>
-        // Admin access trigger (click logo 3 times)
+        // Admin access trigger (click logo 5 times)
         document.addEventListener('DOMContentLoaded', function() {
-            const adminTrigger = document.getElementById('admin-trigger');
+            // Handle both mobile and desktop admin triggers
+            const adminTriggers = document.querySelectorAll('#admin-trigger');
             let clickCount = 0;
             let clickTimer;
 
-            if (adminTrigger) {
-                adminTrigger.addEventListener('click', function() {
-                    clickCount++;
+            adminTriggers.forEach(trigger => {
+                if (trigger) {
+                    trigger.addEventListener('click', function() {
+                        clickCount++;
 
-                    // Reset timer
-                    clearTimeout(clickTimer);
-                    clickTimer = setTimeout(() => {
-                        clickCount = 0;
-                    }, 2000); // Reset after 2 seconds
-
-                    // Check for 3 clicks
-                    if (clickCount === 5) {
-                        clickCount = 0;
+                        // Reset timer
                         clearTimeout(clickTimer);
+                        clickTimer = setTimeout(() => {
+                            clickCount = 0;
+                        }, 2000); // Reset after 2 seconds
 
-                        // Navigate to admin login
-                        window.location.href = 'admin-login.html';
-                    }
-                });
-            }
+                        // Check for 5 clicks
+                        if (clickCount === 5) {
+                            clickCount = 0;
+                            clearTimeout(clickTimer);
+
+                            // Navigate to admin login
+                            window.location.href = 'admin-login.html';
+                        }
+                    });
+                }
+            });
         });
     </script>
 </body>
