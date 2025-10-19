@@ -97,6 +97,44 @@ ALTER TABLE public.service_requests ENABLE ROW LEVEL SECURITY;
 -- Temporarily disable RLS to test functionality
 ALTER TABLE public.service_requests DISABLE ROW LEVEL SECURITY;
 
+-- Announcements table for church announcements
+CREATE TABLE IF NOT EXISTS public.announcements (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    priority TEXT DEFAULT 'normal' CHECK (priority IN ('low', 'normal', 'high', 'urgent')),
+    status TEXT DEFAULT 'active' CHECK (status IN ('active', 'archived')),
+    created_by UUID REFERENCES public.users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Events table for church events
+CREATE TABLE IF NOT EXISTS public.events (
+    id SERIAL PRIMARY KEY,
+    title TEXT NOT NULL,
+    description TEXT,
+    event_date DATE NOT NULL,
+    event_time TIME,
+    location TEXT,
+    category TEXT DEFAULT 'general' CHECK (category IN ('mass', 'service', 'meeting', 'celebration', 'general')),
+    status TEXT DEFAULT 'upcoming' CHECK (status IN ('upcoming', 'ongoing', 'completed', 'cancelled')),
+    created_by UUID REFERENCES public.users(id),
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+);
+
+-- Create indexes for better performance
+CREATE INDEX IF NOT EXISTS idx_announcements_status ON public.announcements(status);
+CREATE INDEX IF NOT EXISTS idx_announcements_created_at ON public.announcements(created_at);
+CREATE INDEX IF NOT EXISTS idx_events_event_date ON public.events(event_date);
+CREATE INDEX IF NOT EXISTS idx_events_status ON public.events(status);
+CREATE INDEX IF NOT EXISTS idx_events_category ON public.events(category);
+
+-- Enable Row Level Security (RLS) for announcements and events
+ALTER TABLE public.announcements DISABLE ROW LEVEL SECURITY;
+ALTER TABLE public.events DISABLE ROW LEVEL SECURITY;
+
 -- Insert a default admin user (you can change the password later)
 -- Note: This uses plain text password for simplicity - in production, use proper hashing
 -- INSERT INTO public.users (first_name, last_name, email, phone, password_hash, role)

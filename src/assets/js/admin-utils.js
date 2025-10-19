@@ -142,6 +142,129 @@ async function updateServiceRequestStatus(requestId, newStatus) {
     }
 }
 
+// Announcement management functions
+async function createAnnouncement(announcementData) {
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('admin_session') || '{}');
+        const { data, error } = await supabaseClient
+            .from('announcements')
+            .insert({
+                title: announcementData.title,
+                content: announcementData.content,
+                priority: announcementData.priority || 'normal',
+                status: 'active',
+                created_by: currentUser.id
+            })
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error creating announcement:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function getAllAnnouncements() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('announcements')
+            .select(`
+                *,
+                users:created_by (
+                    first_name,
+                    last_name
+                )
+            `)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+        return { success: true, data: data };
+    } catch (error) {
+        console.error('Error fetching announcements:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function updateAnnouncementStatus(id, status) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('announcements')
+            .update({ status: status, updated_at: new Date().toISOString() })
+            .eq('id', id)
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error updating announcement:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+// Event management functions
+async function createEvent(eventData) {
+    try {
+        const currentUser = JSON.parse(localStorage.getItem('admin_session') || '{}');
+        const { data, error } = await supabaseClient
+            .from('events')
+            .insert({
+                title: eventData.title,
+                description: eventData.description,
+                event_date: eventData.eventDate,
+                event_time: eventData.eventTime,
+                location: eventData.location,
+                category: eventData.category || 'general',
+                status: 'upcoming',
+                created_by: currentUser.id
+            })
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error creating event:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function getAllEvents() {
+    try {
+        const { data, error } = await supabaseClient
+            .from('events')
+            .select(`
+                *,
+                users:created_by (
+                    first_name,
+                    last_name
+                )
+            `)
+            .order('event_date', { ascending: true });
+
+        if (error) throw error;
+        return { success: true, data: data };
+    } catch (error) {
+        console.error('Error fetching events:', error);
+        return { success: false, error: error.message };
+    }
+}
+
+async function updateEventStatus(id, status) {
+    try {
+        const { data, error } = await supabaseClient
+            .from('events')
+            .update({ status: status, updated_at: new Date().toISOString() })
+            .eq('id', id)
+            .select();
+
+        if (error) throw error;
+        return { success: true, data: data[0] };
+    } catch (error) {
+        console.error('Error updating event:', error);
+        return { success: false, error: error.message };
+    }
+}
+
 // Export functions for use in browser console or other scripts
 if (typeof window !== 'undefined') {
     window.AdminUtils = {
@@ -150,6 +273,12 @@ if (typeof window !== 'undefined') {
         deleteUserByEmail,
         getUserStats,
         getServiceRequestStats,
-        updateServiceRequestStatus
+        updateServiceRequestStatus,
+        createAnnouncement,
+        getAllAnnouncements,
+        updateAnnouncementStatus,
+        createEvent,
+        getAllEvents,
+        updateEventStatus
     };
 }

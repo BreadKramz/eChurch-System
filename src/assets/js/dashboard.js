@@ -59,9 +59,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 200);
     }
 
-    // Load my requests when the page loads (for sidebar navigation)
+    // Load content when the page loads based on hash
     if (window.location.hash === '#my-requests') {
         setTimeout(() => loadMyRequests(), 100);
+    } else if (window.location.hash === '#announcements') {
+        setTimeout(() => loadAnnouncements(), 100);
+    } else if (window.location.hash === '#events') {
+        setTimeout(() => loadEvents(), 100);
     }
 });
 
@@ -385,18 +389,17 @@ document.addEventListener('DOMContentLoaded', async function() {
             title: 'Services',
             content: `
                 <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-8">
+                    <div class="text-center mb-4">
                         <h2 class="text-3xl font-display font-bold text-secondary mb-4">Church Services</h2>
-                    </div>
+                        <div class="flex justify-center gap-4">
+                            <button onclick="showCertificateSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
+                                <h3 class="text-base font-display font-bold text-secondary">Certificate Request</h3>
+                            </button>
 
-                    <div class="flex justify-center gap-4">
-                        <button onclick="showCertificateSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
-                            <h3 class="text-base font-display font-bold text-secondary">Certificate Request</h3>
-                        </button>
-
-                        <button onclick="showServiceSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
-                            <h3 class="text-base font-display font-bold text-secondary">Sacramental Service</h3>
-                        </button>
+                            <button onclick="showServiceSection()" class="flex-1 max-w-xs text-center bg-white rounded-lg p-3 shadow border border-gray-100 hover:bg-gray-50 transition-all duration-200">
+                                <h3 class="text-base font-display font-bold text-secondary">Sacramental Service</h3>
+                            </button>
+                        </div>
                     </div>
 
                     <!-- Certificate Request Form (Hidden by default) -->
@@ -473,16 +476,48 @@ document.addEventListener('DOMContentLoaded', async function() {
         'announcements': {
             icon: 'fas fa-bullhorn',
             title: 'Announcements',
-            description: 'Stay updated with the latest church announcements, news, and important updates from our parish.'
+            content: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-4">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">Announcements</h2>
+                        <div id="announcements-container" class="space-y-4">
+                            <!-- Announcements will be loaded here -->
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary"></i>
+                                <p>Loading announcements...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         },
         'my-requests': {
             icon: 'fas fa-list',
             title: 'My Requests',
             content: `
                 <div class="max-w-4xl mx-auto">
-                    <div class="text-center mb-8">
+                    <div class="text-center mb-4">
                         <h2 class="text-3xl font-display font-bold text-secondary mb-4">My Service Requests</h2>
-                        <p class="text-gray-600">Track the status of all your submitted service requests</p>
+                        <div class="flex gap-2 justify-center">
+                            <button
+                                id="user-filter-all"
+                                class="bg-red-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-red-700 transition-all duration-300"
+                            >
+                                All
+                            </button>
+                            <button
+                                id="user-filter-certificates"
+                                class="bg-blue-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-blue-700 transition-all duration-300"
+                            >
+                                Certificates
+                            </button>
+                            <button
+                                id="user-filter-services"
+                                class="bg-green-600 text-white px-3 py-1.5 rounded text-sm font-medium hover:bg-green-700 transition-all duration-300"
+                            >
+                                Services
+                            </button>
+                        </div>
                     </div>
 
                     <div id="my-requests-list" class="space-y-4">
@@ -496,9 +531,22 @@ document.addEventListener('DOMContentLoaded', async function() {
             `
         },
         'events': {
-            icon: 'fas fa-bullhorn',
+            icon: 'fas fa-calendar-alt',
             title: 'Events',
-            description: 'Stay updated with the latest church announcements, news, and important updates from our parish.'
+            content: `
+                <div class="max-w-4xl mx-auto">
+                    <div class="text-center mb-4">
+                        <h2 class="text-3xl font-display font-bold text-secondary mb-4">Events</h2>
+                        <div id="events-container" class="space-y-4">
+                            <!-- Events will be loaded here -->
+                            <div class="text-center text-gray-500 py-8">
+                                <i class="fas fa-spinner fa-spin text-3xl mb-3 text-primary"></i>
+                                <p>Loading events...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `
         },
     };
 
@@ -523,9 +571,13 @@ document.addEventListener('DOMContentLoaded', async function() {
                     // Custom content (like profile page)
                     contentArea.innerHTML = content.content;
 
-                    // Load my requests if this is the my-requests section
+                    // Load content based on section
                     if (section === 'my-requests') {
                         setTimeout(() => loadMyRequests(), 100);
+                    } else if (section === 'announcements') {
+                        setTimeout(() => loadAnnouncements(), 100);
+                    } else if (section === 'events') {
+                        setTimeout(() => loadEvents(), 100);
                     }
                 } else {
                     // Default content structure
@@ -556,6 +608,211 @@ document.addEventListener('DOMContentLoaded', async function() {
     const dashboardLink = document.querySelector('#sidebar nav a[href="#dashboard"]');
     if (dashboardLink) {
         dashboardLink.click();
+    }
+
+    // Load announcements for users
+    async function loadAnnouncements() {
+        try {
+            const result = await AdminUtils.getAllAnnouncements();
+            const container = document.getElementById('announcements-container');
+
+            if (!result.success || !result.data || result.data.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-bullhorn text-4xl mb-4 text-gray-300"></i>
+                        <p class="text-lg font-medium">No announcements yet</p>
+                        <p class="text-sm">Check back later for church announcements.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter only active announcements
+            const activeAnnouncements = result.data.filter(announcement => announcement.status === 'active');
+
+            if (activeAnnouncements.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-bullhorn text-4xl mb-4 text-gray-300"></i>
+                        <p class="text-lg font-medium">No active announcements</p>
+                        <p class="text-sm">Check back later for church announcements.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const priorityColors = {
+                'low': 'border-l-blue-500 bg-blue-50',
+                'normal': 'border-l-green-500 bg-green-50',
+                'high': 'border-l-yellow-500 bg-yellow-50',
+                'urgent': 'border-l-red-500 bg-red-50'
+            };
+
+            const priorityIcons = {
+                'low': 'fas fa-info-circle text-blue-600',
+                'normal': 'fas fa-bell text-green-600',
+                'high': 'fas fa-exclamation-triangle text-yellow-600',
+                'urgent': 'fas fa-exclamation-circle text-red-600'
+            };
+
+            container.innerHTML = activeAnnouncements.map(announcement => `
+                <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 ${priorityColors[announcement.priority] || 'border-l-gray-500 bg-gray-50'} hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-100') : 'bg-gray-100'}">
+                                <i class="${priorityIcons[announcement.priority] || 'fas fa-bullhorn text-gray-600'} text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-display font-bold text-gray-900">${announcement.title}</h3>
+                                <span class="inline-block px-2 py-1 text-xs font-medium rounded-full ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-100').replace(' bg-', ' text-').replace('-50', '-700') : 'bg-gray-100 text-gray-700'} capitalize">
+                                    ${announcement.priority}
+                                </span>
+                            </div>
+                            <p class="text-gray-700 text-base leading-relaxed mb-4">${announcement.content}</p>
+                            <div class="flex items-center justify-between text-sm text-gray-500">
+                                <span>Posted by ${announcement.users ? `${announcement.users.first_name} ${announcement.users.last_name}` : 'Church Administration'}</span>
+                                <span>${new Date(announcement.created_at).toLocaleDateString('en-US', {
+                                    year: 'numeric',
+                                    month: 'long',
+                                    day: 'numeric',
+                                    hour: '2-digit',
+                                    minute: '2-digit'
+                                })}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        } catch (error) {
+            console.error('Error loading announcements:', error);
+            const container = document.getElementById('announcements-container');
+            container.innerHTML = `
+                <div class="text-center text-gray-500 py-8">
+                    <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-400"></i>
+                    <p class="text-lg font-medium">Error loading announcements</p>
+                    <p class="text-sm">Please try refreshing the page.</p>
+                </div>
+            `;
+        }
+    }
+
+    // Load events for users
+    async function loadEvents() {
+        try {
+            const result = await AdminUtils.getAllEvents();
+            const container = document.getElementById('events-container');
+
+            if (!result.success || !result.data || result.data.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-calendar-alt text-4xl mb-4 text-gray-300"></i>
+                        <p class="text-lg font-medium">No events scheduled</p>
+                        <p class="text-sm">Check back later for upcoming church events.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            // Filter events that are not cancelled
+            const activeEvents = result.data.filter(event => event.status !== 'cancelled');
+
+            if (activeEvents.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-500 py-8">
+                        <i class="fas fa-calendar-alt text-4xl mb-4 text-gray-300"></i>
+                        <p class="text-lg font-medium">No upcoming events</p>
+                        <p class="text-sm">Check back later for upcoming church events.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const categoryColors = {
+                'mass': 'border-l-yellow-500 bg-yellow-50',
+                'service': 'border-l-blue-500 bg-blue-50',
+                'meeting': 'border-l-purple-500 bg-purple-50',
+                'celebration': 'border-l-pink-500 bg-pink-50',
+                'general': 'border-l-green-500 bg-green-50'
+            };
+
+            const categoryIcons = {
+                'mass': 'fas fa-church text-yellow-600',
+                'service': 'fas fa-praying-hands text-blue-600',
+                'meeting': 'fas fa-users text-purple-600',
+                'celebration': 'fas fa-birthday-cake text-pink-600',
+                'general': 'fas fa-calendar-check text-green-600'
+            };
+
+            const statusColors = {
+                'upcoming': 'bg-green-100 text-green-800',
+                'ongoing': 'bg-blue-100 text-blue-800',
+                'completed': 'bg-gray-100 text-gray-800'
+            };
+
+            container.innerHTML = activeEvents.map(event => `
+                <div class="bg-white rounded-xl p-6 shadow-lg border-l-4 ${categoryColors[event.category] || 'border-l-gray-500 bg-gray-50'} hover:shadow-xl transition-all duration-300">
+                    <div class="flex items-start gap-4">
+                        <div class="flex-shrink-0">
+                            <div class="w-12 h-12 rounded-full flex items-center justify-center ${categoryColors[event.category] ? categoryColors[event.category].replace('border-l-', 'bg-').replace('-500', '-100') : 'bg-gray-100'}">
+                                <i class="${categoryIcons[event.category] || 'fas fa-calendar-alt text-gray-600'} text-xl"></i>
+                            </div>
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <div class="flex items-center gap-2 mb-2">
+                                <h3 class="text-xl font-display font-bold text-gray-900">${event.title}</h3>
+                                <span class="inline-block px-2 py-1 text-xs font-medium rounded-full ${statusColors[event.status] || 'bg-gray-100 text-gray-800'}">
+                                    ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
+                                </span>
+                            </div>
+                            ${event.description ? `<p class="text-gray-700 text-base leading-relaxed mb-3">${event.description}</p>` : ''}
+                            <div class="grid md:grid-cols-2 gap-4 mb-4">
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i class="fas fa-calendar text-primary"></i>
+                                    <span>${new Date(event.event_date).toLocaleDateString('en-US', {
+                                        weekday: 'long',
+                                        year: 'numeric',
+                                        month: 'long',
+                                        day: 'numeric'
+                                    })}</span>
+                                </div>
+                                ${event.event_time ? `
+                                <div class="flex items-center gap-2 text-sm text-gray-600">
+                                    <i class="fas fa-clock text-primary"></i>
+                                    <span>${event.event_time}</span>
+                                </div>
+                                ` : ''}
+                                ${event.location ? `
+                                <div class="flex items-center gap-2 text-sm text-gray-600 md:col-span-2">
+                                    <i class="fas fa-map-marker-alt text-primary"></i>
+                                    <span>${event.location}</span>
+                                </div>
+                                ` : ''}
+                            </div>
+                            <div class="flex items-center justify-between text-sm text-gray-500">
+                                <span class="capitalize px-2 py-1 bg-gray-100 rounded-full text-xs font-medium">
+                                    ${event.category}
+                                </span>
+                                <span>Posted by ${event.users ? `${event.users.first_name} ${event.users.last_name}` : 'Church Administration'}</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+        } catch (error) {
+            console.error('Error loading events:', error);
+            const container = document.getElementById('events-container');
+            container.innerHTML = `
+                <div class="text-center text-gray-500 py-8">
+                    <i class="fas fa-exclamation-triangle text-4xl mb-4 text-yellow-400"></i>
+                    <p class="text-lg font-medium">Error loading events</p>
+                    <p class="text-sm">Please try refreshing the page.</p>
+                </div>
+            `;
+        }
     }
 
     // Handle profile form submission - Use event delegation since form is dynamically generated
@@ -827,6 +1084,18 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     });
 
+    // Handle user filter button clicks
+    document.addEventListener('click', function(e) {
+        const filterButtons = ['user-filter-all', 'user-filter-certificates', 'user-filter-services'];
+        filterButtons.forEach(btnId => {
+            if (e.target && (e.target.id === btnId || e.target.closest(`#${btnId}`))) {
+                e.preventDefault();
+                const filterType = btnId.replace('user-filter-', '');
+                applyUserFilter(filterType);
+            }
+        });
+    });
+
     // Reset profile form function
     window.resetProfileForm = function() {
         // Get fresh data from database instead of localStorage
@@ -1051,6 +1320,9 @@ async function requestService() {
 }
 
 
+// Global variable to store all user requests
+let allUserRequests = [];
+
 // Load user's service requests
 async function loadMyRequests() {
     try {
@@ -1068,63 +1340,10 @@ async function loadMyRequests() {
 
         if (error) throw error;
 
-        const myRequestsList = document.getElementById('my-requests-list');
+        allUserRequests = requests; // Store all requests globally
 
-        if (requests.length === 0) {
-            myRequestsList.innerHTML = `
-                <div class="text-center text-gray-500 py-8">
-                    <i class="fas fa-inbox text-4xl mb-3 text-gray-300"></i>
-                    <p class="text-lg font-medium">No requests found</p>
-                    <p class="text-sm">You haven't submitted any service requests yet.</p>
-                </div>
-            `;
-            return;
-        }
-
-        const statusColors = {
-            'pending': 'bg-yellow-100 text-yellow-800',
-            'processing': 'bg-blue-100 text-blue-800',
-            'completed': 'bg-green-100 text-green-800',
-            'cancelled': 'bg-red-100 text-red-800'
-        };
-
-        const typeLabels = {
-            'confirmation': 'Confirmation Certificate',
-            'mass-offering': 'Mass Offering Certificate',
-            'funeral': 'Funeral Certificate',
-            'mass-card': 'Mass Card Certificate',
-            'sick-call': 'Sick Call Certificate',
-            'marriage': 'Marriage Certificate',
-            'baptism': 'Baptism Certificate',
-            'baptism-service': 'Baptism Service',
-            'confirmation-service': 'Confirmation Service',
-            'communion': 'First Holy Communion',
-            'marriage-service': 'Marriage Service',
-            'anointing': 'Anointing of the Sick',
-            'funeral-service': 'Funeral Service'
-        };
-
-        myRequestsList.innerHTML = requests.map(request => `
-            <div class="request-card-mobile flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all duration-200">
-                <div class="flex items-center gap-3 flex-1 min-w-0">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
-                        ${typeLabels[request.request_type]?.charAt(0) || 'R'}
-                    </div>
-                    <div class="flex-1 min-w-0">
-                        <h4 class="font-medium text-gray-900 text-sm truncate">${typeLabels[request.request_type] || request.request_type}</h4>
-                        <p class="text-xs text-gray-600">Submitted: ${new Date(request.created_at).toLocaleDateString()}</p>
-                        ${request.preferred_date ? `<p class="text-xs text-gray-500">Preferred: ${new Date(request.preferred_date).toLocaleDateString()}</p>` : ''}
-                    </div>
-                </div>
-                <div class="flex items-center gap-2 flex-shrink-0">
-                    <span class="status-badge inline-block px-2 py-1 text-xs font-medium rounded-full ${statusColors[request.status] || 'bg-gray-100 text-gray-800'}">
-                        ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
-                    </span>
-                    ${request.admin_notes ? '<i class="fas fa-sticky-note text-blue-600 text-sm" title="Admin notes available"></i>' : ''}
-                </div>
-            </div>
-        `).join('');
-
+        // Apply current filter
+        applyUserFilter();
     } catch (error) {
         console.error('Error loading user requests:', error);
         const myRequestsList = document.getElementById('my-requests-list');
@@ -1136,6 +1355,93 @@ async function loadMyRequests() {
             </div>
         `;
     }
+}
+
+// Apply filter to user requests
+function applyUserFilter(filterType = 'all') {
+    const myRequestsList = document.getElementById('my-requests-list');
+
+    // Update button styles
+    const buttons = ['user-filter-all', 'user-filter-certificates', 'user-filter-services'];
+    buttons.forEach(btnId => {
+        const btn = document.getElementById(btnId);
+        if (btn) {
+            if (btnId === `user-filter-${filterType}`) {
+                btn.classList.remove('bg-gray-600', 'bg-blue-600', 'bg-green-600');
+                btn.classList.add('bg-red-600');
+            } else {
+                btn.classList.remove('bg-red-600');
+                if (btnId === 'user-filter-all') btn.classList.add('bg-gray-600');
+                if (btnId === 'user-filter-certificates') btn.classList.add('bg-blue-600');
+                if (btnId === 'user-filter-services') btn.classList.add('bg-green-600');
+            }
+        }
+    });
+
+    // Filter requests
+    let filteredRequests = allUserRequests;
+    if (filterType === 'certificates') {
+        const certificateTypes = ['confirmation', 'mass-offering', 'funeral', 'mass-card', 'sick-call', 'marriage', 'baptism'];
+        filteredRequests = allUserRequests.filter(request => certificateTypes.includes(request.request_type));
+    } else if (filterType === 'services') {
+        const serviceTypes = ['baptism-service', 'confirmation-service', 'communion', 'marriage-service', 'anointing', 'funeral-service'];
+        filteredRequests = allUserRequests.filter(request => serviceTypes.includes(request.request_type));
+    }
+
+    if (filteredRequests.length === 0) {
+        myRequestsList.innerHTML = `
+            <div class="text-center text-gray-500 py-8">
+                <i class="fas fa-inbox text-4xl mb-3 text-gray-300"></i>
+                <p class="text-lg font-medium">No ${filterType === 'all' ? '' : filterType} requests found</p>
+                <p class="text-sm">You haven't submitted any ${filterType === 'all' ? '' : filterType} requests yet.</p>
+            </div>
+        `;
+        return;
+    }
+
+    const statusColors = {
+        'pending': 'bg-yellow-100 text-yellow-800',
+        'processing': 'bg-blue-100 text-blue-800',
+        'completed': 'bg-green-100 text-green-800',
+        'cancelled': 'bg-red-100 text-red-800'
+    };
+
+    const typeLabels = {
+        'confirmation': 'Confirmation Certificate',
+        'mass-offering': 'Mass Offering Certificate',
+        'funeral': 'Funeral Certificate',
+        'mass-card': 'Mass Card Certificate',
+        'sick-call': 'Sick Call Certificate',
+        'marriage': 'Marriage Certificate',
+        'baptism': 'Baptism Certificate',
+        'baptism-service': 'Baptism Service',
+        'confirmation-service': 'Confirmation Service',
+        'communion': 'First Holy Communion',
+        'marriage-service': 'Marriage Service',
+        'anointing': 'Anointing of the Sick',
+        'funeral-service': 'Funeral Service'
+    };
+
+    myRequestsList.innerHTML = filteredRequests.map(request => `
+        <div class="request-card-mobile flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-gray-100 hover:bg-gray-100 transition-all duration-200">
+            <div class="flex items-center gap-3 flex-1 min-w-0">
+                <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                    ${typeLabels[request.request_type]?.charAt(0) || 'R'}
+                </div>
+                <div class="flex-1 min-w-0">
+                    <h4 class="font-medium text-gray-900 text-sm truncate">${typeLabels[request.request_type] || request.request_type}</h4>
+                    <p class="text-xs text-gray-600">Submitted: ${new Date(request.created_at).toLocaleDateString()}</p>
+                    ${request.preferred_date ? `<p class="text-xs text-gray-500">Preferred: ${new Date(request.preferred_date).toLocaleDateString()}</p>` : ''}
+                </div>
+            </div>
+            <div class="flex items-center gap-2 flex-shrink-0">
+                <span class="status-badge inline-block px-2 py-1 text-xs font-medium rounded-full ${statusColors[request.status] || 'bg-gray-100 text-gray-800'}">
+                    ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                </span>
+                ${request.admin_notes ? '<i class="fas fa-sticky-note text-blue-600 text-sm" title="Admin notes available"></i>' : ''}
+            </div>
+        </div>
+    `).join('');
 }
 
 // Close error modal
