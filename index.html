@@ -5,6 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Our Mother of Perpetual Help - Loading...</title>
     <link rel="icon" type="image/x-icon" href="src/assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="src/assets/images/Perpetual Church Logo.png">
     <meta http-equiv="refresh" content="4; url=src/pages/public/index.html">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -57,6 +63,19 @@
     </div>
 
     <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+
         document.addEventListener('DOMContentLoaded', function() {
             const container = document.querySelector('.container');
             const progressFill = document.getElementById('progressFill');
