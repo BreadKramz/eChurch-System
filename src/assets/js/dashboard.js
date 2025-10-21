@@ -499,7 +499,7 @@ document.addEventListener('DOMContentLoaded', async function() {
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Certificate Type *</label>
-                                <select id="certificate-type" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                <select id="certificate-type" onchange="toggleCertificateFields()" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
                                     <option value="">Select Certificate Type</option>
                                     <option value="confirmation">Confirmation Certificate</option>
                                     <option value="mass-offering">Mass Offering Certificate</option>
@@ -510,6 +510,364 @@ document.addEventListener('DOMContentLoaded', async function() {
                                     <option value="baptism">Baptism Certificate</option>
                                 </select>
                             </div>
+
+                            <!-- Baptism Certificate Specific Fields -->
+                            <div id="baptism-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Baptism Certificate Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of Child *</label>
+                                        <input type="text" id="baptism-child-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of the child">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Birth *</label>
+                                        <input type="date" id="baptism-birth-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Place of Birth *</label>
+                                        <input type="text" id="baptism-birth-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="City, Province, Country">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Legitimate or Illegitimate *</label>
+                                        <select id="baptism-legitimacy" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="legitimate">Legitimate</option>
+                                            <option value="illegitimate">Illegitimate</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father's Name *</label>
+                                        <input type="text" id="baptism-father-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of father">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother's Name *</label>
+                                        <input type="text" id="baptism-mother-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of mother">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father (Are you Catholic?) *</label>
+                                        <select id="baptism-father-catholic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father's Religion *</label>
+                                        <input type="text" id="baptism-father-religion" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="If not Catholic, specify religion">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father (Are you confirmed?) *</label>
+                                        <select id="baptism-father-confirmed" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Where? *</label>
+                                        <input type="text" id="baptism-father-confirmation-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Place of confirmation">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother (Are you Catholic?) *</label>
+                                        <select id="baptism-mother-catholic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother's Religion *</label>
+                                        <input type="text" id="baptism-mother-religion" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="If not Catholic, specify religion">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother (Are you confirmed?) *</label>
+                                        <select id="baptism-mother-confirmed" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Where? *</label>
+                                        <input type="text" id="baptism-mother-confirmation-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Place of confirmation">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Confirmation Certificate Specific Fields -->
+                            <div id="confirmation-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Confirmation Certificate Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of Child *</label>
+                                        <input type="text" id="confirmation-child-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of the child">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Birth *</label>
+                                        <input type="date" id="confirmation-birth-date" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Place of Birth *</label>
+                                        <input type="text" id="confirmation-birth-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="City, Province, Country">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Legitimate or Illegitimate *</label>
+                                        <select id="confirmation-legitimacy" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="legitimate">Legitimate</option>
+                                            <option value="illegitimate">Illegitimate</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father's Name *</label>
+                                        <input type="text" id="confirmation-father-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of father">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother's Name *</label>
+                                        <input type="text" id="confirmation-mother-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of mother">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father (Are you Catholic?) *</label>
+                                        <select id="confirmation-father-catholic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father's Religion *</label>
+                                        <input type="text" id="confirmation-father-religion" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="If not Catholic, specify religion">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Father (Are you confirmed?) *</label>
+                                        <select id="confirmation-father-confirmed" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Where? *</label>
+                                        <input type="text" id="confirmation-father-confirmation-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Place of confirmation">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother (Are you Catholic?) *</label>
+                                        <select id="confirmation-mother-catholic" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother's Religion *</label>
+                                        <input type="text" id="confirmation-mother-religion" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="If not Catholic, specify religion">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Mother (Are you confirmed?) *</label>
+                                        <select id="confirmation-mother-confirmed" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select</option>
+                                            <option value="yes">Yes</option>
+                                            <option value="no">No</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Where? *</label>
+                                        <input type="text" id="confirmation-mother-confirmation-place" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Place of confirmation">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mass Offering Certificate Specific Fields -->
+                            <div id="mass-offering-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Mass Offering Information</h4>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Names of Souls *</label>
+                                    <textarea id="mass-offering-souls" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Names of the souls for whom the mass is being offered (one per line)"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Petitions *</label>
+                                    <textarea id="mass-offering-petitions" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Specific petitions or intentions for the mass"></textarea>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Thanksgiving *</label>
+                                    <textarea id="mass-offering-thanksgiving" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Thanksgiving intentions or gratitude to express"></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Time and Day *</label>
+                                        <input type="text" id="mass-offering-time-day" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Preferred time and day (e.g., Sunday 9:00 AM)">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of the Informant *</label>
+                                        <input type="text" id="mass-offering-informant" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Name of person requesting the mass offering">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Funeral Certificate Specific Fields -->
+                            <div id="funeral-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Funeral Certificate Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of the Deceased *</label>
+                                        <input type="text" id="funeral-deceased-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of the deceased">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Age *</label>
+                                        <input type="number" id="funeral-age" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Age at time of death">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Gender *</label>
+                                        <select id="funeral-gender" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select Gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Civil Status *</label>
+                                        <select id="funeral-civil-status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select Civil Status</option>
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="widowed">Widowed</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="separated">Separated</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div id="spouse-field" class="hidden">
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">If married, name of spouse *</label>
+                                    <input type="text" id="funeral-spouse-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Name of spouse">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Address of deceased *</label>
+                                    <input type="text" id="funeral-address" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Complete address">
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Describe him/her as a person *</label>
+                                    <textarea id="funeral-description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Brief description of the person's character, values, and life"></textarea>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Work/Occupation *</label>
+                                        <input type="text" id="funeral-occupation" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Profession or occupation">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Church Involvement *</label>
+                                        <input type="text" id="funeral-church-involvement" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Ministries, roles, or involvement">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Cause of Death *</label>
+                                        <input type="text" id="funeral-cause-of-death" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Cause of death">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Death *</label>
+                                        <input type="date" id="funeral-date-of-death" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                    </div>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of Informant *</label>
+                                        <input type="text" id="funeral-informant-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Name of person providing information">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Contact Number of Informant *</label>
+                                        <input type="tel" id="funeral-informant-contact" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="(035) 123-4567">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mass Card Certificate Specific Fields -->
+                            <div id="mass-card-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Mass Card Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of the Deceased *</label>
+                                        <input type="text" id="mass-card-deceased-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of the deceased">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">From *</label>
+                                        <input type="text" id="mass-card-from" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Name of person/family requesting">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Sick Call Certificate Specific Fields -->
+                            <div id="sick-call-fields" class="hidden space-y-4 border-t border-gray-200 pt-4">
+                                <h4 class="text-lg font-semibold text-gray-800 mb-3">Patient Information</h4>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name *</label>
+                                        <input type="text" id="sick-call-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Full name of patient">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Age *</label>
+                                        <input type="number" id="sick-call-age" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Age in years">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Sex *</label>
+                                        <select id="sick-call-sex" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select Sex</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Civil Status *</label>
+                                        <select id="sick-call-civil-status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                            <option value="">Select Civil Status</option>
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="widowed">Widowed</option>
+                                            <option value="divorced">Divorced</option>
+                                            <option value="separated">Separated</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div>
+                                    <label class="block text-sm font-semibold text-gray-700 mb-1">Status of the Patient *</label>
+                                    <select id="sick-call-status" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200">
+                                        <option value="">Select Patient Status</option>
+                                        <option value="critical">Critical</option>
+                                        <option value="serious">Serious</option>
+                                        <option value="stable">Stable</option>
+                                        <option value="improving">Improving</option>
+                                        <option value="terminal">Terminal</option>
+                                    </select>
+                                </div>
+                                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Name of Contact Person *</label>
+                                        <input type="text" id="sick-call-contact-name" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Emergency contact name">
+                                    </div>
+                                    <div>
+                                        <label class="block text-sm font-semibold text-gray-700 mb-1">Contact Number *</label>
+                                        <input type="tel" id="sick-call-contact-number" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="(035) 123-4567">
+                                    </div>
+                                </div>
+                            </div>
+
                             <div>
                                 <label class="block text-sm font-semibold text-gray-700 mb-2">Additional Details</label>
                                 <textarea id="certificate-details" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200" placeholder="Please provide any additional information..."></textarea>
@@ -754,26 +1112,26 @@ document.addEventListener('DOMContentLoaded', async function() {
             };
 
             container.innerHTML = activeAnnouncements.map(announcement => `
-                <div class="bg-white rounded-2xl p-6 shadow-xl border-l-4 ${priorityColors[announcement.priority] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'} hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 transform">
+                <div class="dashboard-announcement-card bg-white rounded-2xl p-6 border-l-4 ${priorityColors[announcement.priority] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'}">
                     <div class="flex flex-col gap-4">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
-                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg dashboard-card-icon">
                                     <i class="${priorityIcons[announcement.priority] || 'fas fa-bullhorn text-gray-600'} text-2xl"></i>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-3 mb-3">
-                                    <h3 class="text-xl font-display font-bold text-gray-900 leading-tight">${announcement.title}</h3>
-                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${priorityColors[announcement.priority] ? priorityColors[announcement.priority].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'text-').replace(' to-', '').replace('-50', '-800') : 'bg-gray-200 text-gray-800'} capitalize shadow-sm">
+                                    <h3 class="dashboard-card-title text-xl font-display font-bold text-gray-900 leading-tight">${announcement.title}</h3>
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full priority-badge-${announcement.priority} capitalize shadow-sm">
                                         ${announcement.priority}
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="ml-18">
-                            <p class="text-gray-700 text-base leading-relaxed mb-4">${announcement.content}</p>
-                            <div class="flex items-center justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <p class="dashboard-card-content text-gray-700 text-base leading-relaxed mb-4">${announcement.content}</p>
+                            <div class="dashboard-card-meta flex items-center justify-between text-sm text-gray-500 pt-3">
                                 <span class="flex items-center gap-2">
                                     <i class="fas fa-user text-primary"></i>
                                     ${announcement.users ? `${announcement.users.first_name} ${announcement.users.last_name}` : 'Church Administration'}
@@ -861,25 +1219,25 @@ document.addEventListener('DOMContentLoaded', async function() {
             };
 
             container.innerHTML = activeEvents.map(event => `
-                <div class="bg-white rounded-2xl p-6 shadow-xl border-l-4 ${categoryColors[event.category] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'} hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 transform">
+                <div class="dashboard-event-card bg-white rounded-2xl p-6 border-l-4 ${categoryColors[event.category] || 'border-l-gray-500 bg-gradient-to-br from-gray-50 to-gray-100'}">
                     <div class="flex flex-col gap-4">
                         <div class="flex items-start gap-4">
                             <div class="flex-shrink-0">
-                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${categoryColors[event.category] ? categoryColors[event.category].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg">
+                                <div class="w-14 h-14 rounded-full flex items-center justify-center ${categoryColors[event.category] ? categoryColors[event.category].replace('border-l-', 'bg-').replace('-500', '-200').replace(' bg-gradient-to-br from-', 'bg-').replace(' to-', '/').replace('-50', '-100') : 'bg-gray-200'} shadow-lg dashboard-card-icon">
                                     <i class="${categoryIcons[event.category] || 'fas fa-calendar-alt text-gray-600'} text-2xl"></i>
                                 </div>
                             </div>
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center gap-3 mb-3">
-                                    <h3 class="text-xl font-display font-bold text-gray-900 leading-tight">${event.title}</h3>
-                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full ${statusColors[event.status] || 'bg-gray-200 text-gray-900'} shadow-sm">
+                                    <h3 class="dashboard-card-title text-xl font-display font-bold text-gray-900 leading-tight">${event.title}</h3>
+                                    <span class="inline-block px-3 py-1 text-xs font-semibold rounded-full status-badge-${event.status} shadow-sm">
                                         ${event.status.charAt(0).toUpperCase() + event.status.slice(1)}
                                     </span>
                                 </div>
                             </div>
                         </div>
                         <div class="ml-18">
-                            ${event.description ? `<p class="text-gray-700 text-base leading-relaxed mb-4">${event.description}</p>` : ''}
+                            ${event.description ? `<p class="dashboard-card-content text-gray-700 text-base leading-relaxed mb-4">${event.description}</p>` : ''}
                             <div class="grid gap-3 mb-4">
                                 <div class="flex items-center gap-3 text-sm text-gray-600 bg-gray-50 rounded-lg p-3">
                                     <i class="fas fa-calendar text-primary text-lg"></i>
@@ -903,10 +1261,10 @@ document.addEventListener('DOMContentLoaded', async function() {
                                 </div>
                                 ` : ''}
                             </div>
-                            <div class="flex items-center justify-between text-sm text-gray-500 border-t border-gray-100 pt-3">
+                            <div class="dashboard-card-meta flex items-center justify-between text-sm text-gray-500 pt-3">
                                 <span class="flex items-center gap-2">
                                     <i class="fas fa-tag text-primary"></i>
-                                    <span class="capitalize font-medium px-2 py-1 bg-gray-100 rounded-full text-xs">${event.category}</span>
+                                    <span class="capitalize font-medium px-2 py-1 category-badge-${event.category} rounded-full text-xs">${event.category}</span>
                                 </span>
                                 <span class="flex items-center gap-2">
                                     <i class="fas fa-user text-primary"></i>
@@ -1492,6 +1850,52 @@ function hideServiceSection() {
     document.getElementById('service-form').classList.add('hidden');
 }
 
+// Toggle certificate specific fields
+function toggleCertificateFields() {
+    const certificateType = document.getElementById('certificate-type').value;
+    const baptismFields = document.getElementById('baptism-fields');
+    const confirmationFields = document.getElementById('confirmation-fields');
+    const massOfferingFields = document.getElementById('mass-offering-fields');
+    const funeralFields = document.getElementById('funeral-fields');
+    const massCardFields = document.getElementById('mass-card-fields');
+    const sickCallFields = document.getElementById('sick-call-fields');
+
+    // Hide all specific fields first
+    baptismFields.classList.add('hidden');
+    confirmationFields.classList.add('hidden');
+    massOfferingFields.classList.add('hidden');
+    funeralFields.classList.add('hidden');
+    massCardFields.classList.add('hidden');
+    sickCallFields.classList.add('hidden');
+
+    // Show relevant fields based on selection
+    if (certificateType === 'baptism') {
+        baptismFields.classList.remove('hidden');
+    } else if (certificateType === 'confirmation') {
+        confirmationFields.classList.remove('hidden');
+    } else if (certificateType === 'mass-offering') {
+        massOfferingFields.classList.remove('hidden');
+    } else if (certificateType === 'funeral') {
+        funeralFields.classList.remove('hidden');
+        // Add event listener for civil status to show/hide spouse field
+        const civilStatusSelect = document.getElementById('funeral-civil-status');
+        if (civilStatusSelect) {
+            civilStatusSelect.addEventListener('change', function() {
+                const spouseField = document.getElementById('spouse-field');
+                if (this.value === 'married') {
+                    spouseField.classList.remove('hidden');
+                } else {
+                    spouseField.classList.add('hidden');
+                }
+            });
+        }
+    } else if (certificateType === 'mass-card') {
+        massCardFields.classList.remove('hidden');
+    } else if (certificateType === 'sick-call') {
+        sickCallFields.classList.remove('hidden');
+    }
+}
+
 // Service request functions with Supabase integration
 async function requestCertificate() {
     const certificateType = document.getElementById('certificate-type').value;
@@ -1500,6 +1904,233 @@ async function requestCertificate() {
     if (!certificateType) {
         showErrorMessage('Selection Required', 'Please select a certificate type first.');
         return;
+    }
+
+    let additionalDetails = details;
+
+    // Collect baptism certificate specific information
+    if (certificateType === 'baptism') {
+        const baptismData = {
+            childName: document.getElementById('baptism-child-name').value.trim(),
+            birthDate: document.getElementById('baptism-birth-date').value,
+            birthPlace: document.getElementById('baptism-birth-place').value.trim(),
+            legitimacy: document.getElementById('baptism-legitimacy').value,
+            fatherName: document.getElementById('baptism-father-name').value.trim(),
+            motherName: document.getElementById('baptism-mother-name').value.trim(),
+            fatherCatholic: document.getElementById('baptism-father-catholic').value,
+            fatherReligion: document.getElementById('baptism-father-religion').value.trim(),
+            fatherConfirmed: document.getElementById('baptism-father-confirmed').value,
+            fatherConfirmationPlace: document.getElementById('baptism-father-confirmation-place').value.trim(),
+            motherCatholic: document.getElementById('baptism-mother-catholic').value,
+            motherReligion: document.getElementById('baptism-mother-religion').value.trim(),
+            motherConfirmed: document.getElementById('baptism-mother-confirmed').value,
+            motherConfirmationPlace: document.getElementById('baptism-mother-confirmation-place').value.trim()
+        };
+
+        // Validate required baptism fields
+        if (!baptismData.childName || !baptismData.birthDate || !baptismData.birthPlace || !baptismData.legitimacy ||
+            !baptismData.fatherName || !baptismData.motherName || !baptismData.fatherCatholic || !baptismData.fatherConfirmed ||
+            !baptismData.motherCatholic || !baptismData.motherConfirmed) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the baptism certificate.');
+            return;
+        }
+
+        // Format the details with baptism information
+        additionalDetails = `Baptism Certificate Information:
+- Name of Child: ${baptismData.childName}
+- Date of Birth: ${baptismData.birthDate}
+- Place of Birth: ${baptismData.birthPlace}
+- Legitimate or Illegitimate: ${baptismData.legitimacy}
+- Father's Name: ${baptismData.fatherName}
+- Father (Are you Catholic?): ${baptismData.fatherCatholic}${baptismData.fatherReligion ? `
+- Father's Religion: ${baptismData.fatherReligion}` : ''}
+- Father (Are you confirmed?): ${baptismData.fatherConfirmed}${baptismData.fatherConfirmationPlace ? `
+- Father's Confirmation Place: ${baptismData.fatherConfirmationPlace}` : ''}
+- Mother's Name: ${baptismData.motherName}
+- Mother (Are you Catholic?): ${baptismData.motherCatholic}${baptismData.motherReligion ? `
+- Mother's Religion: ${baptismData.motherReligion}` : ''}
+- Mother (Are you confirmed?): ${baptismData.motherConfirmed}${baptismData.motherConfirmationPlace ? `
+- Mother's Confirmation Place: ${baptismData.motherConfirmationPlace}` : ''}
+
+Additional Details: ${details || 'None provided'}`;
+    }
+
+    // Collect confirmation certificate specific information
+    if (certificateType === 'confirmation') {
+        const confirmationData = {
+            childName: document.getElementById('confirmation-child-name').value.trim(),
+            birthDate: document.getElementById('confirmation-birth-date').value,
+            birthPlace: document.getElementById('confirmation-birth-place').value.trim(),
+            legitimacy: document.getElementById('confirmation-legitimacy').value,
+            fatherName: document.getElementById('confirmation-father-name').value.trim(),
+            motherName: document.getElementById('confirmation-mother-name').value.trim(),
+            fatherCatholic: document.getElementById('confirmation-father-catholic').value,
+            fatherReligion: document.getElementById('confirmation-father-religion').value.trim(),
+            fatherConfirmed: document.getElementById('confirmation-father-confirmed').value,
+            fatherConfirmationPlace: document.getElementById('confirmation-father-confirmation-place').value.trim(),
+            motherCatholic: document.getElementById('confirmation-mother-catholic').value,
+            motherReligion: document.getElementById('confirmation-mother-religion').value.trim(),
+            motherConfirmed: document.getElementById('confirmation-mother-confirmed').value,
+            motherConfirmationPlace: document.getElementById('confirmation-mother-confirmation-place').value.trim()
+        };
+
+        // Validate required confirmation fields
+        if (!confirmationData.childName || !confirmationData.birthDate || !confirmationData.birthPlace || !confirmationData.legitimacy ||
+            !confirmationData.fatherName || !confirmationData.motherName || !confirmationData.fatherCatholic || !confirmationData.fatherConfirmed ||
+            !confirmationData.motherCatholic || !confirmationData.motherConfirmed) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the confirmation certificate.');
+            return;
+        }
+
+        // Format the details with confirmation information
+        additionalDetails = `Confirmation Certificate Information:
+- Name of Child: ${confirmationData.childName}
+- Date of Birth: ${confirmationData.birthDate}
+- Place of Birth: ${confirmationData.birthPlace}
+- Legitimate or Illegitimate: ${confirmationData.legitimacy}
+- Father's Name: ${confirmationData.fatherName}
+- Father (Are you Catholic?): ${confirmationData.fatherCatholic}${confirmationData.fatherReligion ? `
+- Father's Religion: ${confirmationData.fatherReligion}` : ''}
+- Father (Are you confirmed?): ${confirmationData.fatherConfirmed}${confirmationData.fatherConfirmationPlace ? `
+- Father's Confirmation Place: ${confirmationData.fatherConfirmationPlace}` : ''}
+- Mother's Name: ${confirmationData.motherName}
+- Mother (Are you Catholic?): ${confirmationData.motherCatholic}${confirmationData.motherReligion ? `
+- Mother's Religion: ${confirmationData.motherReligion}` : ''}
+- Mother (Are you confirmed?): ${confirmationData.motherConfirmed}${confirmationData.motherConfirmationPlace ? `
+- Mother's Confirmation Place: ${confirmationData.motherConfirmationPlace}` : ''}
+
+Additional Details: ${details || 'None provided'}`;
+    }
+
+    // Collect mass offering certificate specific information
+    if (certificateType === 'mass-offering') {
+        const massOfferingData = {
+            souls: document.getElementById('mass-offering-souls').value.trim(),
+            petitions: document.getElementById('mass-offering-petitions').value.trim(),
+            thanksgiving: document.getElementById('mass-offering-thanksgiving').value.trim(),
+            timeDay: document.getElementById('mass-offering-time-day').value.trim(),
+            informant: document.getElementById('mass-offering-informant').value.trim()
+        };
+
+        // Validate required mass offering fields
+        if (!massOfferingData.souls || !massOfferingData.petitions || !massOfferingData.thanksgiving || !massOfferingData.timeDay || !massOfferingData.informant) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the mass offering certificate.');
+            return;
+        }
+
+        // Format the details with mass offering information
+        additionalDetails = `Mass Offering Information:
+- Names of Souls: ${massOfferingData.souls}
+- Petitions: ${massOfferingData.petitions}
+- Thanksgiving: ${massOfferingData.thanksgiving}
+- Time and Day: ${massOfferingData.timeDay}
+- Name of the Informant: ${massOfferingData.informant}
+
+Additional Details: ${details || 'None provided'}`;
+    }
+
+    // Collect funeral certificate specific information
+    if (certificateType === 'funeral') {
+        const funeralData = {
+            deceasedName: document.getElementById('funeral-deceased-name').value.trim(),
+            age: document.getElementById('funeral-age').value.trim(),
+            gender: document.getElementById('funeral-gender').value,
+            civilStatus: document.getElementById('funeral-civil-status').value,
+            spouseName: document.getElementById('funeral-spouse-name').value.trim(),
+            address: document.getElementById('funeral-address').value.trim(),
+            description: document.getElementById('funeral-description').value.trim(),
+            occupation: document.getElementById('funeral-occupation').value.trim(),
+            churchInvolvement: document.getElementById('funeral-church-involvement').value.trim(),
+            causeOfDeath: document.getElementById('funeral-cause-of-death').value.trim(),
+            dateOfDeath: document.getElementById('funeral-date-of-death').value,
+            informantName: document.getElementById('funeral-informant-name').value.trim(),
+            informantContact: document.getElementById('funeral-informant-contact').value.trim()
+        };
+
+        // Validate required funeral fields
+        if (!funeralData.deceasedName || !funeralData.age || !funeralData.gender || !funeralData.civilStatus ||
+            !funeralData.address || !funeralData.description || !funeralData.occupation ||
+            !funeralData.churchInvolvement || !funeralData.causeOfDeath || !funeralData.dateOfDeath ||
+            !funeralData.informantName || !funeralData.informantContact) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the funeral certificate.');
+            return;
+        }
+
+        // Check if spouse name is required
+        if (funeralData.civilStatus === 'married' && !funeralData.spouseName) {
+            showErrorMessage('Missing Information', 'Please provide the spouse name for married individuals.');
+            return;
+        }
+
+        // Format the details with funeral information
+        additionalDetails = `Funeral Certificate Information:
+- Name of the Deceased: ${funeralData.deceasedName}
+- Age: ${funeralData.age}
+- Gender: ${funeralData.gender}
+- Civil Status: ${funeralData.civilStatus}${funeralData.spouseName ? `
+- Name of Spouse: ${funeralData.spouseName}` : ''}
+- Address of Deceased: ${funeralData.address}
+- Description as a Person: ${funeralData.description}
+- Work/Occupation: ${funeralData.occupation}
+- Church Involvement: ${funeralData.churchInvolvement}
+- Cause of Death: ${funeralData.causeOfDeath}
+- Date of Death: ${funeralData.dateOfDeath}
+- Name of Informant: ${funeralData.informantName}
+- Contact Number of Informant: ${funeralData.informantContact}
+
+Additional Details: ${details || 'None provided'}`;
+    }
+
+    // Collect mass card specific information
+    if (certificateType === 'mass-card') {
+        const massCardData = {
+            deceasedName: document.getElementById('mass-card-deceased-name').value.trim(),
+            from: document.getElementById('mass-card-from').value.trim()
+        };
+
+        // Validate required mass card fields
+        if (!massCardData.deceasedName || !massCardData.from) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the mass card certificate.');
+            return;
+        }
+
+        // Format the details with mass card information
+        additionalDetails = `Mass Card Information:
+- Name of the Deceased: ${massCardData.deceasedName}
+- From: ${massCardData.from}
+
+Additional Details: ${details || 'None provided'}`;
+    }
+
+    // Collect sick call specific information
+    if (certificateType === 'sick-call') {
+        const sickCallData = {
+            name: document.getElementById('sick-call-name').value.trim(),
+            age: document.getElementById('sick-call-age').value.trim(),
+            sex: document.getElementById('sick-call-sex').value,
+            civilStatus: document.getElementById('sick-call-civil-status').value,
+            patientStatus: document.getElementById('sick-call-status').value,
+            contactName: document.getElementById('sick-call-contact-name').value.trim(),
+            contactNumber: document.getElementById('sick-call-contact-number').value.trim()
+        };
+
+        // Validate required sick call fields
+        if (!sickCallData.name || !sickCallData.age || !sickCallData.sex || !sickCallData.civilStatus || !sickCallData.patientStatus || !sickCallData.contactName || !sickCallData.contactNumber) {
+            showErrorMessage('Missing Information', 'Please fill in all required fields for the sick call certificate.');
+            return;
+        }
+
+        // Format the details with sick call information
+        additionalDetails = `Patient Information:
+- Name: ${sickCallData.name}
+- Age: ${sickCallData.age}
+- Sex: ${sickCallData.sex}
+- Civil Status: ${sickCallData.civilStatus}
+- Status of Patient: ${sickCallData.patientStatus}
+- Contact Person: ${sickCallData.contactName}
+- Contact Number: ${sickCallData.contactNumber}
+
+Additional Details: ${details || 'None provided'}`;
     }
 
     try {
@@ -1514,7 +2145,7 @@ async function requestCertificate() {
             .insert({
                 user_id: currentUser.id,
                 request_type: certificateType,
-                details: details || null,
+                details: additionalDetails || null,
                 status: 'pending'
             })
             .select();
@@ -1537,6 +2168,77 @@ async function requestCertificate() {
         // Clear form
         document.getElementById('certificate-type').value = '';
         document.getElementById('certificate-details').value = '';
+
+        // Clear specific certificate fields
+        if (certificateType === 'baptism') {
+            document.getElementById('baptism-child-name').value = '';
+            document.getElementById('baptism-birth-date').value = '';
+            document.getElementById('baptism-birth-place').value = '';
+            document.getElementById('baptism-legitimacy').value = '';
+            document.getElementById('baptism-father-name').value = '';
+            document.getElementById('baptism-mother-name').value = '';
+            document.getElementById('baptism-father-catholic').value = '';
+            document.getElementById('baptism-father-religion').value = '';
+            document.getElementById('baptism-father-confirmed').value = '';
+            document.getElementById('baptism-father-confirmation-place').value = '';
+            document.getElementById('baptism-mother-catholic').value = '';
+            document.getElementById('baptism-mother-religion').value = '';
+            document.getElementById('baptism-mother-confirmed').value = '';
+            document.getElementById('baptism-mother-confirmation-place').value = '';
+            document.getElementById('baptism-fields').classList.add('hidden');
+        } else if (certificateType === 'confirmation') {
+            document.getElementById('confirmation-child-name').value = '';
+            document.getElementById('confirmation-birth-date').value = '';
+            document.getElementById('confirmation-birth-place').value = '';
+            document.getElementById('confirmation-legitimacy').value = '';
+            document.getElementById('confirmation-father-name').value = '';
+            document.getElementById('confirmation-mother-name').value = '';
+            document.getElementById('confirmation-father-catholic').value = '';
+            document.getElementById('confirmation-father-religion').value = '';
+            document.getElementById('confirmation-father-confirmed').value = '';
+            document.getElementById('confirmation-father-confirmation-place').value = '';
+            document.getElementById('confirmation-mother-catholic').value = '';
+            document.getElementById('confirmation-mother-religion').value = '';
+            document.getElementById('confirmation-mother-confirmed').value = '';
+            document.getElementById('confirmation-mother-confirmation-place').value = '';
+            document.getElementById('confirmation-fields').classList.add('hidden');
+        } else if (certificateType === 'mass-offering') {
+            document.getElementById('mass-offering-souls').value = '';
+            document.getElementById('mass-offering-petitions').value = '';
+            document.getElementById('mass-offering-thanksgiving').value = '';
+            document.getElementById('mass-offering-time-day').value = '';
+            document.getElementById('mass-offering-informant').value = '';
+            document.getElementById('mass-offering-fields').classList.add('hidden');
+        } else if (certificateType === 'funeral') {
+            document.getElementById('funeral-deceased-name').value = '';
+            document.getElementById('funeral-age').value = '';
+            document.getElementById('funeral-gender').value = '';
+            document.getElementById('funeral-civil-status').value = '';
+            document.getElementById('funeral-spouse-name').value = '';
+            document.getElementById('funeral-address').value = '';
+            document.getElementById('funeral-description').value = '';
+            document.getElementById('funeral-occupation').value = '';
+            document.getElementById('funeral-church-involvement').value = '';
+            document.getElementById('funeral-cause-of-death').value = '';
+            document.getElementById('funeral-date-of-death').value = '';
+            document.getElementById('funeral-informant-name').value = '';
+            document.getElementById('funeral-informant-contact').value = '';
+            document.getElementById('spouse-field').classList.add('hidden');
+            document.getElementById('funeral-fields').classList.add('hidden');
+        } else if (certificateType === 'mass-card') {
+            document.getElementById('mass-card-deceased-name').value = '';
+            document.getElementById('mass-card-from').value = '';
+            document.getElementById('mass-card-fields').classList.add('hidden');
+        } else if (certificateType === 'sick-call') {
+            document.getElementById('sick-call-name').value = '';
+            document.getElementById('sick-call-age').value = '';
+            document.getElementById('sick-call-sex').value = '';
+            document.getElementById('sick-call-civil-status').value = '';
+            document.getElementById('sick-call-status').value = '';
+            document.getElementById('sick-call-contact-name').value = '';
+            document.getElementById('sick-call-contact-number').value = '';
+            document.getElementById('sick-call-fields').classList.add('hidden');
+        }
 
     } catch (error) {
         console.error('Error submitting certificate request:', error);

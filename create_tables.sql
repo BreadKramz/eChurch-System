@@ -73,7 +73,54 @@ CREATE TABLE IF NOT EXISTS public.service_requests (
     processed_by UUID REFERENCES public.users(id),
     processed_at TIMESTAMP WITH TIME ZONE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    -- Certificate-specific fields
+    -- Baptism and Confirmation fields
+    child_name TEXT,
+    birth_date DATE,
+    birth_place TEXT,
+    legitimacy TEXT CHECK (legitimacy IN ('legitimate', 'illegitimate')),
+    father_name TEXT,
+    mother_name TEXT,
+    father_catholic TEXT CHECK (father_catholic IN ('yes', 'no')),
+    father_religion TEXT,
+    father_confirmed TEXT CHECK (father_confirmed IN ('yes', 'no')),
+    father_confirmation_place TEXT,
+    mother_catholic TEXT CHECK (mother_catholic IN ('yes', 'no')),
+    mother_religion TEXT,
+    mother_confirmed TEXT CHECK (mother_confirmed IN ('yes', 'no')),
+    mother_confirmation_place TEXT,
+    -- Mass Offering fields
+    souls TEXT,
+    petitions TEXT,
+    thanksgiving TEXT,
+    time_day TEXT,
+    informant TEXT,
+    -- Funeral fields
+    deceased_name TEXT,
+    age INTEGER,
+    gender TEXT CHECK (gender IN ('male', 'female')),
+    civil_status TEXT CHECK (civil_status IN ('single', 'married', 'widowed', 'divorced', 'separated')),
+    spouse_name TEXT,
+    address TEXT,
+    description TEXT,
+    occupation TEXT,
+    church_involvement TEXT,
+    cause_of_death TEXT,
+    date_of_death DATE,
+    informant_name TEXT,
+    informant_contact TEXT,
+    -- Mass Card fields
+    mass_card_deceased_name TEXT,
+    mass_card_from TEXT,
+    -- Sick Call fields
+    patient_name TEXT,
+    patient_age INTEGER,
+    patient_sex TEXT CHECK (patient_sex IN ('male', 'female')),
+    patient_civil_status TEXT CHECK (patient_civil_status IN ('single', 'married', 'widowed', 'divorced', 'separated')),
+    patient_status TEXT CHECK (patient_status IN ('critical', 'serious', 'stable', 'improving', 'terminal')),
+    contact_person TEXT,
+    contact_number TEXT
 );
 
 -- Create indexes for better performance
@@ -82,6 +129,9 @@ CREATE INDEX IF NOT EXISTS idx_service_requests_status ON public.service_request
 CREATE INDEX IF NOT EXISTS idx_service_requests_type ON public.service_requests(request_type);
 CREATE INDEX IF NOT EXISTS idx_service_requests_created_at ON public.service_requests(created_at);
 CREATE INDEX IF NOT EXISTS idx_service_requests_processed_by ON public.service_requests(processed_by);
+CREATE INDEX IF NOT EXISTS idx_service_requests_child_name ON public.service_requests(child_name);
+CREATE INDEX IF NOT EXISTS idx_service_requests_deceased_name ON public.service_requests(deceased_name);
+CREATE INDEX IF NOT EXISTS idx_service_requests_patient_name ON public.service_requests(patient_name);
 
 -- Enable Row Level Security (RLS) for service requests
 ALTER TABLE public.service_requests ENABLE ROW LEVEL SECURITY;
