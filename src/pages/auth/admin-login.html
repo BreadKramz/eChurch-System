@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="../../assets/images/Perpetual Church Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../../assets/css/public.css">
+</head>
+<body class="font-body bg-gradient-to-br from-gray-50 via-white to-red-50 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center h-20">
+                <!-- Centered Mobile Header -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer flex-shrink-0">
+                        <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div class="min-w-0">
+                        <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
+                        <p class="text-sm text-gray-600 font-body truncate">Redemptorist Church • Dumaguete City</p>
+                    </div>
+                    <a href="../public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium flex-shrink-0 ml-2">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
+                </div>
+
+                <!-- Desktop Header -->
+                <div class="hidden lg:flex items-center justify-between w-full">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                            <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
+                            <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
+                        </div>
+                    </div>
+                    <a href="../public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Admin Login Section -->
+    <section class="py-8 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-md mx-auto">
+            <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-red-600 to-red-700 text-white p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-lg">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h2 class="text-xl font-display font-bold mb-1">Administrator Login</h2>
+                    <p class="text-white/90 text-sm">Authorized personnel only</p>
+                    <div class="mt-3 p-2 bg-white/10 rounded-lg border border-white/20">
+                        <p class="text-white/80 text-xs">This area is restricted to church administrators.</p>
+                    </div>
+                </div>
+
+                <!-- Admin Login Form -->
+                <div class="p-6">
+                    <!-- Success Message (Hidden by default) -->
+                    <div id="success-message" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-check text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Admin Access Granted</h3>
+                            <p class="text-gray-600 mb-6">Welcome, Administrator. Redirecting to admin panel...</p>
+                            <div class="w-full bg-green-600 h-1 rounded-full overflow-hidden">
+                                <div id="progress-bar" class="h-full bg-green-400 transition-all duration-3000 ease-out" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Error Message (Hidden by default) -->
+                    <div id="error-message" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Access Denied</h3>
+                            <p class="text-gray-600 mb-6">Invalid administrator credentials. Please try again.</p>
+                            <button
+                                onclick="closeErrorMessage()"
+                                class="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                            >
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+
+                    <form id="adminLoginForm" class="space-y-4">
+                        <div>
+                            <label for="admin-email" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-envelope text-red-600 mr-1"></i>Administrator Email
+                            </label>
+                            <input
+                                type="email"
+                                id="admin-email"
+                                name="email"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                placeholder="admin@church.com"
+                            >
+                        </div>
+
+                        <div>
+                            <label for="admin-password" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-lock text-red-600 mr-1"></i>Password
+                            </label>
+                            <div class="relative">
+                                <input
+                                    type="password"
+                                    id="admin-password"
+                                    name="password"
+                                    required
+                                    class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                    placeholder="Enter admin password"
+                                >
+                                <button
+                                    type="button"
+                                    id="toggle-admin-password"
+                                    class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-red-600 transition-colors text-sm"
+                                    aria-label="Toggle password visibility"
+                                >
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="access-code" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-key text-red-600 mr-1"></i>Access Code
+                            </label>
+                            <input
+                                type="password"
+                                id="access-code"
+                                name="accessCode"
+                                required
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-red-500 focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                placeholder="Enter access code"
+                            >
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="admin-login-btn"
+                            class="w-full bg-red-600 text-white py-2.5 px-4 rounded-lg font-bold text-base hover:bg-red-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        >
+                            <i class="fas fa-sign-in-alt mr-2"></i>Access Admin Panel
+                        </button>
+                    </form>
+
+
+                    <!-- Back to User Login -->
+                    <div class="mt-6 text-center">
+                        <a
+                            href="login.html"
+                            class="inline-flex items-center gap-2 text-gray-600 hover:text-primary transition-colors font-medium"
+                        >
+                            <i class="fas fa-arrow-left"></i>
+                            Back to User Login
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-6 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <p class="text-white/80 text-sm">
+                &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    <script src="../../assets/js/auth.js"></script>
+    <script>
+        // Admin login functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const adminLoginForm = document.getElementById('adminLoginForm');
+            const togglePasswordBtn = document.getElementById('toggle-admin-password');
+
+            // Toggle password visibility
+            if (togglePasswordBtn) {
+                togglePasswordBtn.addEventListener('click', function() {
+                    const passwordInput = document.getElementById('admin-password');
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+                });
+            }
+
+            // Admin form submission
+            if (adminLoginForm) {
+                adminLoginForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(this);
+                    const email = formData.get('email').toLowerCase().trim();
+                    const password = formData.get('password');
+                    const accessCode = formData.get('accessCode');
+
+                    // Demo admin credentials
+                    const adminCredentials = {
+                        email: 'admin@ompchurchdumaguete.com',
+                        password: 'admin123',
+                        accessCode: 'admin123'
+                    };
+
+                    // Check credentials
+                    if (email === adminCredentials.email &&
+                        password === adminCredentials.password &&
+                        accessCode === adminCredentials.accessCode) {
+
+                        // Store admin session
+                        localStorage.setItem('admin_session', JSON.stringify({
+                            email: email,
+                            role: 'administrator',
+                            loginTime: new Date().toISOString()
+                        }));
+
+                        // Show success message and redirect
+                        showSuccessMessage('Admin Access Granted', 'Welcome, Administrator. Redirecting to admin panel...');
+                        setTimeout(() => {
+                            window.location.href = '../admin/admin-panel.html';
+                        }, 3000);
+                    } else {
+                        showErrorMessage('Access Denied', 'Invalid administrator credentials. Please try again.');
+                    }
+                });
+            }
+
+            // Add entrance animation
+            const adminCard = document.querySelector('.bg-white\\/95');
+            if (adminCard) {
+                adminCard.style.opacity = '0';
+                adminCard.style.transform = 'translateY(30px)';
+                setTimeout(() => {
+                    adminCard.style.transition = 'all 0.8s ease-out';
+                    adminCard.style.opacity = '1';
+                    adminCard.style.transform = 'translateY(0)';
+                }, 200);
+            }
+        });
+    </script>
+</body>
+</html>

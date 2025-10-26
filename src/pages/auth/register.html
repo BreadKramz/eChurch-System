@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="../../assets/images/Perpetual Church Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../../assets/css/public.css">
+</head>
+<body class="font-body bg-gradient-to-br from-gray-50 via-white to-primary/5 min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center h-20">
+                <!-- Centered Mobile Header -->
+                <div class="flex items-center gap-3 lg:hidden">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer flex-shrink-0">
+                        <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </div>
+                    <div class="min-w-0">
+                        <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
+                        <p class="text-sm text-gray-600 font-body truncate">Redemptorist Church • Dumaguete City</p>
+                    </div>
+                    <a href="../../pages/public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium flex-shrink-0 ml-2">
+                        <i class="fas fa-arrow-left text-lg"></i>
+                    </a>
+                </div>
+
+                <!-- Desktop Header -->
+                <div class="hidden lg:flex items-center justify-between w-full">
+                    <div class="flex items-center gap-4">
+                        <div class="w-12 h-12 bg-primary rounded-full flex items-center justify-center text-white text-2xl shadow-lg">
+                            <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                        </div>
+                        <div>
+                            <h1 class="text-xl font-display text-primary font-bold leading-tight">Our Mother of Perpetual Help</h1>
+                            <p class="text-xs text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
+                        </div>
+                    </div>
+                    <a href="../../pages/public/index.html" class="text-primary hover:text-primary/80 transition-colors font-medium">
+                        <i class="fas fa-arrow-left mr-2"></i>Back to Home
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Registration Section -->
+    <section class="py-6 px-4 sm:px-6 lg:px-8">
+        <div class="max-w-lg mx-auto">
+            <div class="bg-white/95 backdrop-blur-sm rounded-3xl shadow-2xl border border-white/20 overflow-hidden">
+                <!-- Header -->
+                <div class="bg-gradient-to-r from-primary to-secondary text-white p-6 text-center">
+                    <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center text-3xl mx-auto mb-3 shadow-lg">
+                        <i class="fas fa-user-plus"></i>
+                    </div>
+                    <h2 class="text-xl font-display font-bold mb-1">Create Account</h2>
+                    <p class="text-white/90 text-sm">Join our parish community and stay connected</p>
+                </div>
+
+                <!-- Registration Form -->
+                <div class="p-6">
+                    <!-- Success Message (Hidden by default) -->
+                    <div id="success-message" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                            <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-check text-green-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Account Created Successfully!</h3>
+                            <p class="text-gray-600 mb-6">Welcome to our church community!</p>
+                            <button
+                                onclick="closeSuccessMessage()"
+                                class="bg-green-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-green-700 transition-all duration-300"
+                            >
+                                Continue to Login
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Error Message (Hidden by default) -->
+                    <div id="error-message" class="hidden fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+                        <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                            <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                <i class="fas fa-exclamation-triangle text-red-600 text-2xl"></i>
+                            </div>
+                            <h3 class="text-xl font-bold text-gray-900 mb-2">Registration Failed</h3>
+                            <p class="text-gray-600 mb-6">An account with this email already exists. Please use a different email or try logging in.</p>
+                            <button
+                                onclick="closeErrorMessage()"
+                                class="bg-red-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                            >
+                                Try Again
+                            </button>
+                        </div>
+                    </div>
+                    <form id="registerForm" class="space-y-4">
+                        <!-- Personal Information -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="first-name" class="block text-sm font-semibold text-gray-700 mb-1">
+                                    <i class="fas fa-user text-primary mr-1"></i>First Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="first-name"
+                                    name="firstName"
+                                    required
+                                    minlength="2"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                    placeholder="Enter your first name"
+                                >
+                            </div>
+                            <div>
+                                <label for="last-name" class="block text-sm font-semibold text-gray-700 mb-1">
+                                    <i class="fas fa-user text-primary mr-1"></i>Last Name *
+                                </label>
+                                <input
+                                    type="text"
+                                    id="last-name"
+                                    name="lastName"
+                                    required
+                                    minlength="2"
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                    placeholder="Enter your last name"
+                                >
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="register-email" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-envelope text-primary mr-1"></i>Email Address *
+                            </label>
+                            <div class="flex gap-2">
+                                <input
+                                    type="email"
+                                    id="register-email"
+                                    name="email"
+                                    required
+                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                    placeholder="your.email@example.com"
+                                >
+                                <button
+                                    type="button"
+                                    id="send-verification-btn"
+                                    class="px-4 py-2 bg-primary text-white rounded-lg font-medium text-sm hover:bg-primary/90 transition-all duration-300 whitespace-nowrap"
+                                >
+                                    <i class="fas fa-paper-plane mr-1"></i>Send Code
+                                </button>
+                            </div>
+                            <p class="text-xs text-gray-500 mt-1">We'll send a 6-digit verification code to your email</p>
+                        </div>
+
+                        <div id="verification-section" class="hidden">
+                            <label for="verification-code" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-key text-primary mr-1"></i>Verification Code *
+                            </label>
+                            <div class="flex gap-2">
+                                <input
+                                    type="text"
+                                    id="verification-code"
+                                    name="verificationCode"
+                                    maxlength="6"
+                                    pattern="[0-9]{6}"
+                                    class="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm text-center text-lg font-mono tracking-widest"
+                                    placeholder="000000"
+                                >
+                                <button
+                                    type="button"
+                                    id="verify-code-btn"
+                                    class="px-4 py-2 bg-green-600 text-white rounded-lg font-medium text-sm hover:bg-green-600/90 transition-all duration-300 whitespace-nowrap"
+                                >
+                                    <i class="fas fa-check mr-1"></i>Verify
+                                </button>
+                            </div>
+                            <div id="verification-status" class="mt-2 text-xs"></div>
+                            <button
+                                type="button"
+                                id="resend-code-btn"
+                                class="mt-2 text-primary hover:text-primary/80 text-xs font-medium hidden"
+                            >
+                                <i class="fas fa-redo mr-1"></i>Resend Code
+                            </button>
+                        </div>
+
+                        <div>
+                            <label for="contact-number" class="block text-sm font-semibold text-gray-700 mb-1">
+                                <i class="fas fa-phone text-primary mr-1"></i>Contact Number *
+                            </label>
+                            <input
+                                type="tel"
+                                id="contact-number"
+                                name="contactNumber"
+                                required
+                                pattern="[0-9+\-\s\(\)]*"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                placeholder="(035) 123-4567"
+                            >
+                        </div>
+
+                        <!-- Password Section -->
+                        <div class="grid md:grid-cols-2 gap-4">
+                            <div>
+                                <label for="register-password" class="block text-sm font-semibold text-gray-700 mb-1">
+                                    <i class="fas fa-lock text-primary mr-1"></i>Password *
+                                </label>
+                                <div class="relative">
+                                    <input
+                                        type="password"
+                                        id="register-password"
+                                        name="password"
+                                        required
+                                        minlength="6"
+                                        class="w-full px-3 py-2 pr-10 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                        placeholder="Create a password"
+                                    >
+                                    <button
+                                        type="button"
+                                        id="toggle-register-password"
+                                        class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-primary transition-colors text-sm"
+                                        aria-label="Toggle password visibility"
+                                    >
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <div id="password-strength" class="mt-2 text-xs">
+                                    <div class="flex gap-1">
+                                        <div class="flex-1 h-1 bg-gray-200 rounded-full" id="strength-1"></div>
+                                        <div class="flex-1 h-1 bg-gray-200 rounded-full" id="strength-2"></div>
+                                        <div class="flex-1 h-1 bg-gray-200 rounded-full" id="strength-3"></div>
+                                        <div class="flex-1 h-1 bg-gray-200 rounded-full" id="strength-4"></div>
+                                    </div>
+                                    <p class="text-gray-500 mt-1" id="strength-text">Password must be at least 6 characters</p>
+                                </div>
+                            </div>
+                            <div>
+                                <label for="confirm-password" class="block text-sm font-semibold text-gray-700 mb-1">
+                                    <i class="fas fa-lock text-primary mr-1"></i>Confirm Password *
+                                </label>
+                                <input
+                                    type="password"
+                                    id="confirm-password"
+                                    name="confirmPassword"
+                                    required
+                                    class="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition-all duration-200 text-gray-900 placeholder-gray-500 text-sm"
+                                    placeholder="Confirm your password"
+                                >
+                                <div id="password-match" class="mt-2 text-xs text-red-500 hidden">
+                                    Passwords do not match
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Terms and Conditions -->
+                        <div class="bg-gray-50 p-3 rounded-lg border border-gray-200">
+                            <label class="flex items-start">
+                                <input
+                                    type="checkbox"
+                                    id="terms-agreement"
+                                    name="termsAgreement"
+                                    required
+                                    class="mt-1 rounded border-gray-300 text-primary focus:ring-primary w-3 h-3"
+                                >
+                                <span class="ml-2 text-xs text-gray-700">
+                                    I agree to the <a href="#" class="text-primary hover:text-primary/80 font-medium">Terms of Service</a> and <a href="#" class="text-primary hover:text-primary/80 font-medium">Privacy Policy</a>.
+                                </span>
+                            </label>
+                        </div>
+
+                        <button
+                            type="submit"
+                            id="register-btn"
+                            class="w-full bg-primary text-white py-2.5 px-4 rounded-lg font-bold text-base hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5"
+                        >
+                            <i class="fas fa-user-plus mr-2"></i>Create Account
+                        </button>
+                    </form>
+
+                    <!-- Divider -->
+                    <div class="mt-6 mb-4">
+                        <div class="relative">
+                            <div class="absolute inset-0 flex items-center">
+                                <div class="w-full border-t border-gray-300"></div>
+                            </div>
+                            <div class="relative flex justify-center text-xs">
+                                <span class="px-3 bg-white text-gray-500">Already have an account?</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Login Link -->
+                    <div class="text-center">
+                        <a
+                            href="login.html"
+                            class="inline-flex items-center gap-2 bg-secondary text-white px-4 py-2 rounded-lg font-bold text-sm hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                        >
+                            <i class="fas fa-sign-in-alt"></i>
+                            Sign In
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-secondary text-white py-4 shadow-inner mt-auto">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <!-- Footer content removed as requested -->
+
+            <div class="border-t border-white/10 pt-3 text-center">
+                <p class="text-white/80 text-xs sm:text-sm tracking-wide">
+                    &copy; 2025 Our Mother of Perpetual Help Redemptorist Church - Dumaguete. All rights reserved.
+                </p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard - Our Mother of Perpetual Help Redemptorist Church</title>
+    <link rel="icon" type="image/x-icon" href="../../assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="../../assets/images/Perpetual Church Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                        'slide-up': 'slideUp 0.6s ease-out forwards'
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(30px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        },
+                        slideUp: {
+                            '0%': { opacity: '0', transform: 'translateY(50px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="../../assets/css/public.css">
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Sidebar -->
+    <div class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg border-r border-gray-200 dashboard-sidebar transform -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out" id="sidebar">
+        <!-- Sidebar Header -->
+        <div class="flex items-center justify-center h-20 px-4 bg-gradient-to-r from-primary to-secondary border-b border-gray-200">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center text-white">
+                    <img src="../../assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                </div>
+                <div class="text-white">
+                    <h3 class="font-display font-bold text-sm leading-tight">User Dashboard</h3>
+                    <p class="text-xs opacity-90">Parish Member</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Navigation Menu -->
+        <nav class="flex-1 px-4 py-6 space-y-2">
+            <a href="#dashboard" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-tachometer-alt text-primary text-lg"></i>
+                <span class="font-medium">Dashboard</span>
+            </a>
+
+            <a href="#announcements" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-bullhorn text-primary text-lg"></i>
+                <span class="font-medium">Announcements</span>
+            </a>
+
+            <a href="#events" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-calendar-alt text-primary text-lg"></i>
+                <span class="font-medium">Events</span>
+            </a>
+
+            <a href="#services" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-certificate text-primary text-lg"></i>
+                <span class="font-medium">Services</span>
+            </a>
+
+            <a href="#my-requests" class="flex items-center gap-3 px-4 py-3 text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-all duration-200 group">
+                <i class="fas fa-list text-primary text-lg"></i>
+                <span class="font-medium">My Requests</span>
+            </a>
+
+        </nav>
+
+    </div>
+
+    <!-- Main Content -->
+    <div class="md:ml-64 min-h-screen dashboard-main">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200 px-4 md:px-6 py-4">
+            <div class="flex items-center gap-4 w-full">
+                <!-- Mobile Menu Button -->
+                <button class="md:hidden text-2xl text-primary p-2 hover:bg-primary/10 rounded-lg transition-all duration-200 flex-shrink-0" id="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Church Name -->
+                <div class="flex-1 min-w-0 hidden md:block">
+                    <h1 class="text-xl md:text-2xl font-display font-bold text-primary truncate">Our Mother of Perpetual Help</h1>
+                    <p class="text-sm text-gray-600 font-body">Redemptorist Church • Dumaguete City</p>
+                </div>
+
+                <!-- Mobile Church Name -->
+                <div class="flex-1 min-w-0 md:hidden">
+                    <h1 class="text-lg font-display font-bold text-primary truncate">OMP Church</h1>
+                </div>
+
+                <!-- Profile with Name and Role -->
+                <div class="flex-shrink-0">
+                    <div class="relative">
+                        <button class="flex items-center gap-3 hover:bg-gray-50 rounded-lg p-2 transition-colors duration-200" id="profile-dropdown-btn">
+                            <div class="text-right">
+                                <p class="text-sm font-medium text-gray-900" id="user-name">Loading...</p>
+                                <p class="text-xs text-gray-500">Member</p>
+                            </div>
+                            <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <i class="fas fa-chevron-down text-gray-400 text-sm transition-transform duration-200" id="dropdown-icon"></i>
+                        </button>
+
+                        <!-- Logout Confirmation Modal -->
+                        <div id="logout-modal" class="fixed inset-0 bg-black/50 flex items-center justify-center z-50 hidden">
+                            <div class="bg-white rounded-2xl p-8 max-w-sm mx-4 text-center shadow-2xl">
+                                <div class="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                                    <i class="fas fa-sign-out-alt text-red-600 text-2xl"></i>
+                                </div>
+                                <h3 class="text-xl font-bold text-gray-900 mb-2">Confirm Logout</h3>
+                                <p class="text-gray-600 mb-6">Are you sure you want to log out of your account?</p>
+                                <div class="flex gap-3">
+                                    <button
+                                        onclick="closeLogoutModal()"
+                                        class="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-all duration-300"
+                                    >
+                                        Cancel
+                                    </button>
+                                    <button
+                                        onclick="confirmLogout()"
+                                        class="flex-1 bg-red-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-red-700 transition-all duration-300"
+                                    >
+                                        Logout
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Dropdown Menu -->
+                        <div class="absolute right-0 top-full mt-2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50 hidden" id="profile-dropdown">
+                            <a href="#profile" class="flex items-center gap-3 px-4 py-3 text-gray-700 hover:bg-gray-50 hover:text-primary transition-colors duration-200">
+                                <i class="fas fa-user text-primary"></i>
+                                <span>My Profile</span>
+                            </a>
+                            <hr class="border-gray-200 my-1">
+                            <button onclick="showLogoutModal()" class="w-full flex items-center gap-3 px-4 py-3 text-red-600 hover:bg-red-50 hover:text-red-700 transition-colors duration-200">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-4 md:p-6">
+            <div class="max-w-7xl mx-auto">
+                <!-- Content Display Area -->
+                <div id="content-area" class="bg-white rounded-lg shadow-lg border border-gray-100 p-6 md:p-8">
+                    <!-- Dashboard will be loaded here by JavaScript -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+
+    <script>
+        // Register Service Worker for PWA functionality
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('Service Worker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('Service Worker registration failed:', error);
+                    });
+            });
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="../../assets/js/supabase.js"></script>
+    <script src="../../assets/js/admin-utils.js"></script>
+    <script src="../../assets/js/dashboard.js"></script>
+</body>
+</html>
