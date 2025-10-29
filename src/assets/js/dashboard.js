@@ -171,8 +171,18 @@ function initializeLogout() {
 
             if (confirm('Are you sure you want to logout?')) {
                 try {
-                    await churchAuth.signOut();
-                    // Redirect will happen automatically via auth state change
+                    console.log('Starting logout process...');
+                    const result = await churchAuth.signOut();
+                    console.log('Logout result:', result);
+
+                    if (result.success) {
+                        console.log('Logout successful, redirecting to login...');
+                        // Force redirect to login page
+                        window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
+                    } else {
+                        console.error('Logout failed:', result.error);
+                        showDashboardMessage('Failed to logout. Please try again.', 'error');
+                    }
                 } catch (error) {
                     console.error('Logout error:', error);
                     showDashboardMessage('Failed to logout. Please try again.', 'error');
