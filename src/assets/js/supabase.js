@@ -63,7 +63,7 @@ class ChurchAuth {
                     // Only redirect to dashboard if currently on auth pages AND not already on dashboard
                     // AND user successfully authenticated (not just checking existing session)
                     if (event === 'SIGNED_IN' && window.location.pathname.includes('/auth/') && !window.location.pathname.includes('/dashboard/')) {
-                        window.location.href = '/src/pages/dashboard/index.html';
+                        window.location.href = 'https://e-church-system.vercel.app/src/pages/dashboard/index.html';
                     }
                 }
                 break;
@@ -76,9 +76,9 @@ class ChurchAuth {
                 localStorage.removeItem('userId');
                 localStorage.removeItem('rememberMe');
 
-                // Redirect to home page if on dashboard
+                // Redirect to login page if on dashboard (for Vercel production)
                 if (window.location.pathname.includes('/dashboard/')) {
-                    window.location.href = '/src/pages/public/index.html';
+                    window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
                 }
                 break;
 

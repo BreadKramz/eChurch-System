@@ -19,7 +19,7 @@ async function initializeDashboard() {
         // Check if user is authenticated
         if (!churchAuth.isAuthenticated()) {
             console.log('User not authenticated, redirecting to login');
-            window.location.href = '/src/pages/auth/login.html';
+            window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
             return;
         }
 
@@ -27,7 +27,7 @@ async function initializeDashboard() {
         currentUser = churchAuth.getCurrentUser();
         if (!currentUser) {
             console.log('No current user, redirecting to login');
-            window.location.href = '/src/pages/auth/login.html';
+            window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
             return;
         }
 
