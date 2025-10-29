@@ -172,20 +172,30 @@ function initializeLogout() {
             if (confirm('Are you sure you want to logout?')) {
                 try {
                     console.log('Starting logout process...');
-                    const result = await churchAuth.signOut();
-                    console.log('Logout result:', result);
 
-                    if (result.success) {
-                        console.log('Logout successful, redirecting to login...');
-                        // Force redirect to login page
-                        window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
-                    } else {
-                        console.error('Logout failed:', result.error);
-                        showDashboardMessage('Failed to logout. Please try again.', 'error');
+                    // Clear local storage immediately
+                    localStorage.removeItem('isLoggedIn');
+                    localStorage.removeItem('userEmail');
+                    localStorage.removeItem('userId');
+                    localStorage.removeItem('rememberMe');
+
+                    console.log('Local storage cleared, signing out from Supabase...');
+
+                    // Sign out from Supabase
+                    const { error } = await supabaseClient.auth.signOut();
+                    if (error) {
+                        console.error('Supabase signout error:', error);
                     }
+
+                    console.log('Supabase signout completed, forcing redirect to login...');
+
+                    // Force immediate redirect to login page
+                    window.location.replace('https://e-church-system.vercel.app/src/pages/auth/login.html');
+
                 } catch (error) {
                     console.error('Logout error:', error);
-                    showDashboardMessage('Failed to logout. Please try again.', 'error');
+                    // Even if there's an error, redirect to login
+                    window.location.replace('https://e-church-system.vercel.app/src/pages/auth/login.html');
                 }
             }
         });
