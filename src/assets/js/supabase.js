@@ -76,10 +76,9 @@ class ChurchAuth {
                 localStorage.removeItem('userId');
                 localStorage.removeItem('rememberMe');
 
-                // Redirect to login page if on dashboard (for Vercel production)
-                if (window.location.pathname.includes('/dashboard/')) {
-                    window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
-                }
+                // Always redirect to login page when signed out (for Vercel production)
+                console.log('User signed out, redirecting to login page');
+                window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
                 break;
 
             case 'TOKEN_REFRESHED':
