@@ -59,12 +59,12 @@ async function loadUserProfile() {
         console.log('Profile loaded:', profile);
 
         if (profile) {
-            // Update sidebar user info
+            // Update sidebar user info - show full name instead of email
             const fullName = profile.full_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
             document.getElementById('user-name').textContent = fullName || 'Parishioner';
-            document.getElementById('user-email').textContent = currentUser.email;
+            document.getElementById('user-email').textContent = fullName || 'Parishioner'; // Show full name instead of email
 
-            // Update welcome message
+            // Update welcome message - show first name
             document.getElementById('welcome-name').textContent = profile.first_name || 'Parishioner';
 
             // Update profile section
@@ -80,16 +80,16 @@ async function loadUserProfile() {
             }
         } else {
             console.log('No profile found, using fallback');
-            // Fallback to basic user info
+            // Fallback to basic user info - show name instead of email
             document.getElementById('user-name').textContent = 'Parishioner';
-            document.getElementById('user-email').textContent = currentUser.email;
+            document.getElementById('user-email').textContent = 'Parishioner'; // Show name instead of email
             document.getElementById('welcome-name').textContent = 'Parishioner';
         }
     } catch (error) {
         console.error('Error loading user profile:', error);
-        // Fallback to basic user info
+        // Fallback to basic user info - show name instead of email
         document.getElementById('user-name').textContent = 'Parishioner';
-        document.getElementById('user-email').textContent = currentUser.email;
+        document.getElementById('user-email').textContent = 'Parishioner'; // Show name instead of email
         document.getElementById('welcome-name').textContent = 'Parishioner';
     }
 }

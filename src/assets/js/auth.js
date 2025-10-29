@@ -404,10 +404,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (result.success) {
                     showPopupMessage(result.message, 'success');
 
-                    // Redirect to dashboard after successful login
-                    setTimeout(() => {
-                        window.location.href = '/src/pages/dashboard/index.html';
-                    }, 1500);
+                    // Don't redirect here - let Supabase auth state change handle it
+                    // The auth state change will redirect to dashboard automatically
+                    console.log('Login successful, auth state change will handle redirect');
                 } else {
                     // Error is already shown via popup in supabase.js
                     // No need to show again here
