@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Dashboard - Our Mother of Perpetual Help Redemptorist Church - Dumaguete City">
+    <meta name="keywords" content="Catholic Church, Dumaguete, Redemptorist, dashboard, account, profile">
+    <meta name="author" content="Our Mother of Perpetual Help Redemptorist Church">
+    <title>Dashboard - Our Mother of Perpetual Help Church</title>
+    <link rel="icon" type="image/x-icon" href="/src/assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="/src/assets/images/Perpetual Church Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8B4513',
+                        secondary: '#2c3e50',
+                        accent: '#34495e'
+                    },
+                    fontFamily: {
+                        'display': ['Playfair Display', 'serif'],
+                        'body': ['Roboto', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/src/assets/css/public.css">
+</head>
+<body class="font-body bg-gray-50">
+    <!-- Sidebar -->
+    <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
+        <div class="flex flex-col h-full">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-center h-20 px-4 bg-primary text-white">
+                <div class="flex items-center gap-3">
+                    <img src="/src/assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-10 h-10 rounded-full object-cover">
+                    <div class="min-w-0">
+                        <h1 class="text-sm font-display font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
+                        <p class="text-xs opacity-90 truncate">Redemptorist Church</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- User Profile Section -->
+            <div class="px-4 py-4 border-b border-gray-200 bg-gray-50">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white text-sm font-bold">
+                        <span id="user-avatar">U</span>
+                    </div>
+                    <div class="min-w-0 flex-1">
+                        <p class="text-sm font-semibold text-gray-900 truncate" id="user-name">Loading...</p>
+                        <p class="text-xs text-gray-600 truncate" id="user-email">Loading...</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Navigation Menu -->
+            <nav class="flex-1 px-4 py-4 space-y-1">
+                <a href="#dashboard" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt text-primary text-sm"></i>
+                    <span>Dashboard</span>
+                </a>
+
+                <a href="#profile" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="profile">
+                    <i class="fas fa-user text-primary text-sm"></i>
+                    <span>My Profile</span>
+                </a>
+
+                <a href="#services" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="services">
+                    <i class="fas fa-certificate text-primary text-sm"></i>
+                    <span>Services</span>
+                </a>
+
+                <a href="#prayers" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="prayers">
+                    <i class="fas fa-praying-hands text-primary text-sm"></i>
+                    <span>Prayer Requests</span>
+                </a>
+
+                <a href="#events" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="events">
+                    <i class="fas fa-calendar-alt text-primary text-sm"></i>
+                    <span>Events</span>
+                </a>
+
+                <a href="#ministries" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="ministries">
+                    <i class="fas fa-users text-primary text-sm"></i>
+                    <span>Ministries</span>
+                </a>
+
+                <div class="border-t border-gray-200 my-4"></div>
+
+                <a href="#settings" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="settings">
+                    <i class="fas fa-cog text-primary text-sm"></i>
+                    <span>Settings</span>
+                </a>
+            </nav>
+
+            <!-- Logout Button -->
+            <div class="px-4 py-4 border-t border-gray-200">
+                <button id="logout-btn" class="w-full flex items-center gap-3 px-3 py-2 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 hover:text-red-700 transition-colors">
+                    <i class="fas fa-sign-out-alt text-sm"></i>
+                    <span>Logout</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Mobile Sidebar Overlay -->
+    <div id="sidebar-overlay" class="fixed inset-0 z-40 bg-black bg-opacity-50 lg:hidden hidden" onclick="closeSidebar()"></div>
+
+    <!-- Main Content -->
+    <div class="lg:ml-64">
+        <!-- Top Header -->
+        <header class="bg-white shadow-sm border-b border-gray-200 lg:hidden">
+            <div class="flex items-center justify-between h-16 px-4">
+                <button onclick="toggleSidebar()" class="text-gray-600 hover:text-primary transition-colors">
+                    <i class="fas fa-bars text-lg"></i>
+                </button>
+
+                <div class="flex items-center gap-3">
+                    <img src="/src/assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-8 h-8 rounded-full object-cover">
+                    <span class="text-sm font-display font-bold text-primary">OMP Church</span>
+                </div>
+
+                <div class="w-8"></div> <!-- Spacer for centering -->
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-4 lg:p-8">
+            <!-- Dashboard Section -->
+            <div id="dashboard-section" class="section-content">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Welcome to Your Dashboard</h1>
+                    <p class="text-gray-600">Manage your account and access church services</p>
+                </div>
+
+                <!-- Welcome Card -->
+                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-6 text-white mb-6">
+                    <div class="flex items-center gap-4">
+                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
+                            <i class="fas fa-church text-2xl"></i>
+                        </div>
+                        <div>
+                            <h2 class="text-xl font-display font-bold mb-1">Welcome back, <span id="welcome-name">Parishioner</span>!</h2>
+                            <p class="opacity-90">Thank you for being part of our church community</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Stats Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-primary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-certificate text-primary"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Services</p>
+                                <p class="text-lg font-bold text-gray-900">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-secondary/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-praying-hands text-secondary"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Prayers</p>
+                                <p class="text-lg font-bold text-gray-900">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-accent/10 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-calendar-alt text-accent"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Events</p>
+                                <p class="text-lg font-bold text-gray-900">0</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center">
+                                <i class="fas fa-users text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-600">Ministries</p>
+                                <p class="text-lg font-bold text-gray-900">0</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Recent Activity -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-display font-bold text-secondary mb-4">Recent Activity</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center gap-3 p-3 bg-gray-50 rounded-lg">
+                            <div class="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-plus text-primary text-sm"></i>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-sm font-medium text-gray-900">Account Created</p>
+                                <p class="text-xs text-gray-600">Welcome to our parish community!</p>
+                            </div>
+                            <span class="text-xs text-gray-500">Just now</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Section -->
+            <div id="profile-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">My Profile</h1>
+                    <p class="text-gray-600">Manage your personal information</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <h3 class="text-lg font-display font-bold text-secondary mb-4">Personal Information</h3>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
+                            <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-first-name">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Last Name</label>
+                            <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-last-name">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                            <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-email">Loading...</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-phone">Loading...</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div id="services-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Church Services</h1>
+                    <p class="text-gray-600">Request sacramental services and certificates</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600 text-center py-8">Service request functionality coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Prayers Section -->
+            <div id="prayers-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Prayer Requests</h1>
+                    <p class="text-gray-600">Submit and view prayer intentions</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600 text-center py-8">Prayer request functionality coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div id="events-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Church Events</h1>
+                    <p class="text-gray-600">View upcoming events and activities</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600 text-center py-8">Events functionality coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Ministries Section -->
+            <div id="ministries-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Ministries</h1>
+                    <p class="text-gray-600">Connect with church ministries and groups</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600 text-center py-8">Ministries functionality coming soon...</p>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settings-section" class="section-content hidden">
+                <div class="mb-6">
+                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Settings</h1>
+                    <p class="text-gray-600">Manage your account preferences</p>
+                </div>
+
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <p class="text-gray-600 text-center py-8">Settings functionality coming soon...</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/src/assets/js/supabase.js"></script>
+    <script src="/src/assets/js/dashboard.js"></script>
+</body>
+</html>
