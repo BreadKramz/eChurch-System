@@ -1,7 +1,7 @@
 // Service Worker for Our Mother of Perpetual Help Church PWA
-const CACHE_NAME = 'omp-church-v1.0.0';
-const STATIC_CACHE = 'omp-church-static-v1.0.0';
-const DYNAMIC_CACHE = 'omp-church-dynamic-v1.0.0';
+const CACHE_NAME = 'omp-church-v1.0.1'; // bump version to force SW update on deploy
+const STATIC_CACHE = 'omp-church-static-v1.0.1';
+const DYNAMIC_CACHE = 'omp-church-dynamic-v1.0.1';
 
 // Files to cache immediately
 const STATIC_ASSETS = [
@@ -67,6 +67,32 @@ self.addEventListener('fetch', (event) => {
 
   // Skip cross-origin requests and enforce HTTPS
   if (url.origin !== location.origin || url.protocol !== 'https:') {
+    return;
+  }
+
+  // Network-first for navigations/HTML documents to ensure new deploys are visible
+  if (
+    request.mode === 'navigate' ||
+    request.destination === 'document' ||
+    (request.headers.get('accept') || '').includes('text/html')
+  ) {
+    event.respondWith(
+      fetch(request)
+        .then((response) => {
+          // Cache the fresh response for offline fallback
+          const responseClone = response.clone();
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, responseClone);
+          });
+          return response;
+        })
+        .catch(() => {
+          // Fallback to cached page or home
+          return caches.match(request).then((cached) => {
+            return cached || caches.match('/src/pages/public/index.html');
+          });
+        })
+    );
     return;
   }
 
@@ -171,4 +197,15 @@ self.addEventListener('notificationclick', (event) => {
   event.waitUntil(
     clients.openWindow('/')
   );
+});
+
+// Support "SKIP_WAITING" from the page to activate new SW immediately
+self.addEventListener('message', (event) => {
+  try {
+    if (event && event.data && event.data.type === 'SKIP_WAITING') {
+      self.skipWaiting();
+    }
+  } catch (e) {
+    // no-op
+  }
 });

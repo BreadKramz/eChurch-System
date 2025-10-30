@@ -105,6 +105,23 @@
                 navigator.serviceWorker.register('/sw.js')
                     .then(function(registration) {
                         console.log('Service Worker registered successfully:', registration.scope);
+
+                        // Force check for updates on load
+                        try { registration.update(); } catch (e) {}
+
+                        // If a new SW is found, wait for install then activate immediately and reload
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            if (!newWorker) return;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    // Ask the waiting SW to skip waiting and take control
+                                    newWorker.postMessage({ type: 'SKIP_WAITING' });
+                                    // Reload to pick up new assets
+                                    window.location.reload();
+                                }
+                            });
+                        });
                     })
                     .catch(function(error) {
                         console.log('Service Worker registration failed:', error);
