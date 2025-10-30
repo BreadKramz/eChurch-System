@@ -44,9 +44,9 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-center items-center h-20">
                 <div class="flex items-center gap-3">
-                    <a id="admin-logo-link" href="../admin/login.html" title="Admin Login" onclick="window.location.href='../admin/login.html'; return false;" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer" aria-label="Admin login">
+                    <div id="admin-logo-link" title="Admin Login" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg cursor-pointer" aria-label="Admin login">
                         <img src="/src/assets/images/Perpetual Church Logo.png" alt="Our Mother of Perpetual Help Church Logo" class="w-full h-full rounded-full object-cover">
-                    </a>
+                    </div>
                     <div class="min-w-0">
                         <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
                         <p class="text-sm text-gray-600 font-body truncate">Redemptorist Church • Dumaguete City</p>
@@ -136,14 +136,32 @@
     <script src="/src/assets/js/supabase.js"></script>
     <script src="/src/assets/js/auth.js"></script>
 <script>
-  // Extra safety: in case anchor navigation is prevented by SW or other handlers
+  // Admin login trigger: click logo 5 times to access admin login
   (function() {
+    var clickCount = 0;
+    var clickTimeout;
+
     document.addEventListener('DOMContentLoaded', function() {
       var el = document.getElementById('admin-logo-link');
       if (el) {
         el.addEventListener('click', function(e) {
           e.preventDefault();
-          window.location.href = '../admin/login.html';
+          clickCount++;
+
+          // Reset counter after 3 seconds of no clicks
+          clearTimeout(clickTimeout);
+          clickTimeout = setTimeout(function() {
+            clickCount = 0;
+          }, 3000);
+
+          // On 5th click, navigate to admin login
+          if (clickCount >= 5) {
+            clickCount = 0; // Reset for next time
+            window.location.href = '../admin/login.html';
+          } else {
+            // Optional: visual feedback (e.g., subtle animation or message)
+            console.log('Admin access: ' + clickCount + '/5 clicks');
+          }
         });
       }
     });
