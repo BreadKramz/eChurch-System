@@ -65,6 +65,13 @@ async function loadUserProfile() {
             const roleText = roleRaw.charAt(0).toUpperCase() + roleRaw.slice(1);
             document.getElementById('user-name').textContent = roleText;
             document.getElementById('user-email').textContent = fullName; // Show full name instead of email
+            // Header mini profile
+            const headerRoleEl = document.getElementById('header-user-role');
+            const headerNameEl = document.getElementById('header-user-fullname');
+            const headerAvatarEl = document.getElementById('header-user-avatar');
+            if (headerRoleEl) headerRoleEl.textContent = roleText;
+            if (headerNameEl) headerNameEl.textContent = fullName || 'User';
+            if (headerAvatarEl) headerAvatarEl.textContent = (profile.first_name || fullName || 'U').charAt(0).toUpperCase();
 
             // Update welcome message - show first name
             document.getElementById('welcome-name').textContent = profile.first_name;
@@ -91,6 +98,13 @@ async function loadUserProfile() {
             // Update sidebar user info
             document.getElementById('user-name').textContent = 'Parishioner';
             document.getElementById('user-email').textContent = displayName;
+            // Header mini profile (fallback)
+            const headerRoleEl2 = document.getElementById('header-user-role');
+            const headerNameEl2 = document.getElementById('header-user-fullname');
+            const headerAvatarEl2 = document.getElementById('header-user-avatar');
+            if (headerRoleEl2) headerRoleEl2.textContent = 'Parishioner';
+            if (headerNameEl2) headerNameEl2.textContent = displayName || 'User';
+            if (headerAvatarEl2) headerAvatarEl2.textContent = (firstName || displayName || 'U').charAt(0).toUpperCase();
 
             // Update welcome message
             document.getElementById('welcome-name').textContent = firstName;
@@ -242,6 +256,13 @@ function initializeProfileEditing() {
                     document.getElementById('user-name').textContent = 'Parishioner';
                     document.getElementById('user-email').textContent = fullName;
                     document.getElementById('welcome-name').textContent = firstName;
+                    // Update header mini profile after save
+                    const headerRoleEl3 = document.getElementById('header-user-role');
+                    const headerNameEl3 = document.getElementById('header-user-fullname');
+                    const headerAvatarEl3 = document.getElementById('header-user-avatar');
+                    if (headerRoleEl3) headerRoleEl3.textContent = 'Parishioner';
+                    if (headerNameEl3) headerNameEl3.textContent = fullName || 'User';
+                    if (headerAvatarEl3) headerAvatarEl3.textContent = (firstName || 'U').charAt(0).toUpperCase();
 
                     // Update avatar
                     const avatarElement = document.getElementById('user-avatar');
@@ -531,6 +552,8 @@ function updatePageTitle(section) {
         dashboard: 'Dashboard - Our Mother of Perpetual Help Church',
         profile: 'My Profile - Our Mother of Perpetual Help Church',
         services: 'Services - Our Mother of Perpetual Help Church',
+        announcements: 'Announcements - Our Mother of Perpetual Help Church',
+        events: 'Events - Our Mother of Perpetual Help Church',
         settings: 'Settings - Our Mother of Perpetual Help Church'
     };
 
@@ -544,34 +567,82 @@ function initializeLogout() {
         logoutBtn.addEventListener('click', async function(e) {
             e.preventDefault();
 
-            if (confirm('Are you sure you want to logout?')) {
-                try {
-                    console.log('Starting logout process...');
+            // Use custom modal popup instead of browser alert
+            confirmLogout();
 
-                    // Clear local storage immediately
-                    localStorage.removeItem('isLoggedIn');
-                    localStorage.removeItem('userEmail');
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('rememberMe');
-
-                    console.log('Local storage cleared, signing out from Supabase...');
-
-                    // Sign out from Supabase
-                    const { error } = await supabaseClient.auth.signOut();
-                    if (error) {
-                        console.error('Supabase signout error:', error);
-                    }
-
-                    console.log('Supabase signout completed, forcing redirect to login...');
-
-                    // Force immediate redirect to login page
-                    window.location.replace('/src/pages/auth/login.html');
-
-                } catch (error) {
-                    console.error('Logout error:', error);
-                    // Even if there's an error, redirect to login
-                    window.location.replace('/src/pages/auth/login.html');
+            async function confirmLogout() {
+                // Remove any existing popup
+                const existingPopup = document.getElementById('logout-popup');
+                if (existingPopup) {
+                    existingPopup.remove();
                 }
+
+                // Create popup overlay
+                const overlay = document.createElement('div');
+                overlay.id = 'logout-popup';
+                overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+                overlay.innerHTML = `
+                    <div class="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-xl">
+                        <div class="flex items-center mb-4">
+                            <div class="flex-shrink-0 mr-3">
+                                <i class="fas fa-sign-out-alt text-red-500 text-2xl"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="text-lg font-semibold text-gray-800">Confirm Logout</h3>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-6">Are you sure you want to logout?</p>
+                        <div class="flex gap-2">
+                            <button onclick="closeLogoutPopup()" class="flex-1 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                                Cancel
+                            </button>
+                            <button onclick="proceedLogout()" class="flex-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+                                Logout
+                            </button>
+                        </div>
+                    </div>
+                `;
+
+                document.body.appendChild(overlay);
+
+                // Define functions in global scope for onclick handlers
+                window.closeLogoutPopup = function() {
+                    const popup = document.getElementById('logout-popup');
+                    if (popup) {
+                        popup.remove();
+                    }
+                };
+
+                window.proceedLogout = async function() {
+                    closeLogoutPopup();
+                    try {
+                        console.log('Starting logout process...');
+
+                        // Clear local storage immediately
+                        localStorage.removeItem('isLoggedIn');
+                        localStorage.removeItem('userEmail');
+                        localStorage.removeItem('userId');
+                        localStorage.removeItem('rememberMe');
+
+                        console.log('Local storage cleared, signing out from Supabase...');
+
+                        // Sign out from Supabase
+                        const { error } = await supabaseClient.auth.signOut();
+                        if (error) {
+                            console.error('Supabase signout error:', error);
+                        }
+
+                        console.log('Supabase signout completed, forcing redirect to login...');
+
+                        // Force immediate redirect to login page
+                        window.location.replace('/src/pages/auth/login.html');
+
+                    } catch (error) {
+                        console.error('Logout error:', error);
+                        // Even if there's an error, redirect to login
+                        window.location.replace('/src/pages/auth/login.html');
+                    }
+                };
             }
         });
     }

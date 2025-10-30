@@ -213,3 +213,43 @@ $$;
 -- Grant execute on RPCs to authenticated users (RLS still enforced where applicable)
 grant execute on function public.generate_admin_code() to authenticated;
 grant execute on function public.verify_admin_code(text) to authenticated;
+
+
+-- ===== ADMIN PRIVILEGE HELPERS (append) =====
+-- Allow admin users (profiles.user_role='admin') to manage all profiles via RLS-safe helper
+create or replace function public.is_admin(p_uid uuid)
+returns boolean
+language sql
+security definer
+set search_path = public, pg_catalog
+as $$
+  select exists (
+    select 1
+      from public.profiles
+     where id = p_uid
+       and user_role = 'admin'
+  );
+$$;
+
+-- Ensure DELETE privilege exists (RLS still restricts who can delete)
+grant delete on table public.profiles to authenticated;
+
+-- Admin policies: let admins select/update/delete ANY profile row
+create policy "profiles_admin_select_all"
+on public.profiles
+for select
+to authenticated
+using (public.is_admin(auth.uid()));
+
+create policy "profiles_admin_update_all"
+on public.profiles
+for update
+to authenticated
+using (public.is_admin(auth.uid()))
+with check (true);
+
+create policy "profiles_admin_delete_all"
+on public.profiles
+for delete
+to authenticated
+using (public.is_admin(auth.uid()));

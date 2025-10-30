@@ -305,37 +305,48 @@ class ChurchAuth {
         }
     }
 
-    // Reset password
-    async resetPassword(email) {
-        try {
-            // Use current origin to make it work in different environments
-            const currentOrigin = window.location.origin;
-            const resetUrl = `${currentOrigin}/src/pages/auth/reset-password.html`;
-
-            console.log('Sending password reset to:', email);
-            console.log('Reset URL:', resetUrl);
-
-            const { data, error } = await this.supabase.auth.resetPasswordForEmail(email, {
-                redirectTo: resetUrl
-            });
-
-            if (error) throw error;
-
-            console.log('Password reset email sent successfully');
-
-            return {
-                success: true,
-                message: 'Password reset email sent! Please check your inbox and click the reset link.'
-            };
-
-        } catch (error) {
-            console.error('Reset password error:', error);
-            return {
-                success: false,
-                error: error.message
-            };
+        // Reset password (robust across local/Vercel; avoids leaking whether email exists)
+        async resetPassword(email) {
+            try {
+                const origin = window.location.origin || '';
+                let options = undefined;
+    
+                // Only set redirectTo when we are on an http(s) origin (required by Supabase)
+                if (origin.startsWith('http://') || origin.startsWith('https://')) {
+                    options = { redirectTo: `${origin}/src/pages/auth/reset-password.html` };
+                }
+    
+                console.log('Sending password reset to:', email, 'with options:', options);
+    
+                // First attempt (with redirect when available)
+                let resp = await this.supabase.auth.resetPasswordForEmail(email, options);
+    
+                // If redirectTo is rejected (e.g., not whitelisted), retry without redirectTo
+                if (resp?.error && options) {
+                    const msg = (resp.error.message || '').toLowerCase();
+                    if (msg.includes('redirect') || msg.includes('url')) {
+                        console.warn('Reset password redirect error, retrying without redirectTo...');
+                        resp = await this.supabase.auth.resetPasswordForEmail(email);
+                    }
+                }
+    
+                if (resp?.error) throw resp.error;
+    
+                // Always return generic message to avoid user enumeration
+                return {
+                    success: true,
+                    message: 'If an account exists for this email, a password reset link has been sent.'
+                };
+    
+            } catch (error) {
+                console.error('Reset password error:', error);
+                // Return generic success-style message to avoid user enumeration, even on error
+                return {
+                    success: true,
+                    message: 'If an account exists for this email, a password reset link has been sent.'
+                };
+            }
         }
-    }
 
     // Update password
     async updatePassword(newPassword) {

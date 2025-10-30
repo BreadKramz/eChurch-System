@@ -99,6 +99,22 @@
     </style>
 
     <script>
+        // Forward Supabase recovery tokens coming to the root to the reset page (works for local 127.0.0.1)
+        (function() {
+            try {
+                var h = window.location.hash || '';
+                var s = window.location.search || '';
+                if (h && (h.indexOf('type=recovery') !== -1 || h.indexOf('access_token=') !== -1 || h.indexOf('token=') !== -1 || h.indexOf('token_hash=') !== -1)) {
+                    // Redirect immediately to reset page preserving all tokens
+                    window.location.replace('/src/pages/auth/reset-password.html' + s + h);
+                    return;
+                }
+            } catch (e) {
+                console.warn('Recovery forward failed:', e);
+            }
+        })();
+    </script>
+    <script>
         // Register Service Worker for PWA functionality
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
