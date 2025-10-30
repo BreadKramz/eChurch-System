@@ -24,6 +24,48 @@
     setTimeout(() => el.classList.add('hidden'), 6000);
   }
 
+  // Modal popup for admin messages
+  function showAdminPopup(message) {
+    try {
+      const existing = document.getElementById('admin-popup');
+      if (existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.id = 'admin-popup';
+      overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+      overlay.innerHTML = `
+        <div class="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-xl">
+          <div class="flex items-center mb-4">
+            <div class="flex-shrink-0 mr-3">
+              <i class="fas fa-info-circle text-primary text-2xl"></i>
+            </div>
+            <div class="flex-1">
+              <h3 class="text-lg font-semibold text-secondary">Information</h3>
+            </div>
+          </div>
+          <p class="text-gray-700 mb-6">${message}</p>
+          <div class="text-right">
+            <button class="px-4 py-2 bg-primary text-white rounded hover:bg-primary/90 transition-colors" id="admin-popup-ok">
+              OK
+            </button>
+          </div>
+        </div>
+      `;
+
+      document.body.appendChild(overlay);
+
+      const okBtn = document.getElementById('admin-popup-ok');
+      if (okBtn) {
+        okBtn.addEventListener('click', function () {
+          const popup = document.getElementById('admin-popup');
+          if (popup) popup.remove();
+        });
+      }
+    } catch (e) {
+      console.warn('Failed to show admin popup', e);
+    }
+  }
+
   function setBtnLoading(btn, loadingText) {
     if (!btn) return;
     btn.disabled = true;
@@ -122,9 +164,9 @@
             return;
           }
 
-          const generated = data; // text
-          // Display the code to the admin (as requested: server generates; we show it)
-          showFeedback(`Your Admin Code: ${generated} (valid for 10 minutes)`, 'success');
+          const generated = data; // text (not shown to user)
+          // Show a popup instruction instead of revealing the code
+          showAdminPopup('Contact Parish Staff for Admin Code');
 
           // Enable step 2
           enableCodeStep();
