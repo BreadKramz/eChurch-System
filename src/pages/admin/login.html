@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="description" content="Administrator Sign in - Our Mother of Perpetual Help Redemptorist Church - Dumaguete City">
+    <meta name="keywords" content="Catholic Church, Dumaguete, Redemptorist, admin, login, signin">
+    <meta name="author" content="Our Mother of Perpetual Help Redemptorist Church">
+    <title>Admin Sign In - Our Mother of Perpetual Help Church</title>
+    <link rel="icon" type="image/x-icon" href="/src/assets/images/favicon.ico.png">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta name="theme-color" content="#8B4513">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="OMP Church">
+    <link rel="apple-touch-icon" href="/src/assets/images/Perpetual Church Logo.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: { primary: '#8B4513', secondary: '#2c3e50', accent: '#34495e' },
+                    fontFamily: { 'display': ['Playfair Display','serif'], 'body': ['Roboto','sans-serif'] }
+                }
+            }
+        }
+    </script>
+    <link rel="stylesheet" href="/src/assets/css/public.css">
+</head>
+<body class="font-body bg-gradient-to-br from-primary/5 via-white to-secondary/5 min-h-screen">
+    <header class="bg-white shadow-lg border-b border-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-center items-center h-20">
+                <div class="flex items-center gap-3">
+                    <a href="/src/pages/admin/login.html" class="w-10 h-10 bg-primary rounded-full flex items-center justify-center text-white shadow-lg" aria-label="Admin login">
+                        <img src="/src/assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-full h-full rounded-full object-cover">
+                    </a>
+                    <div class="min-w-0">
+                        <h1 class="text-base font-display text-primary font-bold leading-tight truncate">Administrator</h1>
+                        <p class="text-sm text-gray-600 font-body truncate">Restricted access</p>
+                    </div>
+                    <a href="/src/pages/auth/login.html" class="text-2xl text-primary p-2 hover:bg-primary/10 rounded-md transition-all duration-200 active:scale-95 flex-shrink-0 ml-2" aria-label="Back to user login">
+                        <i class="fas fa-user"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+    <main class="flex items-center justify-center min-h-[calc(100vh-80px)] px-4 py-8">
+        <div class="w-full max-w-sm">
+            <div class="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl border border-white/50 p-4 sm:p-6">
+                <div class="text-center mb-4">
+                    <div class="w-12 h-12 bg-gradient-to-br from-secondary to-secondary/80 rounded-full flex items-center justify-center text-white text-lg mx-auto mb-3 shadow-lg">
+                        <i class="fas fa-user-shield"></i>
+                    </div>
+                    <h1 class="text-xl font-display font-bold text-secondary mb-1">Admin Sign In</h1>
+                    <p class="text-gray-600 text-xs">Email + Password + Admin Code</p>
+                </div>
+                <form id="admin-auth-form" class="space-y-3" novalidate>
+                    <div>
+                        <label for="admin-email" class="block text-xs font-semibold text-gray-700 mb-1">Admin Email *</label>
+                        <input type="email" id="admin-email" name="email" required class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="admin@yourchurch.org">
+                    </div>
+                    <div>
+                        <label for="admin-password" class="block text-xs font-semibold text-gray-700 mb-1">Password *</label>
+                        <div class="relative">
+                            <input type="password" id="admin-password" name="password" required class="w-full px-2 py-1.5 pr-8 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="Enter password">
+                            <button type="button" id="toggle-admin-password" class="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle password visibility">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" id="admin-get-code-btn" class="w-full bg-secondary text-white py-2 px-3 rounded-lg font-semibold text-xs hover:bg-secondary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-1">
+                        <i class="fas fa-key text-xs"></i>
+                        <span>Sign In & Get Admin Code</span>
+                    </button>
+                </form>
+                <div class="flex items-center my-3">
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                    <div class="px-3 text-xs uppercase tracking-wider text-gray-500">Then</div>
+                    <div class="flex-1 h-px bg-gray-200"></div>
+                </div>
+                <form id="admin-code-form" class="space-y-3" novalidate>
+                    <div>
+                        <label for="admin-code" class="block text-xs font-semibold text-gray-700 mb-1">Admin Code *</label>
+                        <input type="text" id="admin-code" name="code" inputmode="numeric" pattern="\d{6}" maxlength="6" required class="w-full px-2 py-1.5 text-xs border border-gray-300 rounded tracking-widest text-center focus:ring-1 focus:ring-primary focus:border-transparent transition-all" placeholder="••••••" title="Enter 6-digit code">
+                        <p class="text-[10px] text-gray-500 mt-1">A 6-digit code generated by the server (valid for 10 minutes)</p>
+                    </div>
+                    <button type="submit" id="admin-verify-btn" class="w-full bg-primary text-white py-2 px-3 rounded-lg font-semibold text-xs hover:bg-primary/90 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 flex items-center justify-center gap-1">
+                        <i class="fas fa-sign-in-alt text-xs"></i>
+                        <span>Verify & Enter Admin Dashboard</span>
+                    </button>
+                </form>
+                <div id="admin-form-feedback" class="mt-3 text-xs text-center hidden"></div>
+                <div class="mt-4 space-y-2 text-center">
+                    <a href="/src/pages/auth/login.html" class="inline-flex items-center gap-1 text-gray-500 hover:text-primary transition-colors text-xs">
+                        <i class="fas fa-arrow-left text-xs"></i>
+                        Back to User Login
+                    </a>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="/src/assets/js/supabase.js"></script>
+    <script src="/src/assets/js/admin.js"></script>
+</body>
+</html>

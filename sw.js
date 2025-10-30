@@ -11,6 +11,13 @@ const STATIC_ASSETS = [
   '/src/pages/public/index.html',
   '/src/assets/css/public.css',
   '/src/assets/js/public.js',
+
+  // Admin pages and scripts
+  '/src/pages/admin/login.html',
+  '/src/pages/admin/index.html',
+  '/src/assets/js/admin.js',
+
+  // Images
   '/src/assets/images/favicon.ico.png',
   '/src/assets/images/Perpetual Church Logo.png',
   '/src/assets/images/Perpetual Church.png',

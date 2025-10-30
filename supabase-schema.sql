@@ -111,3 +111,105 @@ create index if not exists profiles_email_ci_idx on public.profiles(lower(email)
 
 -- 7) Verification
 -- select 'Profiles schema applied successfully' as status;
+
+-- =====================================================
+-- ADMIN ACCESS CODE (server-generated 6-digit) INFRA
+-- =====================================================
+
+-- Ensure UUID generator is available (Supabase typically has pgcrypto)
+create extension if not exists pgcrypto;
+
+-- Table to store admin access codes
+create table if not exists public.admin_access_codes (
+  id uuid primary key default gen_random_uuid(),
+  admin_user_id uuid not null references auth.users(id) on delete cascade,
+  code text not null,
+  expires_at timestamptz not null,
+  used boolean not null default false,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists admin_codes_user_idx on public.admin_access_codes(admin_user_id);
+create index if not exists admin_codes_code_idx on public.admin_access_codes(code);
+create index if not exists admin_codes_expiry_idx on public.admin_access_codes(expires_at);
+
+-- Function: generate a new 6-digit admin code for the authenticated admin
+create or replace function public.generate_admin_code()
+returns text
+language plpgsql
+security definer
+set search_path = public, pg_catalog
+as $$
+declare
+  v_uid uuid;
+  v_role text;
+  v_code text;
+  v_expires_at timestamptz;
+begin
+  v_uid := auth.uid();
+  if v_uid is null then
+    raise exception 'Not authenticated';
+  end if;
+
+  -- Only allow admins to generate an admin code
+  select user_role into v_role from public.profiles where id = v_uid;
+  if coalesce(v_role, 'parishioner') <> 'admin' then
+    raise exception 'Not authorized';
+  end if;
+
+  -- Generate 6-digit code via server
+  v_code := lpad((floor(random()*1000000))::int::text, 6, '0');
+  v_expires_at := now() + interval '10 minutes';
+
+  -- Invalidate any previous unused codes for this admin
+  update public.admin_access_codes
+  set used = true
+  where admin_user_id = v_uid
+    and used = false;
+
+  -- Store the new code
+  insert into public.admin_access_codes (admin_user_id, code, expires_at, used)
+  values (v_uid, v_code, v_expires_at, false);
+
+  return v_code;
+end;
+$$;
+
+-- Function: verify a code for the authenticated admin; consumes the latest valid match
+create or replace function public.verify_admin_code(p_code text)
+returns boolean
+language plpgsql
+security definer
+set search_path = public, pg_catalog
+as $$
+declare
+  v_uid uuid;
+  v_consumed boolean;
+begin
+  v_uid := auth.uid();
+  if v_uid is null then
+    raise exception 'Not authenticated';
+  end if;
+
+  -- Consume most recent valid code
+  update public.admin_access_codes
+     set used = true
+   where id in (
+     select id
+       from public.admin_access_codes
+      where admin_user_id = v_uid
+        and used = false
+        and expires_at > now()
+        and code = p_code
+      order by created_at desc
+      limit 1
+   )
+  returning true into v_consumed;
+
+  return coalesce(v_consumed, false);
+end;
+$$;
+
+-- Grant execute on RPCs to authenticated users (RLS still enforced where applicable)
+grant execute on function public.generate_admin_code() to authenticated;
+grant execute on function public.verify_admin_code(text) to authenticated;
