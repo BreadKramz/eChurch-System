@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Enhanced parallax and animation effects - Optimized for mobile
     let ticking = false;
-    const isMobile = window.innerWidth <= 768;
+    let isMobile = window.innerWidth <= 768;
 
     function updateParallax() {
         const scrolled = window.pageYOffset;

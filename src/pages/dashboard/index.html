@@ -83,20 +83,6 @@
                     <span>Services</span>
                 </a>
 
-                <a href="#prayers" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="prayers">
-                    <i class="fas fa-praying-hands text-primary text-sm"></i>
-                    <span>Prayer Requests</span>
-                </a>
-
-                <a href="#events" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="events">
-                    <i class="fas fa-calendar-alt text-primary text-sm"></i>
-                    <span>Events</span>
-                </a>
-
-                <a href="#ministries" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="ministries">
-                    <i class="fas fa-users text-primary text-sm"></i>
-                    <span>Ministries</span>
-                </a>
 
                 <div class="border-t border-gray-200 my-4"></div>
 
@@ -235,9 +221,17 @@
                     <p class="text-gray-600">Manage your personal information</p>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <h3 class="text-lg font-display font-bold text-secondary mb-4">Personal Information</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Personal Information Form -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 mb-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-display font-bold text-secondary">Personal Information</h3>
+                        <button id="edit-profile-btn" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-primary/90 transition-all duration-300">
+                            <i class="fas fa-edit text-xs"></i> Edit Profile
+                        </button>
+                    </div>
+
+                    <!-- View Mode -->
+                    <div id="profile-view-mode" class="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div>
                             <label class="block text-sm font-medium text-gray-700 mb-1">First Name</label>
                             <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-first-name">Loading...</p>
@@ -255,6 +249,89 @@
                             <p class="text-sm text-gray-900 p-2 bg-gray-50 rounded" id="profile-phone">Loading...</p>
                         </div>
                     </div>
+
+                    <!-- Edit Mode -->
+                    <form id="profile-edit-form" class="hidden grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="edit-first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
+                            <input type="text" id="edit-first-name" name="firstName" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" maxlength="50" pattern="[A-Za-z\s]+" title="Please enter a valid first name (letters and spaces only)">
+                        </div>
+                        <div>
+                            <label for="edit-last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
+                            <input type="text" id="edit-last-name" name="lastName" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" maxlength="50" pattern="[A-Za-z\s]+" title="Please enter a valid last name (letters and spaces only)">
+                        </div>
+                        <div class="md:col-span-2">
+                            <label for="edit-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
+                            <input type="tel" id="edit-phone" name="phone" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" pattern="[0-9\s\-\(\)\+]+" title="Please enter a valid phone number">
+                        </div>
+                        <div class="md:col-span-2 flex gap-2 mt-4">
+                            <button type="submit" id="save-profile-btn" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-primary/90 transition-all duration-300">
+                                <i class="fas fa-save text-xs"></i> Save Changes
+                            </button>
+                            <button type="button" id="cancel-profile-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-600 transition-all duration-300">
+                                <i class="fas fa-times text-xs"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Change Password Section -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <h3 class="text-lg font-display font-bold text-secondary">Change Password</h3>
+                        <button id="change-password-btn" class="bg-secondary text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-secondary/90 transition-all duration-300">
+                            <i class="fas fa-key text-xs"></i> Change Password
+                        </button>
+                    </div>
+
+                    <!-- Password Change Form -->
+                    <form id="password-change-form" class="hidden space-y-4">
+                        <div>
+                            <label for="current-password" class="block text-sm font-medium text-gray-700 mb-1">Current Password *</label>
+                            <div class="relative">
+                                <input type="password" id="current-password" name="currentPassword" required class="w-full px-2 py-2 pr-8 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+                                <button type="button" id="toggle-current-password" class="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle current password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="new-password" class="block text-sm font-medium text-gray-700 mb-1">New Password *</label>
+                            <div class="relative">
+                                <input type="password" id="new-password" name="newPassword" required class="w-full px-2 py-2 pr-8 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" minlength="8">
+                                <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle new password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div id="password-strength" class="mt-1">
+                                <div class="flex space-x-0.5 mb-0.5">
+                                    <div id="strength-1" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
+                                    <div id="strength-2" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
+                                    <div id="strength-3" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
+                                    <div id="strength-4" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
+                                </div>
+                                <p id="password-feedback" class="text-xs text-gray-500 leading-tight">Use uppercase, lowercase, number & symbol</p>
+                            </div>
+                        </div>
+                        <div>
+                            <label for="confirm-new-password" class="block text-sm font-medium text-gray-700 mb-1">Confirm New Password *</label>
+                            <div class="relative">
+                                <input type="password" id="confirm-new-password" name="confirmNewPassword" required class="w-full px-2 py-2 pr-8 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
+                                <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 pr-2 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle confirm password visibility">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div id="confirm-password-feedback" class="text-xs text-red-600 mt-1 hidden"></div>
+                        </div>
+                        <div class="flex gap-2">
+                            <button type="submit" id="save-password-btn" class="bg-secondary text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-secondary/90 transition-all duration-300">
+                                <i class="fas fa-save text-xs"></i> Update Password
+                            </button>
+                            <button type="button" id="cancel-password-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-600 transition-all duration-300">
+                                <i class="fas fa-times text-xs"></i> Cancel
+                            </button>
+                        </div>
+                    </form>
                 </div>
             </div>
 
@@ -270,41 +347,6 @@
                 </div>
             </div>
 
-            <!-- Prayers Section -->
-            <div id="prayers-section" class="section-content hidden">
-                <div class="mb-6">
-                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Prayer Requests</h1>
-                    <p class="text-gray-600">Submit and view prayer intentions</p>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <p class="text-gray-600 text-center py-8">Prayer request functionality coming soon...</p>
-                </div>
-            </div>
-
-            <!-- Events Section -->
-            <div id="events-section" class="section-content hidden">
-                <div class="mb-6">
-                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Church Events</h1>
-                    <p class="text-gray-600">View upcoming events and activities</p>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <p class="text-gray-600 text-center py-8">Events functionality coming soon...</p>
-                </div>
-            </div>
-
-            <!-- Ministries Section -->
-            <div id="ministries-section" class="section-content hidden">
-                <div class="mb-6">
-                    <h1 class="text-2xl lg:text-3xl font-display font-bold text-secondary mb-2">Ministries</h1>
-                    <p class="text-gray-600">Connect with church ministries and groups</p>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                    <p class="text-gray-600 text-center py-8">Ministries functionality coming soon...</p>
-                </div>
-            </div>
 
             <!-- Settings Section -->
             <div id="settings-section" class="section-content hidden">

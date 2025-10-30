@@ -14,12 +14,12 @@ document.addEventListener('DOMContentLoaded', function() {
 async function initializeDashboard() {
     try {
         // Wait a bit for auth to initialize
-        await new Promise(resolve => setTimeout(resolve, 100));
+        await new Promise(resolve => setTimeout(resolve, 500));
 
         // Check if user is authenticated
         if (!churchAuth.isAuthenticated()) {
             console.log('User not authenticated, redirecting to login');
-            window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
+            window.location.href = '/src/pages/auth/login.html';
             return;
         }
 
@@ -27,13 +27,13 @@ async function initializeDashboard() {
         currentUser = churchAuth.getCurrentUser();
         if (!currentUser) {
             console.log('No current user, redirecting to login');
-            window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
+            window.location.href = '/src/pages/auth/login.html';
             return;
         }
 
         console.log('Dashboard initializing for user:', currentUser.email);
 
-        // Load user profile data
+        // Load user profile data (don't block initialization)
         await loadUserProfile();
 
         // Initialize navigation
@@ -61,11 +61,13 @@ async function loadUserProfile() {
         if (profile) {
             // Update sidebar user info - show full name instead of email
             const fullName = profile.full_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
-            document.getElementById('user-name').textContent = fullName || 'Parishioner';
-            document.getElementById('user-email').textContent = fullName || 'Parishioner'; // Show full name instead of email
+            const roleRaw = (profile.user_role || 'parishioner');
+            const roleText = roleRaw.charAt(0).toUpperCase() + roleRaw.slice(1);
+            document.getElementById('user-name').textContent = roleText;
+            document.getElementById('user-email').textContent = fullName; // Show full name instead of email
 
             // Update welcome message - show first name
-            document.getElementById('welcome-name').textContent = profile.first_name || 'Parishioner';
+            document.getElementById('welcome-name').textContent = profile.first_name;
 
             // Update profile section
             document.getElementById('profile-first-name').textContent = profile.first_name || 'Not provided';
@@ -79,18 +81,38 @@ async function loadUserProfile() {
                 avatarElement.textContent = profile.first_name.charAt(0).toUpperCase();
             }
         } else {
-            console.log('No profile found, using fallback');
-            // Fallback to basic user info - show name instead of email
+            console.log('No profile found, checking user metadata...');
+            // Try to get name from user metadata as fallback
+            const userMeta = currentUser?.user_metadata || {};
+            const metaFullName = userMeta.full_name || `${userMeta.first_name || ''} ${userMeta.last_name || ''}`.trim();
+            const displayName = metaFullName.trim() || 'User';
+            const firstName = userMeta.first_name || 'User';
+
+            // Update sidebar user info
             document.getElementById('user-name').textContent = 'Parishioner';
-            document.getElementById('user-email').textContent = 'Parishioner'; // Show name instead of email
-            document.getElementById('welcome-name').textContent = 'Parishioner';
+            document.getElementById('user-email').textContent = displayName;
+
+            // Update welcome message
+            document.getElementById('welcome-name').textContent = firstName;
+
+            // Update profile section with available data
+            document.getElementById('profile-first-name').textContent = userMeta.first_name || 'Not provided';
+            document.getElementById('profile-last-name').textContent = userMeta.last_name || 'Not provided';
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('profile-phone').textContent = userMeta.phone || 'Not provided';
+
+            // Update user avatar
+            const avatarElement = document.getElementById('user-avatar');
+            if (avatarElement && userMeta.first_name) {
+                avatarElement.textContent = userMeta.first_name.charAt(0).toUpperCase();
+            }
         }
     } catch (error) {
         console.error('Error loading user profile:', error);
-        // Fallback to basic user info - show name instead of email
+        // Final fallback to basic user info
         document.getElementById('user-name').textContent = 'Parishioner';
-        document.getElementById('user-email').textContent = 'Parishioner'; // Show name instead of email
-        document.getElementById('welcome-name').textContent = 'Parishioner';
+        document.getElementById('user-email').textContent = 'User';
+        document.getElementById('welcome-name').textContent = 'User';
     }
 }
 
@@ -113,6 +135,362 @@ function initializeNavigation() {
             }
         });
     });
+
+    // Initialize profile editing functionality
+    initializeProfileEditing();
+}
+
+// Initialize profile editing functionality
+function initializeProfileEditing() {
+    const editProfileBtn = document.getElementById('edit-profile-btn');
+    const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+    const saveProfileBtn = document.getElementById('save-profile-btn');
+    const profileViewMode = document.getElementById('profile-view-mode');
+    const profileEditForm = document.getElementById('profile-edit-form');
+
+    const changePasswordBtn = document.getElementById('change-password-btn');
+    const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+    const savePasswordBtn = document.getElementById('save-password-btn');
+    const passwordChangeForm = document.getElementById('password-change-form');
+
+    // Profile editing
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener('click', function() {
+            console.log('Edit profile button clicked');
+            // Hide view mode, show edit form
+            profileViewMode.classList.add('hidden');
+            profileEditForm.classList.remove('hidden');
+
+            // Populate form with current values
+            const firstName = document.getElementById('profile-first-name').textContent;
+            const lastName = document.getElementById('profile-last-name').textContent;
+            const phone = document.getElementById('profile-phone').textContent;
+
+            console.log('Current values:', { firstName, lastName, phone });
+
+            document.getElementById('edit-first-name').value = firstName !== 'Not provided' ? firstName : '';
+            document.getElementById('edit-last-name').value = lastName !== 'Not provided' ? lastName : '';
+            document.getElementById('edit-phone').value = phone !== 'Not provided' ? phone : '';
+        });
+    }
+
+    if (cancelProfileBtn) {
+        cancelProfileBtn.addEventListener('click', function() {
+            // Hide edit form, show view mode
+            profileEditForm.classList.add('hidden');
+            profileViewMode.classList.remove('hidden');
+        });
+    }
+
+    if (saveProfileBtn) {
+        saveProfileBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(profileEditForm);
+            const firstName = formData.get('firstName').trim();
+            const lastName = formData.get('lastName').trim();
+            const phone = formData.get('phone').trim();
+
+            // Validation
+            if (!firstName || !lastName) {
+                showDashboardMessage('First name and last name are required.', 'error');
+                return;
+            }
+
+            if (!isValidName(firstName) || !isValidName(lastName)) {
+                showDashboardMessage('Please enter valid names (letters and spaces only).', 'error');
+                return;
+            }
+
+            if (phone && !isValidPhone(phone)) {
+                showDashboardMessage('Please enter a valid phone number.', 'error');
+                return;
+            }
+
+            // Disable save button
+            saveProfileBtn.disabled = true;
+            saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+            try {
+                console.log('Attempting to update profile with:', {
+                    first_name: firstName,
+                    last_name: lastName,
+                    full_name: `${firstName} ${lastName}`.trim(),
+                    phone: phone || null,
+                    updated_at: new Date().toISOString()
+                });
+
+                const updates = {
+                    first_name: firstName,
+                    last_name: lastName,
+                    full_name: `${firstName} ${lastName}`.trim(),
+                    phone: phone || null,
+                    updated_at: new Date().toISOString()
+                };
+
+                const result = await churchAuth.updateUserProfile(updates);
+                console.log('Profile update result:', result);
+
+                if (result.success) {
+                    // Update display values
+                    document.getElementById('profile-first-name').textContent = firstName;
+                    document.getElementById('profile-last-name').textContent = lastName;
+                    document.getElementById('profile-phone').textContent = phone || 'Not provided';
+
+                    // Update sidebar and welcome message
+                    const fullName = `${firstName} ${lastName}`.trim();
+                    document.getElementById('user-name').textContent = 'Parishioner';
+                    document.getElementById('user-email').textContent = fullName;
+                    document.getElementById('welcome-name').textContent = firstName;
+
+                    // Update avatar
+                    const avatarElement = document.getElementById('user-avatar');
+                    if (avatarElement) {
+                        avatarElement.textContent = firstName.charAt(0).toUpperCase();
+                    }
+
+                    // Hide edit form, show view mode
+                    profileEditForm.classList.add('hidden');
+                    profileViewMode.classList.remove('hidden');
+
+                    showDashboardMessage('Profile updated successfully!', 'success');
+                } else {
+                    console.error('Profile update failed:', result.error);
+                    showDashboardMessage(result.error || 'Failed to update profile.', 'error');
+                }
+            } catch (error) {
+                console.error('Profile update error:', error);
+                showDashboardMessage('Failed to update profile. Please try again.', 'error');
+            } finally {
+                saveProfileBtn.disabled = false;
+                saveProfileBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Save Changes';
+            }
+        });
+    }
+
+    // Password change functionality
+    if (changePasswordBtn) {
+        changePasswordBtn.addEventListener('click', function() {
+            passwordChangeForm.classList.remove('hidden');
+            changePasswordBtn.classList.add('hidden');
+        });
+    }
+
+    if (cancelPasswordBtn) {
+        cancelPasswordBtn.addEventListener('click', function() {
+            passwordChangeForm.classList.add('hidden');
+            changePasswordBtn.classList.remove('hidden');
+            passwordChangeForm.reset();
+            resetPasswordStrength();
+        });
+    }
+
+    if (savePasswordBtn) {
+        savePasswordBtn.addEventListener('click', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(passwordChangeForm);
+            const currentPassword = formData.get('currentPassword');
+            const newPassword = formData.get('newPassword');
+            const confirmPassword = formData.get('confirmNewPassword');
+
+            // Validation
+            if (!currentPassword || !newPassword || !confirmPassword) {
+                showDashboardMessage('All password fields are required.', 'error');
+                return;
+            }
+
+            const { strength } = checkPasswordStrength(newPassword);
+            if (strength < 3) {
+                showDashboardMessage('New password is too weak. Please choose a stronger password.', 'error');
+                return;
+            }
+
+            if (newPassword !== confirmPassword) {
+                showDashboardMessage('New passwords do not match.', 'error');
+                return;
+            }
+
+            // Disable save button
+            savePasswordBtn.disabled = true;
+            savePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Updating...';
+
+            try {
+                // First verify current password by attempting sign in
+                const currentUser = churchAuth.getCurrentUser();
+                if (!currentUser) {
+                    showDashboardMessage('Session expired. Please login again.', 'error');
+                    return;
+                }
+
+                // Try to sign in with current password to verify it
+                const verifyResult = await churchAuth.signIn(currentUser.email, currentPassword, false);
+                if (!verifyResult.success) {
+                    showDashboardMessage('Current password is incorrect.', 'error');
+                    return;
+                }
+
+                // Update password
+                const result = await churchAuth.updatePassword(newPassword);
+
+                if (result.success) {
+                    passwordChangeForm.classList.add('hidden');
+                    changePasswordBtn.classList.remove('hidden');
+                    passwordChangeForm.reset();
+                    resetPasswordStrength();
+                    showDashboardMessage('Password updated successfully!', 'success');
+                } else {
+                    showDashboardMessage(result.error || 'Failed to update password.', 'error');
+                }
+            } catch (error) {
+                console.error('Password update error:', error);
+                showDashboardMessage('Failed to update password. Please try again.', 'error');
+            } finally {
+                savePasswordBtn.disabled = false;
+                savePasswordBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Update Password';
+            }
+        });
+    }
+
+    // Password visibility toggles
+    const passwordToggles = [
+        { button: 'toggle-current-password', input: 'current-password' },
+        { button: 'toggle-new-password', input: 'new-password' },
+        { button: 'toggle-confirm-password', input: 'confirm-new-password' }
+    ];
+
+    passwordToggles.forEach(({ button, input }) => {
+        const toggleBtn = document.getElementById(button);
+        const inputField = document.getElementById(input);
+
+        if (toggleBtn && inputField) {
+            toggleBtn.addEventListener('click', function() {
+                const type = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+                inputField.setAttribute('type', type);
+                this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+            });
+        }
+    });
+
+    // Password strength indicator for new password
+    const newPasswordInput = document.getElementById('new-password');
+    if (newPasswordInput) {
+        newPasswordInput.addEventListener('input', function() {
+            updatePasswordStrength(this.value);
+        });
+    }
+
+    // Confirm password validation
+    const confirmPasswordInput = document.getElementById('confirm-new-password');
+    if (confirmPasswordInput) {
+        confirmPasswordInput.addEventListener('input', function() {
+            const password = newPasswordInput.value;
+            const confirmPassword = this.value;
+            const feedback = document.getElementById('confirm-password-feedback');
+
+            if (confirmPassword && password !== confirmPassword) {
+                feedback.textContent = 'Passwords do not match';
+                feedback.classList.remove('hidden');
+                this.classList.add('border-red-500');
+                this.classList.remove('border-gray-300');
+            } else {
+                feedback.classList.add('hidden');
+                this.classList.remove('border-red-500');
+                this.classList.add('border-gray-300');
+            }
+        });
+    }
+}
+
+// Password strength checker
+function checkPasswordStrength(password) {
+    let strength = 0;
+    let feedback = [];
+
+    if (password.length >= 8) strength++;
+    else feedback.push('At least 8 characters');
+
+    if (/[a-z]/.test(password)) strength++;
+    else feedback.push('Lowercase letter');
+
+    if (/[A-Z]/.test(password)) strength++;
+    else feedback.push('Uppercase letter');
+
+    if (/[0-9]/.test(password)) strength++;
+    else feedback.push('Number');
+
+    if (/[^A-Za-z0-9]/.test(password)) strength++;
+    else feedback.push('Special character');
+
+    return { strength, feedback };
+}
+
+// Update password strength indicator
+function updatePasswordStrength(password) {
+    const strengthBars = ['strength-1', 'strength-2', 'strength-3', 'strength-4'];
+    const feedbackElement = document.getElementById('password-feedback');
+
+    if (!password) {
+        strengthBars.forEach(id => {
+            document.getElementById(id).className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+        });
+        if (feedbackElement) feedbackElement.textContent = 'Use uppercase, lowercase, number & symbol';
+        return;
+    }
+
+    const { strength, feedback } = checkPasswordStrength(password);
+
+    strengthBars.forEach((id, index) => {
+        const element = document.getElementById(id);
+        if (index < strength) {
+            if (strength <= 2) element.className = 'h-0.5 w-1/4 bg-red-400 rounded';
+            else if (strength <= 3) element.className = 'h-0.5 w-1/4 bg-yellow-400 rounded';
+            else if (strength <= 4) element.className = 'h-0.5 w-1/4 bg-blue-400 rounded';
+            else element.className = 'h-0.5 w-1/4 bg-green-400 rounded';
+        } else {
+            element.className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+        }
+    });
+
+    if (feedbackElement) {
+        if (strength >= 4) {
+            feedbackElement.textContent = 'Strong password!';
+            feedbackElement.className = 'text-xs text-green-600';
+        } else if (strength >= 3) {
+            feedbackElement.textContent = 'Good password. ' + feedback.join(', ') + ' would make it stronger.';
+            feedbackElement.className = 'text-xs text-blue-600';
+        } else if (strength >= 2) {
+            feedbackElement.textContent = 'Weak password. Add: ' + feedback.join(', ');
+            feedbackElement.className = 'text-xs text-yellow-600';
+        } else {
+            feedbackElement.textContent = 'Very weak password. Add: ' + feedback.join(', ');
+            feedbackElement.className = 'text-xs text-red-600';
+        }
+    }
+}
+
+// Reset password strength indicator
+function resetPasswordStrength() {
+    const strengthBars = ['strength-1', 'strength-2', 'strength-3', 'strength-4'];
+    strengthBars.forEach(id => {
+        document.getElementById(id).className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+    });
+    const feedbackElement = document.getElementById('password-feedback');
+    if (feedbackElement) {
+        feedbackElement.textContent = 'Use uppercase, lowercase, number & symbol';
+        feedbackElement.className = 'text-xs text-gray-500';
+    }
+}
+
+// Validation functions
+function isValidName(name) {
+    const nameRegex = /^[A-Za-z\s]+$/;
+    return nameRegex.test(name) && name.length >= 2 && name.length <= 50;
+}
+
+function isValidPhone(phone) {
+    const phoneRegex = /^[\+]?[0-9\s\-\(\)]{7,15}$/;
+    return phoneRegex.test(phone) || phone === '';
 }
 
 // Switch between sections
@@ -153,9 +531,6 @@ function updatePageTitle(section) {
         dashboard: 'Dashboard - Our Mother of Perpetual Help Church',
         profile: 'My Profile - Our Mother of Perpetual Help Church',
         services: 'Services - Our Mother of Perpetual Help Church',
-        prayers: 'Prayer Requests - Our Mother of Perpetual Help Church',
-        events: 'Events - Our Mother of Perpetual Help Church',
-        ministries: 'Ministries - Our Mother of Perpetual Help Church',
         settings: 'Settings - Our Mother of Perpetual Help Church'
     };
 
@@ -190,12 +565,12 @@ function initializeLogout() {
                     console.log('Supabase signout completed, forcing redirect to login...');
 
                     // Force immediate redirect to login page
-                    window.location.replace('https://e-church-system.vercel.app/src/pages/auth/login.html');
+                    window.location.replace('/src/pages/auth/login.html');
 
                 } catch (error) {
                     console.error('Logout error:', error);
                     // Even if there's an error, redirect to login
-                    window.location.replace('https://e-church-system.vercel.app/src/pages/auth/login.html');
+                    window.location.replace('/src/pages/auth/login.html');
                 }
             }
         });

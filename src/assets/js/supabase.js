@@ -63,7 +63,7 @@ class ChurchAuth {
                     // Only redirect to dashboard if currently on auth pages AND not already on dashboard
                     // AND user successfully authenticated (not just checking existing session)
                     if (event === 'SIGNED_IN' && window.location.pathname.includes('/auth/') && !window.location.pathname.includes('/dashboard/')) {
-                        window.location.href = 'https://e-church-system.vercel.app/src/pages/dashboard/index.html';
+                        window.location.href = '/src/pages/dashboard/index.html';
                     }
                 }
                 break;
@@ -78,7 +78,7 @@ class ChurchAuth {
 
                 // Always redirect to login page when signed out (for Vercel production)
                 console.log('User signed out, redirecting to login page');
-                window.location.href = 'https://e-church-system.vercel.app/src/pages/auth/login.html';
+                window.location.href = '/src/pages/auth/login.html';
                 break;
 
             case 'TOKEN_REFRESHED':
@@ -106,11 +106,15 @@ class ChurchAuth {
             }
 
             // Create account in Supabase Auth with redirect to login page
+            // Use current origin to make it work in different environments
+            const currentOrigin = window.location.origin;
+            const redirectUrl = `${currentOrigin}/src/pages/auth/login.html`;
+
             const { data, error } = await this.supabase.auth.signUp({
                 email: email,
                 password: password,
                 options: {
-                    emailRedirectTo: `https://e-church-system.vercel.app/src/pages/auth/login.html`,
+                    emailRedirectTo: redirectUrl,
                     data: {
                         first_name: userData.firstName,
                         last_name: userData.lastName,
@@ -181,6 +185,15 @@ class ChurchAuth {
 
             if (error) throw error;
 
+            // Check if user email is confirmed
+            if (!data.user.email_confirmed_at) {
+                showPopupMessage('Please verify your email address before logging in. Check your inbox for the verification link.', 'error');
+                return {
+                    success: false,
+                    error: 'Please verify your email address before logging in.'
+                };
+            }
+
             // Now check if user exists in our profiles table
             const { data: profileData, error: profileError } = await this.supabase
                 .from('profiles')
@@ -244,7 +257,7 @@ class ChurchAuth {
                     error: 'Invalid email or password. Please check your credentials.'
                 };
             } else if (error.message.includes('Email not confirmed')) {
-                showPopupMessage('Please verify your email address before logging in.', 'error');
+                showPopupMessage('Please verify your email address before logging in. Check your inbox for the verification link.', 'error');
                 return {
                     success: false,
                     error: 'Please verify your email address before logging in.'
@@ -295,8 +308,9 @@ class ChurchAuth {
     // Reset password
     async resetPassword(email) {
         try {
-            // Use Vercel production URL
-            const resetUrl = `https://e-church-system.vercel.app/src/pages/auth/reset-password.html`;
+            // Use current origin to make it work in different environments
+            const currentOrigin = window.location.origin;
+            const resetUrl = `${currentOrigin}/src/pages/auth/reset-password.html`;
 
             console.log('Sending password reset to:', email);
             console.log('Reset URL:', resetUrl);
@@ -382,24 +396,63 @@ class ChurchAuth {
         if (!this.currentUser) return { success: false, error: 'Not authenticated' };
 
         try {
-            const { data, error } = await this.supabase
-                .from('profiles')
-                .upsert({
-                    id: this.currentUser.id,
-                    ...updates,
-                    updated_at: new Date().toISOString()
-                });
+            console.log('Updating profile for user:', this.currentUser.id);
+            console.log('Updates:', updates);
 
-            if (error) throw error;
+            // First, check if profile exists
+            const { data: existingProfile, error: checkError } = await this.supabase
+                .from('profiles')
+                .select('id')
+                .eq('id', this.currentUser.id)
+                .single();
+
+            console.log('Existing profile check:', { existingProfile, checkError });
+
+            let result;
+            if (existingProfile) {
+                // Update existing profile
+                console.log('Updating existing profile');
+                const { data, error } = await this.supabase
+                    .from('profiles')
+                    .update({
+                        ...updates,
+                        updated_at: new Date().toISOString()
+                    })
+                    .eq('id', this.currentUser.id);
+
+                if (error) throw error;
+                result = { data, error };
+                console.log('Update result:', result);
+            } else {
+                // Insert new profile
+                console.log('Inserting new profile');
+                const { data, error } = await this.supabase
+                    .from('profiles')
+                    .insert({
+                        id: this.currentUser.id,
+                        ...updates,
+                        updated_at: new Date().toISOString()
+                    });
+
+                if (error) throw error;
+                result = { data, error };
+                console.log('Insert result:', result);
+            }
 
             return {
                 success: true,
-                data: data,
+                data: result.data,
                 message: 'Profile updated successfully!'
             };
 
         } catch (error) {
             console.error('Update profile error:', error);
+            console.error('Error details:', {
+                message: error.message,
+                details: error.details,
+                hint: error.hint,
+                code: error.code
+            });
             return {
                 success: false,
                 error: error.message

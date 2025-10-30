@@ -1,103 +1,113 @@
 -- =====================================================
--- Our Mother of Perpetual Help Church Database Schema
--- Supabase SQL Editor - Copy and paste this entire script
+-- SECURE, IDEMPOTENT PROFILES SCHEMA (Run in Supabase SQL Editor)
 -- =====================================================
 
--- Enable Row Level Security (RLS) for all tables
--- This ensures users can only access their own data
+-- 0) Clean up cross-object dependencies safely (no references to non-existent relations)
 
--- =====================================================
--- 1. PROFILES TABLE
--- Extends Supabase auth.users with additional church-specific data
--- =====================================================
+drop trigger if exists on_auth_user_created on auth.users;
+drop function if exists public.handle_new_user();
+drop function if exists public.update_updated_at_column();
 
-CREATE TABLE IF NOT EXISTS public.profiles (
-    id UUID REFERENCES auth.users(id) ON DELETE CASCADE PRIMARY KEY,
-    first_name TEXT,
-    last_name TEXT,
-    full_name TEXT,
-    email TEXT,
-    phone TEXT,
-    password TEXT,
-    confirm_password TEXT,
-    membership_status TEXT DEFAULT 'active' CHECK (membership_status IN ('active', 'inactive', 'suspended')),
-    user_role TEXT DEFAULT 'parishioner' CHECK (user_role IN ('parishioner', 'admin', 'priest', 'staff')),
-    created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL,
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
+-- 1) Table (recreate from scratch; comment DROP if you have prod data)
+drop table if exists public.profiles cascade;
+
+create table public.profiles (
+  id uuid primary key references auth.users(id) on delete cascade,
+  first_name text,
+  last_name  text,
+  full_name  text,
+  email      text,
+  phone      text,
+  membership_status text default 'active',
+  user_role  text default 'parishioner',
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
 );
 
--- Enable RLS
-ALTER TABLE public.profiles ENABLE ROW LEVEL SECURITY;
+-- 2) Enable RLS (do not disable in prod)
+alter table public.profiles enable row level security;
 
--- Profiles policies
-CREATE POLICY "Users can view own profile" ON public.profiles
-    FOR SELECT USING (auth.uid() = id);
+-- 3) Grants (PostgREST honors RLS; keep surface minimal)
+-- Ensure roles have USAGE on schema to avoid "permission denied for schema public"
+grant usage on schema public to authenticated;
+grant usage on schema public to anon;
 
-CREATE POLICY "Users can update own profile" ON public.profiles
-    FOR UPDATE USING (auth.uid() = id);
+revoke all on table public.profiles from anon;
+revoke all on table public.profiles from authenticated;
+grant select, insert, update on table public.profiles to authenticated;
+grant all on table public.profiles to service_role;
 
-CREATE POLICY "Admins can view all profiles" ON public.profiles
-    FOR SELECT USING (
-        EXISTS (
-            SELECT 1 FROM public.profiles
-            WHERE id = auth.uid() AND user_role = 'admin'
-        )
-    );
+-- 4) Policies: users can only access their own row
+create policy "profiles_select_own"
+on public.profiles
+for select
+to authenticated
+using (auth.uid() = id);
 
-CREATE POLICY "Admins can update all profiles" ON public.profiles
-    FOR UPDATE USING (
-        EXISTS (
-            SELECT 1 FROM public.profiles
-            WHERE id = auth.uid() AND user_role = 'admin'
-        )
-    );
+create policy "profiles_update_own"
+on public.profiles
+for update
+to authenticated
+using (auth.uid() = id)
+with check (auth.uid() = id);
 
--- =====================================================
--- FUNCTIONS AND TRIGGERS
--- =====================================================
+create policy "profiles_insert_own"
+on public.profiles
+for insert
+to authenticated
+with check (auth.uid() = id);
 
--- Function to handle user profile creation
-CREATE OR REPLACE FUNCTION public.handle_new_user()
-RETURNS TRIGGER AS $$
-BEGIN
-    INSERT INTO public.profiles (id, first_name, last_name, full_name, phone)
-    VALUES (
-        NEW.id,
-        NEW.raw_user_meta_data->>'first_name',
-        NEW.raw_user_meta_data->>'last_name',
-        NEW.raw_user_meta_data->>'full_name',
-        NEW.raw_user_meta_data->>'phone'
-    );
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+-- 5) Triggers & functions
 
--- Trigger to create profile on user signup
-CREATE OR REPLACE TRIGGER on_auth_user_created
-    AFTER INSERT ON auth.users
-    FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+-- Keep updated_at fresh
+create or replace function public.update_updated_at_column()
+returns trigger
+language plpgsql
+as $$
+begin
+  new.updated_at := timezone('utc'::text, now());
+  return new;
+end;
+$$;
 
--- Function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION public.update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = TIMEZONE('utc'::text, NOW());
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
+create trigger update_profiles_updated_at
+before update on public.profiles
+for each row execute function public.update_updated_at_column();
 
--- Add updated_at trigger to profiles table
-CREATE TRIGGER update_profiles_updated_at BEFORE UPDATE ON public.profiles
-    FOR EACH ROW EXECUTE FUNCTION public.update_updated_at_column();
+-- Auto-create a profile when a new auth user is created
+create or replace function public.handle_new_user()
+returns trigger
+language plpgsql
+security definer
+set search_path = public, pg_catalog
+as $$
+begin
+  insert into public.profiles (id, first_name, last_name, full_name, email, phone)
+  values (
+    new.id,
+    new.raw_user_meta_data->>'first_name',
+    new.raw_user_meta_data->>'last_name',
+    coalesce(
+      new.raw_user_meta_data->>'full_name',
+      trim(both ' ' from concat(new.raw_user_meta_data->>'first_name',' ',new.raw_user_meta_data->>'last_name'))
+    ),
+    new.email,
+    new.raw_user_meta_data->>'phone'
+  )
+  on conflict (id) do nothing;
+  return new;
+end;
+$$;
 
--- =====================================================
--- INDEXES FOR PERFORMANCE
--- =====================================================
+create trigger on_auth_user_created
+after insert on auth.users
+for each row
+execute function public.handle_new_user();
 
--- Profiles indexes
-CREATE INDEX IF NOT EXISTS profiles_user_role_idx ON public.profiles(user_role);
-CREATE INDEX IF NOT EXISTS profiles_membership_status_idx ON public.profiles(membership_status);
+-- 6) Indexes
+create index if not exists profiles_user_role_idx on public.profiles(user_role);
+create index if not exists profiles_membership_status_idx on public.profiles(membership_status);
+create index if not exists profiles_email_ci_idx on public.profiles(lower(email));
 
--- =====================================================
--- END OF SCHEMA
--- =====================================================
+-- 7) Verification
+-- select 'Profiles schema applied successfully' as status;
