@@ -13,6 +13,13 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize dashboard
 async function initializeDashboard() {
     try {
+        // Check if we're on the admin dashboard - if so, skip initialization
+        // as admin dashboard handles its own auth and UI
+        if (window.location.pathname.includes('/admin/')) {
+            console.log('Admin dashboard detected, skipping user dashboard initialization');
+            return;
+        }
+
         // Wait a bit for auth to initialize
         await new Promise(resolve => setTimeout(resolve, 500));
 

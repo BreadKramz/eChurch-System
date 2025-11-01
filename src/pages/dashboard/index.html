@@ -42,13 +42,13 @@
     <!-- Sidebar -->
     <div id="sidebar" class="fixed inset-y-0 left-0 z-50 w-64 bg-white shadow-lg transform -translate-x-full lg:translate-x-0 transition-transform duration-300 ease-in-out">
         <div class="flex flex-col h-full">
-            <!-- Sidebar Header (hidden, moved to top header) -->
-            <div class="hidden flex items-center justify-center h-20 px-4 bg-primary text-white">
+            <!-- Sidebar Header -->
+            <div class="flex items-center justify-center h-20 px-4 bg-primary text-white">
                 <div class="flex items-center gap-3">
                     <img src="/src/assets/images/Perpetual Church Logo.png" alt="Church Logo" class="w-10 h-10 rounded-full object-cover">
                     <div class="min-w-0">
-                        <h1 class="text-sm font-display font-bold leading-tight truncate">Our Mother of Perpetual Help</h1>
-                        <p class="text-xs opacity-90 truncate">Redemptorist Church</p>
+                        <h1 class="text-sm font-display font-bold leading-tight truncate">User Panel</h1>
+                        <p class="text-xs opacity-90 truncate">OMP Church</p>
                     </div>
                 </div>
             </div>
@@ -123,8 +123,11 @@
                 <div class="flex items-center gap-3 justify-self-center">
                     <img src="/src/assets/images/Perpetual Church Logo.png" alt="Our Mother of Perpetual Help Church Logo" class="w-9 h-9 rounded-full object-cover">
                     <div class="leading-tight text-center">
-                        <div class="text-sm sm:text-base font-display font-bold text-primary">Our Mother of Perpetual Help</div>
-                        <div class="text-[11px] sm:text-xs text-gray-600">Redemptorist Church</div>
+                        <div class="text-sm sm:text-base font-display font-bold text-primary">
+                            <span class="block sm:hidden">OMP Church</span>
+                            <span class="hidden sm:block">Our Mother of Perpetual Help</span>
+                        </div>
+                        <div class="hidden sm:block text-[11px] sm:text-xs text-gray-600">Redemptorist Church</div>
                     </div>
                 </div>
 
@@ -161,7 +164,7 @@
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-display font-bold text-secondary">Announcements</h3>
-                            <span class="text-xs text-gray-400">Latest</span>
+                            <a href="#" onclick="switchSection('announcements')" class="text-xs text-primary hover:underline">View all</a>
                         </div>
                         <ul class="space-y-3">
                             <!-- Announcements will be populated here -->
@@ -172,7 +175,7 @@
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-display font-bold text-secondary">Upcoming Events</h3>
-                            <a href="#events" class="text-xs text-primary hover:underline">View all</a>
+                            <a href="#" onclick="switchSection('events')" class="text-xs text-primary hover:underline">View all</a>
                         </div>
                         <div class="space-y-3">
                             <!-- Upcoming events will be populated here -->

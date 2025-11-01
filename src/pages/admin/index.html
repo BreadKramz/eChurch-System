@@ -73,10 +73,6 @@
                     <span>Dashboard</span>
                 </a>
 
-                <a href="#profile" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="profile">
-                    <i class="fas fa-user-shield text-primary text-sm"></i>
-                    <span>My Profile</span>
-                </a>
 
                 <a href="#users" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="users">
                     <i class="fas fa-users text-primary text-sm"></i>
@@ -90,10 +86,6 @@
 
                 <div class="border-t border-gray-200 my-4"></div>
 
-                <a href="#settings" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="settings">
-                    <i class="fas fa-cog text-primary text-sm"></i>
-                    <span>Settings</span>
-                </a>
             </nav>
 
             <!-- Logout Button -->
@@ -125,8 +117,11 @@
                 <div class="flex items-center gap-3 justify-self-center">
                     <img src="/src/assets/images/Perpetual Church Logo.png" alt="Our Mother of Perpetual Help Church Logo" class="w-9 h-9 rounded-full object-cover">
                     <div class="leading-tight text-center">
-                        <div class="text-sm sm:text-base font-display font-bold text-primary">Our Mother of Perpetual Help</div>
-                        <div class="text-[11px] sm:text-xs text-gray-600">Redemptorist Church</div>
+                        <div class="text-sm sm:text-base font-display font-bold text-primary">
+                            <span class="block sm:hidden">OMP Church</span>
+                            <span class="hidden sm:block">Our Mother of Perpetual Help</span>
+                        </div>
+                        <div class="hidden sm:block text-[11px] sm:text-xs text-gray-600">Redemptorist Church</div>
                     </div>
                 </div>
 
@@ -144,16 +139,78 @@
         <main class="p-4 lg:p-8">
             <!-- Dashboard Section -->
             <div id="dashboard-section" class="section-content">
-                <!-- Welcome Card -->
-                <div class="bg-gradient-to-r from-primary to-secondary rounded-xl p-6 text-white mb-6">
-                    <div class="flex items-center gap-4">
-                        <div class="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center">
-                            <i class="fas fa-church text-2xl"></i>
+
+                <!-- Admin Statistics -->
+                <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-6">
+                    <!-- Total Users -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-blue-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-users text-blue-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-900" id="total-users">0</p>
+                                <p class="text-sm text-gray-600">Total Users</p>
+                            </div>
                         </div>
-                        <div>
-                            <h2 class="text-xl font-display font-bold mb-1">Welcome back, <span id="welcome-name">Administrator</span>!</h2>
-                            <p class="opacity-90">Thank you for serving our parish community</p>
+                    </div>
+
+                    <!-- Active Users -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-check text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-900" id="active-users">0</p>
+                                <p class="text-sm text-gray-600">Active Users</p>
+                            </div>
                         </div>
+                    </div>
+
+                    <!-- New This Month -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-purple-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-user-plus text-purple-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-2xl font-bold text-gray-900" id="new-users">0</p>
+                                <p class="text-sm text-gray-600">New This Month</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- System Status -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                        <div class="flex items-center gap-3">
+                            <div class="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+                                <i class="fas fa-server text-green-600"></i>
+                            </div>
+                            <div>
+                                <p class="text-lg font-bold text-gray-900">Online</p>
+                                <p class="text-sm text-gray-600">System Status</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 mb-6">
+                    <h3 class="text-lg font-display font-bold text-secondary mb-4">Quick Actions</h3>
+                    <div class="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                        <button onclick="switchSection('users')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition">
+                            <i class="fas fa-users text-primary"></i>
+                            <span class="text-sm text-gray-800">Manage Users</span>
+                        </button>
+                        <button onclick="switchSection('services')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition">
+                            <i class="fas fa-certificate text-primary"></i>
+                            <span class="text-sm text-gray-800">Services</span>
+                        </button>
+                        <button onclick="confirmLogout()" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-red-200 hover:border-red-400 hover:bg-red-50 transition">
+                            <i class="fas fa-sign-out-alt text-red-600"></i>
+                            <span class="text-sm text-gray-800">Logout</span>
+                        </button>
                     </div>
                 </div>
 
@@ -175,126 +232,6 @@
                 </div>
             </div>
 
-            <!-- Profile Section -->
-            <div id="profile-section" class="section-content hidden">
-                <div class="mb-4">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">My Profile</h1>
-                    <p class="text-gray-600 text-sm">Manage your personal information</p>
-                </div>
-
-                <!-- Compact Profile Card -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-base font-display font-bold text-secondary">Personal Information</h3>
-                        <button id="edit-profile-btn" class="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-primary/90 transition-all">
-                            <i class="fas fa-edit text-xs"></i> Edit
-                        </button>
-                    </div>
-
-                    <!-- View Mode - Compact -->
-                    <div id="profile-view-mode" class="space-y-2">
-                        <div class="flex justify-between items-center py-1">
-                            <span class="text-sm text-gray-600">Name:</span>
-                            <span class="text-sm text-gray-900" id="profile-first-name">Loading...</span>
-                        </div>
-                        <div class="flex justify-between items-center py-1">
-                            <span class="text-sm text-gray-600">Last Name:</span>
-                            <span class="text-sm text-gray-900" id="profile-last-name">Loading...</span>
-                        </div>
-                        <div class="flex justify-between items-center py-1">
-                            <span class="text-sm text-gray-600">Email:</span>
-                            <span class="text-sm text-gray-900" id="profile-email">Loading...</span>
-                        </div>
-                        <div class="flex justify-between items-center py-1">
-                            <span class="text-sm text-gray-600">Phone:</span>
-                            <span class="text-sm text-gray-900" id="profile-phone">Loading...</span>
-                        </div>
-                    </div>
-
-                    <!-- Edit Mode - Compact -->
-                    <form id="profile-edit-form" class="hidden space-y-3">
-                        <div>
-                            <label for="edit-first-name" class="block text-sm font-medium text-gray-700 mb-1">First Name *</label>
-                            <input type="text" id="edit-first-name" name="firstName" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" maxlength="50" pattern="[A-Za-z\\s]+" title="Please enter a valid first name (letters and spaces only)">
-                        </div>
-                        <div>
-                            <label for="edit-last-name" class="block text-sm font-medium text-gray-700 mb-1">Last Name *</label>
-                            <input type="text" id="edit-last-name" name="lastName" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" maxlength="50" pattern="[A-Za-z\\s]+" title="Please enter a valid last name (letters and spaces only)">
-                        </div>
-                        <div class="md:col-span-2">
-                            <label for="edit-phone" class="block text-sm font-medium text-gray-700 mb-1">Phone</label>
-                            <input type="tel" id="edit-phone" name="phone" class="w-full px-2 py-2 text-sm border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" pattern="[0-9\\s\\-\\(\\)\\+]+" title="Please enter a valid phone number">
-                        </div>
-                        <div class="md:col-span-2 flex gap-2 mt-4">
-                            <button type="submit" id="save-profile-btn" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-primary/90 transition-all duration-300">
-                                <i class="fas fa-save text-xs"></i> Save Changes
-                            </button>
-                            <button type="button" id="cancel-profile-btn" class="bg-gray-500 text-white px-4 py-2 rounded-lg font-semibold text-sm hover:bg-gray-600 transition-all duration-300">
-                                <i class="fas fa-times text-xs"></i> Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-
-                <!-- Compact Password Section -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 mt-4">
-                    <div class="flex items-center justify-between mb-3">
-                        <h3 class="text-base font-display font-bold text-secondary">Password</h3>
-                        <button id="change-password-btn" class="bg-secondary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-secondary/90 transition-all">
-                            <i class="fas fa-key text-xs"></i> Change
-                        </button>
-                    </div>
-
-                    <!-- Password Change Form - Compact -->
-                    <form id="password-change-form" class="hidden space-y-3">
-                        <div>
-                            <label for="current-password" class="block text-xs font-medium text-gray-700 mb-1">Current Password *</label>
-                            <div class="relative">
-                                <input type="password" id="current-password" name="currentPassword" required class="w-full px-2 py-1.5 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
-                                <button type="button" id="toggle-current-password" class="absolute inset-y-0 right-0 pr-1.5 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle current password visibility">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="new-password" class="block text-xs font-medium text-gray-700 mb-1">New Password *</label>
-                            <div class="relative">
-                                <input type="password" id="new-password" name="newPassword" required class="w-full px-2 py-1.5 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all" minlength="8">
-                                <button type="button" id="toggle-new-password" class="absolute inset-y-0 right-0 pr-1.5 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle new password visibility">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                            <div id="password-strength" class="mt-1">
-                                <div class="flex space-x-0.5 mb-0.5">
-                                    <div id="strength-1" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
-                                    <div id="strength-2" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
-                                    <div id="strength-3" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
-                                    <div id="strength-4" class="h-0.5 w-1/4 bg-gray-200 rounded"></div>
-                                </div>
-                                <p id="password-feedback" class="text-xs text-gray-500 leading-tight">Use uppercase, lowercase, number & symbol</p>
-                            </div>
-                        </div>
-                        <div>
-                            <label for="confirm-new-password" class="block text-xs font-medium text-gray-700 mb-1">Confirm New Password *</label>
-                            <div class="relative">
-                                <input type="password" id="confirm-new-password" name="confirmNewPassword" required class="w-full px-2 py-1.5 pr-6 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent transition-all">
-                                <button type="button" id="toggle-confirm-password" class="absolute inset-y-0 right-0 pr-1.5 flex items-center text-gray-400 hover:text-gray-600 text-xs" aria-label="Toggle confirm password visibility">
-                                    <i class="fas fa-eye"></i>
-                                </button>
-                            </div>
-                            <div id="confirm-password-feedback" class="text-xs text-red-600 mt-1 hidden"></div>
-                        </div>
-                        <div class="flex gap-2">
-                            <button type="submit" id="save-password-btn" class="bg-secondary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-secondary/90 transition-all">
-                                <i class="fas fa-save text-xs"></i> Update
-                            </button>
-                            <button type="button" id="cancel-password-btn" class="bg-gray-500 text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-gray-600 transition-all">
-                                <i class="fas fa-times text-xs"></i> Cancel
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
 
             <!-- User Management Section -->
             <div id="users-section" class="section-content hidden">
@@ -371,17 +308,6 @@
                 </div>
             </div>
 
-            <!-- Settings Section -->
-            <div id="settings-section" class="section-content hidden">
-                <div class="mb-4">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Settings</h1>
-                    <p class="text-gray-600 text-sm">Manage your account preferences</p>
-                </div>
-
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-gray-600 text-center py-6 text-sm">Settings functionality coming soon...</p>
-                </div>
-            </div>
 
     <!-- User Edit Modal -->
     <div id="user-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
@@ -501,6 +427,583 @@
     </script>
     <!-- Reuse existing dashboard logic for UI behaviors -->
     <script src="/src/assets/js/dashboard.js"></script>
+    <script>
+        // Sidebar toggle functions for admin dashboard
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            if (sidebar.classList.contains('-translate-x-full')) {
+                openSidebar();
+            } else {
+                closeSidebar();
+            }
+        }
+
+        function openSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            sidebar.classList.remove('-translate-x-full');
+            overlay.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebar-overlay');
+
+            sidebar.classList.add('-translate-x-full');
+            overlay.classList.add('hidden');
+            document.body.style.overflow = '';
+        }
+
+        // Handle window resize for sidebar
+        window.addEventListener('resize', function() {
+            if (window.innerWidth >= 1024) {
+                closeSidebar();
+            }
+        });
+
+        // Initialize navigation for admin dashboard
+        function initializeNavigation() {
+            const navLinks = document.querySelectorAll('.nav-link');
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+
+                    const section = this.getAttribute('data-section');
+                    if (section) {
+                        switchSection(section);
+                    }
+
+                    // Close sidebar on mobile after navigation
+                    if (window.innerWidth < 1024) {
+                        closeSidebar();
+                    }
+                });
+            });
+        }
+
+        // Switch between sections
+        function switchSection(sectionName) {
+            // Hide all sections
+            const sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => {
+                section.classList.add('hidden');
+            });
+
+            // Remove active class from all nav links
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+
+            // Show selected section
+            const targetSection = document.getElementById(`${sectionName}-section`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+
+            // Add active class to selected nav link
+            const targetLink = document.querySelector(`[data-section="${sectionName}"]`);
+            if (targetLink) {
+                targetLink.classList.add('active');
+            }
+        }
+
+        // Initialize navigation when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeNavigation();
+            loadAdminProfile(); // Load admin profile data
+            initializeLogout(); // Initialize logout functionality
+        });
+
+        // Initialize logout functionality for admin
+        function initializeLogout() {
+            const logoutBtn = document.getElementById('logout-btn');
+            if (logoutBtn) {
+                logoutBtn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    confirmAdminLogout();
+                });
+            }
+        }
+
+        // Admin logout confirmation popup (same style as user dashboard)
+        function confirmAdminLogout() {
+            // Remove any existing popup
+            const existingPopup = document.getElementById('admin-logout-popup');
+            if (existingPopup) {
+                existingPopup.remove();
+            }
+
+            // Create popup overlay
+            const overlay = document.createElement('div');
+            overlay.id = 'admin-logout-popup';
+            overlay.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50';
+            overlay.innerHTML = `
+                <div class="bg-white rounded-lg p-6 max-w-sm mx-4 shadow-xl">
+                    <div class="flex items-center mb-4">
+                        <div class="flex-shrink-0 mr-3">
+                            <i class="fas fa-sign-out-alt text-red-500 text-2xl"></i>
+                        </div>
+                        <div class="flex-1">
+                            <h3 class="text-lg font-semibold text-gray-800">Confirm Logout</h3>
+                        </div>
+                    </div>
+                    <p class="text-gray-700 mb-6">Are you sure you want to logout from the admin dashboard?</p>
+                    <div class="flex gap-2">
+                        <button onclick="closeAdminLogoutPopup()" class="flex-1 px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600 transition-colors">
+                            Cancel
+                        </button>
+                        <button onclick="proceedAdminLogout()" class="flex-1 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600 transition-colors">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            `;
+
+            document.body.appendChild(overlay);
+        }
+
+        // Close admin logout popup
+        function closeAdminLogoutPopup() {
+            const popup = document.getElementById('admin-logout-popup');
+            if (popup) {
+                popup.remove();
+            }
+        }
+
+        // Proceed with admin logout
+        async function proceedAdminLogout() {
+            closeAdminLogoutPopup();
+
+            try {
+                // Sign out using churchAuth
+                const result = await churchAuth.signOut();
+                if (result.success) {
+                    // Redirect to admin login page
+                    window.location.href = '/src/pages/admin/login.html';
+                } else {
+                    showDashboardMessage('Logout failed. Please try again.', 'error');
+                }
+            } catch (error) {
+                console.error('Logout error:', error);
+                showDashboardMessage('An error occurred during logout.', 'error');
+            }
+        }
+
+        // Load admin profile data
+        async function loadAdminProfile() {
+            try {
+                // Set default values first
+                document.getElementById('user-name').textContent = 'Administrator';
+                document.getElementById('user-email').textContent = 'Loading...';
+
+                // Get the current user's profile
+                const profile = await churchAuth.getUserProfile();
+                if (profile) {
+                    // Update sidebar user info
+                    const fullName = profile.full_name || `${profile.first_name || ''} ${profile.last_name || ''}`.trim();
+                    document.getElementById('user-name').textContent = 'Administrator';
+                    document.getElementById('user-email').textContent = fullName || 'Administrator';
+
+                    // Update user avatar
+                    const avatarElement = document.getElementById('user-avatar');
+                    if (avatarElement && profile.first_name) {
+                        avatarElement.textContent = profile.first_name.charAt(0).toUpperCase();
+                    } else if (avatarElement) {
+                        avatarElement.textContent = 'A'; // Default admin avatar
+                    }
+                } else {
+                    // If no profile found, try to find admin user from database
+                    try {
+                        const { data: adminUsers, error } = await supabaseClient
+                            .from('profiles')
+                            .select('first_name, last_name, full_name')
+                            .eq('user_role', 'admin')
+                            .limit(1);
+
+                        if (!error && adminUsers && adminUsers.length > 0) {
+                            const adminUser = adminUsers[0];
+                            const fullName = adminUser.full_name || `${adminUser.first_name || ''} ${adminUser.last_name || ''}`.trim();
+                            document.getElementById('user-name').textContent = 'Administrator';
+                            document.getElementById('user-email').textContent = fullName || 'Administrator';
+                        } else {
+                            // Fallback to current user email
+                            document.getElementById('user-name').textContent = 'Administrator';
+                            const currentUser = churchAuth.getCurrentUser();
+                            document.getElementById('user-email').textContent = currentUser?.email || 'Administrator';
+                        }
+                    } catch (dbError) {
+                        console.error('Error fetching admin from database:', dbError);
+                        // Fallback to current user email
+                        document.getElementById('user-name').textContent = 'Administrator';
+                        const currentUser = churchAuth.getCurrentUser();
+                        document.getElementById('user-email').textContent = currentUser?.email || 'Administrator';
+                    }
+
+                    // Set default avatar
+                    const avatarElement = document.getElementById('user-avatar');
+                    if (avatarElement) {
+                        avatarElement.textContent = 'A';
+                    }
+                }
+            } catch (error) {
+                console.error('Error loading admin profile:', error);
+                // Set fallback values on error
+                document.getElementById('user-name').textContent = 'Administrator';
+                const currentUser = churchAuth.getCurrentUser();
+                document.getElementById('user-email').textContent = currentUser?.email || 'Administrator';
+
+                const avatarElement = document.getElementById('user-avatar');
+                if (avatarElement) {
+                    avatarElement.textContent = 'A';
+                }
+            }
+        }
+
+        // Initialize profile editing functionality for admin
+        function initializeProfileEditing() {
+            const editProfileBtn = document.getElementById('edit-profile-btn');
+            const cancelProfileBtn = document.getElementById('cancel-profile-btn');
+            const saveProfileBtn = document.getElementById('save-profile-btn');
+            const profileViewMode = document.getElementById('profile-view-mode');
+            const profileEditForm = document.getElementById('profile-edit-form');
+
+            const changePasswordBtn = document.getElementById('change-password-btn');
+            const cancelPasswordBtn = document.getElementById('cancel-password-btn');
+            const savePasswordBtn = document.getElementById('save-password-btn');
+            const passwordChangeForm = document.getElementById('password-change-form');
+
+            // Profile editing
+            if (editProfileBtn) {
+                editProfileBtn.addEventListener('click', function() {
+                    // Hide view mode, show edit form
+                    profileViewMode.classList.add('hidden');
+                    profileEditForm.classList.remove('hidden');
+
+                    // Populate form with current values
+                    const firstName = document.getElementById('profile-first-name').textContent;
+                    const lastName = document.getElementById('profile-last-name').textContent;
+                    const phone = document.getElementById('profile-phone').textContent;
+
+                    document.getElementById('edit-first-name').value = firstName !== 'Not provided' ? firstName : '';
+                    document.getElementById('edit-last-name').value = lastName !== 'Not provided' ? lastName : '';
+                    document.getElementById('edit-phone').value = phone !== 'Not provided' ? phone : '';
+                });
+            }
+
+            if (cancelProfileBtn) {
+                cancelProfileBtn.addEventListener('click', function() {
+                    // Hide edit form, show view mode
+                    profileEditForm.classList.add('hidden');
+                    profileViewMode.classList.remove('hidden');
+                });
+            }
+
+            if (saveProfileBtn) {
+                saveProfileBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(profileEditForm);
+                    const firstName = formData.get('firstName').trim();
+                    const lastName = formData.get('lastName').trim();
+                    const phone = formData.get('phone').trim();
+
+                    // Validation
+                    if (!firstName || !lastName) {
+                        showDashboardMessage('First name and last name are required.', 'error');
+                        return;
+                    }
+
+                    if (!isValidName(firstName) || !isValidName(lastName)) {
+                        showDashboardMessage('Please enter valid names (letters and spaces only).', 'error');
+                        return;
+                    }
+
+                    if (phone && !isValidPhone(phone)) {
+                        showDashboardMessage('Please enter a valid phone number.', 'error');
+                        return;
+                    }
+
+                    // Disable save button
+                    saveProfileBtn.disabled = true;
+                    saveProfileBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+                    try {
+                        const updates = {
+                            first_name: firstName,
+                            last_name: lastName,
+                            full_name: `${firstName} ${lastName}`.trim(),
+                            phone: phone || null,
+                            updated_at: new Date().toISOString()
+                        };
+
+                        const result = await churchAuth.updateUserProfile(updates);
+
+                        if (result.success) {
+                            // Update display values
+                            document.getElementById('profile-first-name').textContent = firstName;
+                            document.getElementById('profile-last-name').textContent = lastName;
+                            document.getElementById('profile-phone').textContent = phone || 'Not provided';
+
+                            // Update sidebar and welcome message
+                            const fullName = `${firstName} ${lastName}`.trim();
+                            document.getElementById('user-name').textContent = 'Administrator';
+                            document.getElementById('user-email').textContent = fullName;
+
+                            // Update avatar
+                            const avatarElement = document.getElementById('user-avatar');
+                            if (avatarElement) {
+                                avatarElement.textContent = firstName.charAt(0).toUpperCase();
+                            }
+
+                            // Hide edit form, show view mode
+                            profileEditForm.classList.add('hidden');
+                            profileViewMode.classList.remove('hidden');
+
+                            showDashboardMessage('Profile updated successfully!', 'success');
+                        } else {
+                            showDashboardMessage(result.error || 'Failed to update profile.', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Profile update error:', error);
+                        showDashboardMessage('Failed to update profile. Please try again.', 'error');
+                    } finally {
+                        saveProfileBtn.disabled = false;
+                        saveProfileBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Save Changes';
+                    }
+                });
+            }
+
+            // Password change functionality
+            if (changePasswordBtn) {
+                changePasswordBtn.addEventListener('click', function() {
+                    passwordChangeForm.classList.remove('hidden');
+                    changePasswordBtn.classList.add('hidden');
+                });
+            }
+
+            if (cancelPasswordBtn) {
+                cancelPasswordBtn.addEventListener('click', function() {
+                    passwordChangeForm.classList.add('hidden');
+                    changePasswordBtn.classList.remove('hidden');
+                    passwordChangeForm.reset();
+                    resetPasswordStrength();
+                });
+            }
+
+            if (savePasswordBtn) {
+                savePasswordBtn.addEventListener('click', async function(e) {
+                    e.preventDefault();
+
+                    const formData = new FormData(passwordChangeForm);
+                    const currentPassword = formData.get('currentPassword');
+                    const newPassword = formData.get('newPassword');
+                    const confirmPassword = formData.get('confirmNewPassword');
+
+                    // Validation
+                    if (!currentPassword || !newPassword || !confirmPassword) {
+                        showDashboardMessage('All password fields are required.', 'error');
+                        return;
+                    }
+
+                    const { strength } = checkPasswordStrength(newPassword);
+                    if (strength < 3) {
+                        showDashboardMessage('New password is too weak. Please choose a stronger password.', 'error');
+                        return;
+                    }
+
+                    if (newPassword !== confirmPassword) {
+                        showDashboardMessage('New passwords do not match.', 'error');
+                        return;
+                    }
+
+                    // Disable save button
+                    savePasswordBtn.disabled = true;
+                    savePasswordBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Updating...';
+
+                    try {
+                        // First verify current password by attempting sign in
+                        const currentUser = churchAuth.getCurrentUser();
+                        if (!currentUser) {
+                            showDashboardMessage('Session expired. Please login again.', 'error');
+                            return;
+                        }
+
+                        // Try to sign in with current password to verify it
+                        const verifyResult = await churchAuth.signIn(currentUser.email, currentPassword, false);
+                        if (!verifyResult.success) {
+                            showDashboardMessage('Current password is incorrect.', 'error');
+                            return;
+                        }
+
+                        // Update password
+                        const result = await churchAuth.updatePassword(newPassword);
+
+                        if (result.success) {
+                            passwordChangeForm.classList.add('hidden');
+                            changePasswordBtn.classList.remove('hidden');
+                            passwordChangeForm.reset();
+                            resetPasswordStrength();
+                            showDashboardMessage('Password updated successfully!', 'success');
+                        } else {
+                            showDashboardMessage(result.error || 'Failed to update password.', 'error');
+                        }
+                    } catch (error) {
+                        console.error('Password update error:', error);
+                        showDashboardMessage('Failed to update password. Please try again.', 'error');
+                    } finally {
+                        savePasswordBtn.disabled = false;
+                        savePasswordBtn.innerHTML = '<i class="fas fa-save text-xs"></i> Update Password';
+                    }
+                });
+            }
+
+            // Password visibility toggles
+            const passwordToggles = [
+                { button: 'toggle-current-password', input: 'current-password' },
+                { button: 'toggle-new-password', input: 'new-password' },
+                { button: 'toggle-confirm-password', input: 'confirm-new-password' }
+            ];
+
+            passwordToggles.forEach(({ button, input }) => {
+                const toggleBtn = document.getElementById(button);
+                const inputField = document.getElementById(input);
+
+                if (toggleBtn && inputField) {
+                    toggleBtn.addEventListener('click', function() {
+                        const type = inputField.getAttribute('type') === 'password' ? 'text' : 'password';
+                        inputField.setAttribute('type', type);
+                        this.querySelector('i').className = type === 'password' ? 'fas fa-eye' : 'fas fa-eye-slash';
+                    });
+                }
+            });
+
+            // Password strength indicator for new password
+            const newPasswordInput = document.getElementById('new-password');
+            if (newPasswordInput) {
+                newPasswordInput.addEventListener('input', function() {
+                    updatePasswordStrength(this.value);
+                });
+            }
+
+            // Confirm password validation
+            const confirmPasswordInput = document.getElementById('confirm-new-password');
+            if (confirmPasswordInput) {
+                confirmPasswordInput.addEventListener('input', function() {
+                    const password = newPasswordInput.value;
+                    const confirmPassword = this.value;
+                    const feedback = document.getElementById('confirm-password-feedback');
+
+                    if (confirmPassword && password !== confirmPassword) {
+                        feedback.textContent = 'Passwords do not match';
+                        feedback.classList.remove('hidden');
+                        this.classList.add('border-red-500');
+                        this.classList.remove('border-gray-300');
+                    } else {
+                        feedback.classList.add('hidden');
+                        this.classList.remove('border-red-500');
+                        this.classList.add('border-gray-300');
+                    }
+                });
+            }
+        }
+
+        // Password strength checker
+        function checkPasswordStrength(password) {
+            let strength = 0;
+            let feedback = [];
+
+            if (password.length >= 8) strength++;
+            else feedback.push('At least 8 characters');
+
+            if (/[a-z]/.test(password)) strength++;
+            else feedback.push('Lowercase letter');
+
+            if (/[A-Z]/.test(password)) strength++;
+            else feedback.push('Uppercase letter');
+
+            if (/[0-9]/.test(password)) strength++;
+            else feedback.push('Number');
+
+            if (/[^A-Za-z0-9]/.test(password)) strength++;
+            else feedback.push('Special character');
+
+            return { strength, feedback };
+        }
+
+        // Update password strength indicator
+        function updatePasswordStrength(password) {
+            const strengthBars = ['strength-1', 'strength-2', 'strength-3', 'strength-4'];
+            const feedbackElement = document.getElementById('password-feedback');
+
+            if (!password) {
+                strengthBars.forEach(id => {
+                    document.getElementById(id).className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+                });
+                if (feedbackElement) feedbackElement.textContent = 'Use uppercase, lowercase, number & symbol';
+                return;
+            }
+
+            const { strength, feedback } = checkPasswordStrength(password);
+
+            strengthBars.forEach((id, index) => {
+                const element = document.getElementById(id);
+                if (index < strength) {
+                    if (strength <= 2) element.className = 'h-0.5 w-1/4 bg-red-400 rounded';
+                    else if (strength <= 3) element.className = 'h-0.5 w-1/4 bg-yellow-400 rounded';
+                    else if (strength <= 4) element.className = 'h-0.5 w-1/4 bg-blue-400 rounded';
+                    else element.className = 'h-0.5 w-1/4 bg-green-400 rounded';
+                } else {
+                    element.className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+                }
+            });
+
+            if (feedbackElement) {
+                if (strength >= 4) {
+                    feedbackElement.textContent = 'Strong password!';
+                    feedbackElement.className = 'text-xs text-green-600';
+                } else if (strength >= 3) {
+                    feedbackElement.textContent = 'Good password. ' + feedback.join(', ') + ' would make it stronger.';
+                    feedbackElement.className = 'text-xs text-blue-600';
+                } else if (strength >= 2) {
+                    feedbackElement.textContent = 'Weak password. Add: ' + feedback.join(', ');
+                    feedbackElement.className = 'text-xs text-yellow-600';
+                } else {
+                    feedbackElement.textContent = 'Very weak password. Add: ' + feedback.join(', ');
+                    feedbackElement.className = 'text-xs text-red-600';
+                }
+            }
+        }
+
+        // Reset password strength indicator
+        function resetPasswordStrength() {
+            const strengthBars = ['strength-1', 'strength-2', 'strength-3', 'strength-4'];
+            strengthBars.forEach(id => {
+                document.getElementById(id).className = 'h-0.5 w-1/4 bg-gray-200 rounded';
+            });
+            const feedbackElement = document.getElementById('password-feedback');
+            if (feedbackElement) {
+                feedbackElement.textContent = 'Use uppercase, lowercase, number & symbol';
+                feedbackElement.className = 'text-xs text-gray-500';
+            }
+        }
+
+        // Validation functions
+        function isValidName(name) {
+            const nameRegex = /^[A-Za-z\s]+$/;
+            return nameRegex.test(name) && name.length >= 2 && name.length <= 50;
+        }
+
+        function isValidPhone(phone) {
+            const phoneRegex = /^[\+]?[0-9\s\-\(\)]{7,15}$/;
+            return phoneRegex.test(phone) || phone === '';
+        }
+    </script>
     <!-- User Management functionality -->
     <script>
       let currentUsersPage = 1;
