@@ -161,7 +161,7 @@
                 <!-- Main Cards -->
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
                     <!-- Announcements -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-announcements">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-display font-bold text-secondary">Announcements</h3>
                             <a href="#" onclick="switchSection('announcements')" class="text-xs text-primary hover:underline">View all</a>
@@ -172,7 +172,7 @@
                     </div>
 
                     <!-- Upcoming Events -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200">
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-events">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-display font-bold text-secondary">Upcoming Events</h3>
                             <a href="#" onclick="switchSection('events')" class="text-xs text-primary hover:underline">View all</a>
@@ -430,8 +430,8 @@
                     <p class="text-gray-600 text-sm">Latest news and updates from our parish</p>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-gray-600 text-center py-6 text-sm">Announcements will be displayed here...</p>
+                <div id="announcements-container" class="space-y-4">
+                    <!-- Announcements will be loaded here -->
                 </div>
             </div>
 
@@ -442,8 +442,8 @@
                     <p class="text-gray-600 text-sm">Upcoming events and activities</p>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-gray-600 text-center py-6 text-sm">Events will be displayed here...</p>
+                <div id="events-container" class="space-y-4">
+                    <!-- Events will be loaded here -->
                 </div>
             </div>
 

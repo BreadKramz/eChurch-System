@@ -84,6 +84,16 @@
                     <span>Services</span>
                 </a>
 
+                <a href="#announcements" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="announcements">
+                    <i class="fas fa-bullhorn text-primary text-sm"></i>
+                    <span>Announcements</span>
+                </a>
+
+                <a href="#events" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="events">
+                    <i class="fas fa-calendar-alt text-primary text-sm"></i>
+                    <span>Events</span>
+                </a>
+
                 <div class="border-t border-gray-200 my-4"></div>
 
             </nav>
@@ -308,6 +318,94 @@
                 </div>
             </div>
 
+            <!-- Announcements Section -->
+            <div id="announcements-section" class="section-content hidden">
+                <div class="mb-4">
+                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Announcements</h1>
+                    <p class="text-gray-600 text-sm">Manage parish announcements and news</p>
+                </div>
+
+                <!-- Add Announcement Button -->
+                <div class="mb-4">
+                    <button onclick="showAddAnnouncementModal()" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                        <i class="fas fa-plus text-sm mr-2"></i>Add Announcement
+                    </button>
+                </div>
+
+                <!-- Announcements Table -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-4 border-b border-gray-200">
+                        <h3 class="text-base font-display font-bold text-secondary">All Announcements</h3>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Priority</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Created</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="announcements-table-body" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                                        Loading announcements...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Events Section -->
+            <div id="events-section" class="section-content hidden">
+                <div class="mb-4">
+                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Events</h1>
+                    <p class="text-gray-600 text-sm">Manage parish events and activities</p>
+                </div>
+
+                <!-- Add Event Button -->
+                <div class="mb-4">
+                    <button onclick="showAddEventModal()" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                        <i class="fas fa-plus text-sm mr-2"></i>Add Event
+                    </button>
+                </div>
+
+                <!-- Events Table -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-4 border-b border-gray-200">
+                        <h3 class="text-base font-display font-bold text-secondary">All Events</h3>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Title</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date & Time</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Location</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="events-table-body" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                                        Loading events...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
 
     <!-- User Edit Modal -->
     <div id="user-edit-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
@@ -371,29 +469,174 @@
     </div>
 
     <!-- User Delete Modal -->
-    <div id="user-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
-        <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
-            <div class="flex items-center mb-4">
-                <div class="flex-shrink-0 mr-3">
-                    <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
-                </div>
-                <div class="flex-1">
-                    <h3 class="text-lg font-semibold text-red-800">Delete User</h3>
-                </div>
-            </div>
+     <div id="user-delete-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+         <div class="bg-white rounded-lg p-6 max-w-sm w-full mx-4">
+             <div class="flex items-center mb-4">
+                 <div class="flex-shrink-0 mr-3">
+                     <i class="fas fa-exclamation-triangle text-red-500 text-2xl"></i>
+                 </div>
+                 <div class="flex-1">
+                     <h3 class="text-lg font-semibold text-red-800">Delete User</h3>
+                 </div>
+             </div>
 
-            <p class="text-gray-700 mb-6">Are you sure you want to delete user "<span id="delete-user-name"></span>"? This action cannot be undone.</p>
+             <p class="text-gray-700 mb-6">Are you sure you want to delete user "<span id="delete-user-name"></span>"? This action cannot be undone.</p>
 
-            <div class="flex gap-2">
-                <button onclick="confirmDeleteUser()" class="flex-1 bg-red-600 text-white py-2 px-4 rounded font-semibold hover:bg-red-700 transition-all">
-                    <i class="fas fa-trash text-xs mr-1"></i> Delete
-                </button>
-                <button onclick="closeUserDeleteModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
-                    Cancel
-                </button>
-            </div>
-        </div>
-    </div>
+             <div class="flex gap-2">
+                 <button onclick="confirmDeleteUser()" class="flex-1 bg-red-600 text-white py-2 px-4 rounded font-semibold hover:bg-red-700 transition-all">
+                     <i class="fas fa-trash text-xs mr-1"></i> Delete
+                 </button>
+                 <button onclick="closeUserDeleteModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                     Cancel
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- Add Announcement Modal -->
+     <div id="announcement-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+         <div class="bg-white rounded-lg p-6 max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+             <div class="flex items-center justify-between mb-4">
+                 <h3 class="text-lg font-display font-bold text-secondary" id="announcement-modal-title">Add Announcement</h3>
+                 <button onclick="closeAnnouncementModal()" class="text-gray-400 hover:text-gray-600">
+                     <i class="fas fa-times"></i>
+                 </button>
+             </div>
+
+             <form id="announcement-form" class="space-y-4">
+                 <input type="hidden" id="announcement-id" name="id">
+
+                 <div>
+                     <label for="announcement-title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                     <input type="text" id="announcement-title" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" maxlength="200">
+                 </div>
+
+                 <div>
+                     <label for="announcement-content" class="block text-sm font-medium text-gray-700 mb-1">Content *</label>
+                     <textarea id="announcement-content" name="content" rows="4" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" maxlength="1000"></textarea>
+                 </div>
+
+                 <div class="grid grid-cols-2 gap-4">
+                     <div>
+                         <label for="announcement-priority" class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                         <select id="announcement-priority" name="priority" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                             <option value="low">Low</option>
+                             <option value="normal" selected>Normal</option>
+                             <option value="high">High</option>
+                             <option value="urgent">Urgent</option>
+                         </select>
+                     </div>
+
+                     <div>
+                         <label for="announcement-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                         <select id="announcement-status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                             <option value="active" selected>Active</option>
+                             <option value="inactive">Inactive</option>
+                         </select>
+                     </div>
+                 </div>
+
+                 <div>
+                     <label for="announcement-expires" class="block text-sm font-medium text-gray-700 mb-1">Expires At (Optional)</label>
+                     <input type="datetime-local" id="announcement-expires" name="expiresAt" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                 </div>
+
+                 <div class="flex gap-2 pt-4">
+                     <button type="submit" id="save-announcement-btn" class="flex-1 bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary/90 transition-all">
+                         <i class="fas fa-save text-xs mr-1"></i> Save Announcement
+                     </button>
+                     <button type="button" onclick="closeAnnouncementModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                         Cancel
+                     </button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <!-- Add Event Modal -->
+     <div id="event-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+         <div class="bg-white rounded-lg p-6 max-w-lg w-full mx-4 max-h-[90vh] overflow-y-auto">
+             <div class="flex items-center justify-between mb-4">
+                 <h3 class="text-lg font-display font-bold text-secondary" id="event-modal-title">Add Event</h3>
+                 <button onclick="closeEventModal()" class="text-gray-400 hover:text-gray-600">
+                     <i class="fas fa-times"></i>
+                 </button>
+             </div>
+
+             <form id="event-form" class="space-y-4">
+                 <input type="hidden" id="event-id" name="id">
+
+                 <div>
+                     <label for="event-title" class="block text-sm font-medium text-gray-700 mb-1">Title *</label>
+                     <input type="text" id="event-title" name="title" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" maxlength="200">
+                 </div>
+
+                 <div>
+                     <label for="event-description" class="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                     <textarea id="event-description" name="description" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" maxlength="500"></textarea>
+                 </div>
+
+                 <div class="grid grid-cols-2 gap-4">
+                     <div>
+                         <label for="event-date" class="block text-sm font-medium text-gray-700 mb-1">Date *</label>
+                         <input type="date" id="event-date" name="eventDate" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                     </div>
+
+                     <div>
+                         <label for="event-time" class="block text-sm font-medium text-gray-700 mb-1">Time</label>
+                         <input type="time" id="event-time" name="eventTime" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                     </div>
+                 </div>
+
+                 <div>
+                     <label for="event-location" class="block text-sm font-medium text-gray-700 mb-1">Location</label>
+                     <input type="text" id="event-location" name="location" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" maxlength="200">
+                 </div>
+
+                 <div class="grid grid-cols-2 gap-4">
+                     <div>
+                         <label for="event-category" class="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                         <select id="event-category" name="category" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                             <option value="general" selected>General</option>
+                             <option value="mass">Mass</option>
+                             <option value="service">Service</option>
+                             <option value="meeting">Meeting</option>
+                             <option value="celebration">Celebration</option>
+                         </select>
+                     </div>
+
+                     <div>
+                         <label for="event-priority" class="block text-sm font-medium text-gray-700 mb-1">Priority</label>
+                         <select id="event-priority" name="priority" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                             <option value="low">Low</option>
+                             <option value="normal" selected>Normal</option>
+                             <option value="high">High</option>
+                             <option value="urgent">Urgent</option>
+                         </select>
+                     </div>
+                 </div>
+
+                 <div>
+                     <label for="event-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                     <select id="event-status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                         <option value="upcoming" selected>Upcoming</option>
+                         <option value="ongoing">Ongoing</option>
+                         <option value="completed">Completed</option>
+                         <option value="cancelled">Cancelled</option>
+                     </select>
+                 </div>
+
+                 <div class="flex gap-2 pt-4">
+                     <button type="submit" id="save-event-btn" class="flex-1 bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary/90 transition-all">
+                         <i class="fas fa-save text-xs mr-1"></i> Save Event
+                     </button>
+                     <button type="button" onclick="closeEventModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                         Cancel
+                     </button>
+                 </div>
+             </form>
+         </div>
+     </div>
 
 </diff>
 </apply_diff>
@@ -1306,6 +1549,485 @@
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         return emailRegex.test(email);
       }
+
+      // ===== ANNOUNCEMENTS MANAGEMENT =====
+
+      let currentAnnouncementsPage = 1;
+      const announcementsPerPage = 10;
+
+      // Load announcements when Announcements section is shown
+      document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-link[data-section="announcements"]');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            setTimeout(() => {
+              if (document.getElementById('announcements-section').classList.contains('hidden') === false) {
+                loadAnnouncements();
+              }
+            }, 100);
+          });
+        });
+      });
+
+      async function loadAnnouncements() {
+        try {
+          const tbody = document.getElementById('announcements-table-body');
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                Loading announcements...
+              </td>
+            </tr>
+          `;
+
+          const { data: announcements, error } = await supabaseClient
+            .from('announcements')
+            .select('*')
+            .order('created_at', { ascending: false });
+
+          if (error) throw error;
+
+          displayAnnouncements(announcements || []);
+        } catch (error) {
+          console.error('Error loading announcements:', error);
+          document.getElementById('announcements-table-body').innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-red-600">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                Failed to load announcements. Please try again.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      function displayAnnouncements(announcements) {
+        const tbody = document.getElementById('announcements-table-body');
+
+        if (announcements.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-bullhorn mr-2"></i>
+                No announcements found.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = announcements.map(announcement => `
+          <tr class="hover:bg-gray-50">
+            <td class="px-4 py-3">
+              <div class="max-w-xs truncate" title="${announcement.title}">${announcement.title}</div>
+            </td>
+            <td class="px-4 py-3">
+              <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                announcement.priority === 'urgent' ? 'bg-red-100 text-red-800' :
+                announcement.priority === 'high' ? 'bg-orange-100 text-orange-800' :
+                announcement.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
+                'bg-gray-100 text-gray-800'
+              }">
+                ${announcement.priority}
+              </span>
+            </td>
+            <td class="px-4 py-3">
+              <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                announcement.status === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+              }">
+                ${announcement.status}
+              </span>
+            </td>
+            <td class="px-4 py-3 text-sm text-gray-500">
+              ${new Date(announcement.created_at).toLocaleDateString()}
+            </td>
+            <td class="px-4 py-3 text-sm">
+              <div class="flex gap-1">
+                <button onclick="editAnnouncement('${announcement.id}')" class="text-primary hover:text-primary/80 p-1" title="Edit announcement">
+                  <i class="fas fa-edit text-xs"></i>
+                </button>
+                <button onclick="deleteAnnouncement('${announcement.id}', '${announcement.title}')" class="text-red-600 hover:text-red-800 p-1" title="Delete announcement">
+                  <i class="fas fa-trash text-xs"></i>
+                </button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      function showAddAnnouncementModal() {
+        document.getElementById('announcement-modal-title').textContent = 'Add Announcement';
+        document.getElementById('announcement-id').value = '';
+        document.getElementById('announcement-form').reset();
+        document.getElementById('announcement-modal').classList.remove('hidden');
+      }
+
+      function closeAnnouncementModal() {
+        document.getElementById('announcement-modal').classList.add('hidden');
+        document.getElementById('announcement-form').reset();
+      }
+
+      async function editAnnouncement(id) {
+        try {
+          const { data: announcement, error } = await supabaseClient
+            .from('announcements')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+          if (error) throw error;
+
+          document.getElementById('announcement-modal-title').textContent = 'Edit Announcement';
+          document.getElementById('announcement-id').value = announcement.id;
+          document.getElementById('announcement-title').value = announcement.title;
+          document.getElementById('announcement-content').value = announcement.content;
+          document.getElementById('announcement-priority').value = announcement.priority;
+          document.getElementById('announcement-status').value = announcement.status;
+          document.getElementById('announcement-expires').value = announcement.expires_at ?
+            new Date(announcement.expires_at).toISOString().slice(0, 16) : '';
+
+          document.getElementById('announcement-modal').classList.remove('hidden');
+        } catch (error) {
+          console.error('Error loading announcement:', error);
+          showDashboardMessage('Failed to load announcement.', 'error');
+        }
+      }
+
+      async function deleteAnnouncement(id, title) {
+        if (!confirm(`Are you sure you want to delete the announcement "${title}"?`)) return;
+
+        try {
+          const { error } = await supabaseClient
+            .from('announcements')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+
+          showDashboardMessage('Announcement deleted successfully!', 'success');
+          loadAnnouncements();
+        } catch (error) {
+          console.error('Error deleting announcement:', error);
+          showDashboardMessage('Failed to delete announcement.', 'error');
+        }
+      }
+
+      // Announcement form submission
+      document.addEventListener('DOMContentLoaded', function() {
+        const announcementForm = document.getElementById('announcement-form');
+        if (announcementForm) {
+          announcementForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+            const title = formData.get('title').trim();
+            const content = formData.get('content').trim();
+            const priority = formData.get('priority');
+            const status = formData.get('status');
+            const expiresAt = formData.get('expiresAt');
+
+            if (!title || !content) {
+              showDashboardMessage('Title and content are required.', 'error');
+              return;
+            }
+
+            const submitBtn = document.getElementById('save-announcement-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+            try {
+              // Get current authenticated user from Supabase session
+              const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+              if (userError || !user) {
+                throw new Error('Not authenticated');
+              }
+
+              const announcementData = {
+                title,
+                content,
+                priority,
+                status,
+                expires_at: expiresAt || null,
+                updated_at: new Date().toISOString()
+              };
+
+              let result;
+              if (id) {
+                // Update
+                result = await supabaseClient
+                  .from('announcements')
+                  .update(announcementData)
+                  .eq('id', id);
+              } else {
+                // Insert
+                announcementData.created_by = user.id;
+                result = await supabaseClient
+                  .from('announcements')
+                  .insert(announcementData);
+              }
+
+              if (result.error) throw result.error;
+
+              showDashboardMessage(`Announcement ${id ? 'updated' : 'created'} successfully!`, 'success');
+              closeAnnouncementModal();
+              loadAnnouncements();
+            } catch (error) {
+              console.error('Error saving announcement:', error);
+              showDashboardMessage('Failed to save announcement.', 'error');
+            } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fas fa-save text-xs mr-1"></i> Save Announcement';
+            }
+          });
+        }
+      });
+
+      // ===== EVENTS MANAGEMENT =====
+
+      let currentEventsPage = 1;
+      const eventsPerPage = 10;
+
+      // Load events when Events section is shown
+      document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('.nav-link[data-section="events"]');
+        navLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            setTimeout(() => {
+              if (document.getElementById('events-section').classList.contains('hidden') === false) {
+                loadEvents();
+              }
+            }, 100);
+          });
+        });
+      });
+
+      async function loadEvents() {
+        try {
+          const tbody = document.getElementById('events-table-body');
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                Loading events...
+              </td>
+            </tr>
+          `;
+
+          const { data: events, error } = await supabaseClient
+            .from('events')
+            .select('*')
+            .order('event_date', { ascending: true });
+
+          if (error) throw error;
+
+          displayEvents(events || []);
+        } catch (error) {
+          console.error('Error loading events:', error);
+          document.getElementById('events-table-body').innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-red-600">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                Failed to load events. Please try again.
+              </td>
+            </tr>
+          `;
+        }
+      }
+
+      function displayEvents(events) {
+        const tbody = document.getElementById('events-table-body');
+
+        if (events.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-calendar-alt mr-2"></i>
+                No events found.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = events.map(event => {
+          const eventDate = new Date(event.event_date);
+          const dateStr = eventDate.toLocaleDateString();
+          const timeStr = event.event_time || 'TBD';
+
+          return `
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3">
+                <div class="max-w-xs truncate" title="${event.title}">${event.title}</div>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-900">
+                <div>${dateStr}</div>
+                <div class="text-gray-500">${timeStr}</div>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-900">
+                ${event.location || 'TBD'}
+              </td>
+              <td class="px-4 py-3">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                  event.status === 'completed' ? 'bg-green-100 text-green-800' :
+                  event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                  event.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                  'bg-yellow-100 text-yellow-800'
+                }">
+                  ${event.status}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-sm">
+                <div class="flex gap-1">
+                  <button onclick="editEvent('${event.id}')" class="text-primary hover:text-primary/80 p-1" title="Edit event">
+                    <i class="fas fa-edit text-xs"></i>
+                  </button>
+                  <button onclick="deleteEvent('${event.id}', '${event.title}')" class="text-red-600 hover:text-red-800 p-1" title="Delete event">
+                    <i class="fas fa-trash text-xs"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function showAddEventModal() {
+        document.getElementById('event-modal-title').textContent = 'Add Event';
+        document.getElementById('event-id').value = '';
+        document.getElementById('event-form').reset();
+        document.getElementById('event-modal').classList.remove('hidden');
+      }
+
+      function closeEventModal() {
+        document.getElementById('event-modal').classList.add('hidden');
+        document.getElementById('event-form').reset();
+      }
+
+      async function editEvent(id) {
+        try {
+          const { data: event, error } = await supabaseClient
+            .from('events')
+            .select('*')
+            .eq('id', id)
+            .single();
+
+          if (error) throw error;
+
+          document.getElementById('event-modal-title').textContent = 'Edit Event';
+          document.getElementById('event-id').value = event.id;
+          document.getElementById('event-title').value = event.title;
+          document.getElementById('event-description').value = event.description || '';
+          document.getElementById('event-date').value = event.event_date.split('T')[0];
+          document.getElementById('event-time').value = event.event_time || '';
+          document.getElementById('event-location').value = event.location || '';
+          document.getElementById('event-category').value = event.category;
+          document.getElementById('event-priority').value = event.priority;
+          document.getElementById('event-status').value = event.status;
+
+          document.getElementById('event-modal').classList.remove('hidden');
+        } catch (error) {
+          console.error('Error loading event:', error);
+          showDashboardMessage('Failed to load event.', 'error');
+        }
+      }
+
+      async function deleteEvent(id, title) {
+        if (!confirm(`Are you sure you want to delete the event "${title}"?`)) return;
+
+        try {
+          const { error } = await supabaseClient
+            .from('events')
+            .delete()
+            .eq('id', id);
+
+          if (error) throw error;
+
+          showDashboardMessage('Event deleted successfully!', 'success');
+          loadEvents();
+        } catch (error) {
+          console.error('Error deleting event:', error);
+          showDashboardMessage('Failed to delete event.', 'error');
+        }
+      }
+
+      // Event form submission
+      document.addEventListener('DOMContentLoaded', function() {
+        const eventForm = document.getElementById('event-form');
+        if (eventForm) {
+          eventForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const id = formData.get('id');
+            const title = formData.get('title').trim();
+            const description = formData.get('description').trim();
+            const eventDate = formData.get('eventDate');
+            const eventTime = formData.get('eventTime');
+            const location = formData.get('location').trim();
+            const category = formData.get('category');
+            const priority = formData.get('priority');
+            const status = formData.get('status');
+
+            if (!title || !eventDate) {
+              showDashboardMessage('Title and date are required.', 'error');
+              return;
+            }
+
+            const submitBtn = document.getElementById('save-event-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Saving...';
+
+            try {
+              // Get current authenticated user from Supabase session
+              const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+              if (userError || !user) {
+                throw new Error('Not authenticated');
+              }
+
+              const eventData = {
+                title,
+                description: description || null,
+                event_date: eventDate,
+                event_time: eventTime || null,
+                location: location || null,
+                category,
+                priority,
+                status,
+                updated_at: new Date().toISOString()
+              };
+
+              let result;
+              if (id) {
+                // Update
+                result = await supabaseClient
+                  .from('events')
+                  .update(eventData)
+                  .eq('id', id);
+              } else {
+                // Insert
+                eventData.created_by = user.id;
+                result = await supabaseClient
+                  .from('events')
+                  .insert(eventData);
+              }
+
+              if (result.error) throw result.error;
+
+              showDashboardMessage(`Event ${id ? 'updated' : 'created'} successfully!`, 'success');
+              closeEventModal();
+              loadEvents();
+            } catch (error) {
+              console.error('Error saving event:', error);
+              showDashboardMessage('Failed to save event.', 'error');
+            } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fas fa-save text-xs mr-1"></i> Save Event';
+            }
+          });
+        }
+      });
 
       // After dashboard.js sets labels, enforce Administrator label
       window.addEventListener('load', function() {

@@ -253,3 +253,94 @@ on public.profiles
 for delete
 to authenticated
 using (public.is_admin(auth.uid()));
+
+-- =====================================================
+-- EVENTS & ANNOUNCEMENTS TABLES
+-- =====================================================
+
+-- Events table
+create table if not exists public.events (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  description text,
+  event_date timestamptz not null,
+  event_time text,
+  location text,
+  category text default 'general',
+  priority text default 'normal',
+  status text default 'upcoming',
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Announcements table
+create table if not exists public.announcements (
+  id uuid primary key default gen_random_uuid(),
+  title text not null,
+  content text not null,
+  priority text default 'normal',
+  status text default 'active',
+  expires_at timestamptz,
+  created_by uuid references auth.users(id) on delete set null,
+  created_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Enable RLS
+alter table public.events enable row level security;
+alter table public.announcements enable row level security;
+
+-- Grants for events
+grant select on table public.events to authenticated;
+grant select on table public.events to anon;
+grant insert, update, delete on table public.events to authenticated;
+grant all on table public.events to service_role;
+
+-- Grants for announcements
+grant select on table public.announcements to authenticated;
+grant select on table public.announcements to anon;
+grant insert, update, delete on table public.announcements to authenticated;
+grant all on table public.announcements to service_role;
+
+-- RLS Policies for events (public read, admin write)
+create policy "events_select_all"
+on public.events
+for select
+to authenticated, anon
+using (true);
+
+create policy "events_admin_all"
+on public.events
+for all
+to authenticated
+using (public.is_admin(auth.uid()));
+
+-- RLS Policies for announcements (public read, admin write)
+create policy "announcements_select_all"
+on public.announcements
+for select
+to authenticated, anon
+using (true);
+
+create policy "announcements_admin_all"
+on public.announcements
+for all
+to authenticated
+using (public.is_admin(auth.uid()));
+
+-- Indexes
+create index if not exists events_date_idx on public.events(event_date);
+create index if not exists events_status_idx on public.events(status);
+create index if not exists events_category_idx on public.events(category);
+create index if not exists announcements_status_idx on public.announcements(status);
+create index if not exists announcements_expires_idx on public.announcements(expires_at);
+
+-- Triggers for updated_at
+create trigger update_events_updated_at
+before update on public.events
+for each row execute function public.update_updated_at_column();
+
+create trigger update_announcements_updated_at
+before update on public.announcements
+for each row execute function public.update_updated_at_column();
