@@ -4,6 +4,447 @@
 let currentUser = null;
 let currentSection = 'dashboard';
 
+// Load announcements for dashboard overview
+async function loadDashboardAnnouncements() {
+  try {
+    console.log('Loading dashboard announcements...');
+    const now = new Date().toISOString();
+
+    // First, try to get ALL announcements to see what's in the database
+    const { data: allAnnouncements, error: allError } = await supabaseClient
+      .from('announcements')
+      .select('*')
+      .order('created_at', { ascending: false });
+
+    console.log('ALL announcements in database:', { allAnnouncements, allError, count: allAnnouncements?.length || 0 });
+
+    // Get announcements that are active and either have no expiration or haven't expired
+    const { data: announcements, error } = await supabaseClient
+      .from('announcements')
+      .select('*')
+      .eq('status', 'active')
+      .or(`expires_at.is.null,expires_at.gt.${now}`)
+      .order('created_at', { ascending: false })
+      .limit(3);
+
+    console.log('Dashboard announcements query result:', { announcements, error, count: announcements?.length || 0 });
+
+    if (error) throw error;
+
+    const announcementsList = document.querySelector('.dashboard-announcements ul');
+    if (announcementsList) {
+      announcementsList.innerHTML = '';
+
+      if (announcements && announcements.length > 0) {
+        console.log('Rendering', announcements.length, 'announcements to dashboard');
+        announcements.forEach(announcement => {
+          const li = document.createElement('li');
+          li.className = 'flex items-start gap-3 p-3 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg border border-primary/10 hover:border-primary/20 transition-all duration-200 cursor-pointer';
+          li.onclick = () => switchSection('announcements');
+
+          // Priority indicator
+          const priorityColor = announcement.priority === 'urgent' ? 'bg-red-500' :
+                                announcement.priority === 'high' ? 'bg-orange-500' :
+                                announcement.priority === 'normal' ? 'bg-blue-500' : 'bg-gray-500';
+
+          li.innerHTML = `
+            <div class="flex-shrink-0">
+              <div class="w-3 h-3 ${priorityColor} rounded-full shadow-sm"></div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-1">
+                <p class="text-sm font-semibold text-gray-900 truncate">${announcement.title}</p>
+                <span class="text-xs px-2 py-0.5 rounded-full font-medium ${
+                  announcement.priority === 'urgent' ? 'bg-red-100 text-red-700' :
+                  announcement.priority === 'high' ? 'bg-orange-100 text-orange-700' :
+                  announcement.priority === 'normal' ? 'bg-blue-100 text-blue-700' :
+                  'bg-gray-100 text-gray-700'
+                }">${announcement.priority}</span>
+              </div>
+              <p class="text-xs text-gray-600 mb-2 line-clamp-2">${announcement.content.substring(0, 100)}${announcement.content.length > 100 ? '...' : ''}</p>
+              <div class="flex items-center justify-between">
+                <span class="text-xs text-gray-500">${new Date(announcement.created_at).toLocaleDateString()}</span>
+                <span class="text-xs text-primary hover:text-primary/80 font-medium">Read more →</span>
+              </div>
+            </div>
+          `;
+          announcementsList.appendChild(li);
+        });
+      } else {
+        console.log('No announcements to display - showing empty state');
+        announcementsList.innerHTML = `
+          <li class="text-center py-6">
+            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-bullhorn text-gray-400 text-lg"></i>
+            </div>
+            <p class="text-sm text-gray-500">No announcements available</p>
+            <p class="text-xs text-gray-400 mt-1">Check back later for updates</p>
+          </li>
+        `;
+      }
+    } else {
+      console.error('Could not find announcements list element');
+    }
+  } catch (error) {
+    console.error('Error loading dashboard announcements:', error);
+    // Don't throw error, just show empty state
+    const announcementsList = document.querySelector('.dashboard-announcements ul');
+    if (announcementsList) {
+      announcementsList.innerHTML = `
+        <li class="text-center py-6">
+          <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-exclamation-triangle text-red-400 text-lg"></i>
+          </div>
+          <p class="text-sm text-red-600">Unable to load announcements</p>
+          <p class="text-xs text-gray-400 mt-1">Please try refreshing the page</p>
+        </li>
+      `;
+    }
+  }
+}
+
+// Setup real-time subscription for announcements
+function setupAnnouncementsSubscription() {
+  console.log('Setting up announcements subscription...');
+
+  const channel = supabaseClient
+    .channel('dashboard-announcements')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'announcements'
+      },
+      (payload) => {
+        console.log('Announcements change detected:', payload);
+        // Reload announcements when any change occurs
+        loadDashboardAnnouncements();
+      }
+    )
+    .subscribe((status) => {
+      console.log('Announcements subscription status:', status);
+    });
+
+  console.log('Announcements real-time subscription established');
+  return channel;
+}
+
+// Load events for dashboard overview
+async function loadDashboardEvents() {
+  try {
+    console.log('Loading dashboard events...');
+
+    // First, try to get ALL events to see what's in the database
+    const { data: allEvents, error: allError } = await supabaseClient
+      .from('events')
+      .select('*')
+      .order('event_date', { ascending: true });
+
+    console.log('ALL events in database:', { allEvents, allError, count: allEvents?.length || 0 });
+
+    // Get upcoming events that are not cancelled, ordered by date
+    const today = new Date().toISOString().split('T')[0];
+    const { data: events, error } = await supabaseClient
+      .from('events')
+      .select('*')
+      .neq('status', 'cancelled')
+      .gte('event_date', today)
+      .order('event_date', { ascending: true })
+      .limit(3);
+
+    console.log('Dashboard events query result:', { events, error, count: events?.length || 0 });
+
+    if (error) throw error;
+
+    const eventsList = document.querySelector('.dashboard-events .space-y-3');
+    if (eventsList) {
+      eventsList.innerHTML = '';
+
+      if (events && events.length > 0) {
+        console.log('Rendering', events.length, 'events to dashboard');
+        events.forEach(event => {
+          const eventDate = new Date(event.event_date);
+          const dateStr = eventDate.toLocaleDateString('en-US', {
+            month: 'short',
+            day: 'numeric'
+          });
+          const timeStr = event.event_time || 'TBD';
+
+          // Status color coding
+          const statusColor = event.status === 'completed' ? 'border-green-200 bg-green-50' :
+                              event.status === 'ongoing' ? 'border-blue-200 bg-blue-50' :
+                              'border-yellow-200 bg-yellow-50';
+
+          const eventDiv = document.createElement('div');
+          eventDiv.className = `flex items-start gap-3 p-3 ${statusColor} rounded-lg border hover:shadow-sm transition-all duration-200 cursor-pointer`;
+          eventDiv.onclick = () => switchSection('events');
+
+          eventDiv.innerHTML = `
+            <div class="flex-shrink-0">
+              <div class="w-10 h-10 bg-gradient-to-br from-primary to-secondary rounded-lg flex items-center justify-center text-white font-bold text-sm shadow-sm">
+                ${dateStr}
+              </div>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between mb-1">
+                <p class="text-sm font-semibold text-gray-900 truncate">${event.title}</p>
+                <span class="text-xs px-2 py-0.5 rounded-full font-medium ${
+                  event.status === 'completed' ? 'bg-green-100 text-green-700' :
+                  event.status === 'ongoing' ? 'bg-blue-100 text-blue-700' :
+                  'bg-yellow-100 text-yellow-700'
+                }">${event.status}</span>
+              </div>
+              <div class="flex items-center gap-3 text-xs text-gray-600 mb-1">
+                <span class="flex items-center gap-1">
+                  <i class="fas fa-clock text-primary/60"></i>
+                  ${timeStr}
+                </span>
+                ${event.location ? `<span class="flex items-center gap-1">
+                  <i class="fas fa-map-marker-alt text-primary/60"></i>
+                  ${event.location}
+                </span>` : ''}
+              </div>
+              ${event.description ? `<p class="text-xs text-gray-600 line-clamp-1">${event.description.substring(0, 80)}${event.description.length > 80 ? '...' : ''}</p>` : ''}
+              <div class="flex items-center justify-end mt-2">
+                <span class="text-xs text-primary hover:text-primary/80 font-medium">View details →</span>
+              </div>
+            </div>
+          `;
+          eventsList.appendChild(eventDiv);
+        });
+      } else {
+        console.log('No events to display - showing empty state');
+        eventsList.innerHTML = `
+          <div class="text-center py-6">
+            <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+              <i class="fas fa-calendar-alt text-gray-400 text-lg"></i>
+            </div>
+            <p class="text-sm text-gray-500">No upcoming events</p>
+            <p class="text-xs text-gray-400 mt-1">Check back later for new events</p>
+          </div>
+        `;
+      }
+    } else {
+      console.error('Could not find events list element');
+    }
+  } catch (error) {
+    console.error('Error loading dashboard events:', error);
+    // Don't throw error, just show empty state
+    const eventsList = document.querySelector('.dashboard-events .space-y-3');
+    if (eventsList) {
+      eventsList.innerHTML = `
+        <div class="text-center py-6">
+          <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-3">
+            <i class="fas fa-exclamation-triangle text-red-400 text-lg"></i>
+          </div>
+          <p class="text-sm text-red-600">Unable to load events</p>
+          <p class="text-xs text-gray-400 mt-1">Please try refreshing the page</p>
+        </div>
+      `;
+    }
+  }
+}
+
+// Setup real-time subscription for events
+function setupEventsSubscription() {
+  console.log('Setting up events subscription...');
+
+  const channel = supabaseClient
+    .channel('dashboard-events')
+    .on(
+      'postgres_changes',
+      {
+        event: '*',
+        schema: 'public',
+        table: 'events'
+      },
+      (payload) => {
+        console.log('Events change detected:', payload);
+        // Reload events when any change occurs
+        loadDashboardEvents();
+      }
+    )
+    .subscribe((status) => {
+      console.log('Events subscription status:', status);
+    });
+
+  console.log('Events real-time subscription established');
+  return channel;
+}
+
+// Load announcements for announcements section
+async function loadAnnouncementsSection() {
+    try {
+        const container = document.getElementById('announcements-container');
+        if (!container) return;
+
+        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading announcements...</p></div>';
+
+        const { data: announcements, error } = await supabaseClient
+            .from('announcements')
+            .select('*')
+            .eq('status', 'active')
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (announcements && announcements.length > 0) {
+            container.innerHTML = announcements.map(announcement => {
+                const priorityColor = announcement.priority === 'urgent' ? 'border-red-200 bg-red-50' :
+                                    announcement.priority === 'high' ? 'border-orange-200 bg-orange-50' :
+                                    announcement.priority === 'normal' ? 'border-blue-200 bg-blue-50' :
+                                    'border-gray-200 bg-gray-50';
+
+                return `
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${priorityColor}">
+                        <div class="flex items-start justify-between mb-3">
+                            <h3 class="text-lg font-display font-bold text-secondary">${announcement.title}</h3>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                announcement.priority === 'urgent' ? 'bg-red-100 text-red-800' :
+                                announcement.priority === 'high' ? 'bg-orange-100 text-orange-800' :
+                                announcement.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
+                                'bg-gray-100 text-gray-800'
+                            }">
+                                ${announcement.priority}
+                            </span>
+                        </div>
+                        <p class="text-gray-700 mb-4 leading-relaxed">${announcement.content}</p>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <span>Posted on ${new Date(announcement.created_at).toLocaleDateString()}</span>
+                            ${announcement.expires_at ? `<span>Expires: ${new Date(announcement.expires_at).toLocaleDateString()}</span>` : ''}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-bullhorn text-gray-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Announcements</h3>
+                    <p class="text-gray-600">There are no active announcements at this time.</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading announcements section:', error);
+        const container = document.getElementById('announcements-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Announcements</h3>
+                    <p class="text-gray-600">Unable to load announcements. Please try again later.</p>
+                </div>
+            `;
+        }
+    }
+}
+
+// Load events for events section
+async function loadEventsSection() {
+    try {
+        const container = document.getElementById('events-container');
+        if (!container) return;
+
+        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading events...</p></div>';
+
+        const { data: events, error } = await supabaseClient
+            .from('events')
+            .select('*')
+            .order('event_date', { ascending: true });
+
+        if (error) throw error;
+
+        if (events && events.length > 0) {
+            container.innerHTML = events.map(event => {
+                const eventDate = new Date(event.event_date);
+                const dateStr = eventDate.toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                const timeStr = event.event_time || 'TBD';
+
+                const statusColor = event.status === 'completed' ? 'border-green-200 bg-green-50' :
+                                  event.status === 'ongoing' ? 'border-blue-200 bg-blue-50' :
+                                  event.status === 'cancelled' ? 'border-red-200 bg-red-50' :
+                                  'border-yellow-200 bg-yellow-50';
+
+                return `
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${statusColor}">
+                        <div class="flex items-start justify-between mb-3">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-display font-bold text-secondary mb-1">${event.title}</h3>
+                                ${event.description ? `<p class="text-gray-700 mb-3">${event.description}</p>` : ''}
+                            </div>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ml-4 ${
+                                event.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                                event.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                'bg-yellow-100 text-yellow-800'
+                            }">
+                                ${event.status}
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-calendar text-primary"></i>
+                                <span class="text-sm text-gray-700">${dateStr}</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <i class="fas fa-clock text-primary"></i>
+                                <span class="text-sm text-gray-700">${timeStr}</span>
+                            </div>
+                            ${event.location ? `
+                            <div class="flex items-center gap-2 md:col-span-2">
+                                <i class="fas fa-map-marker-alt text-primary"></i>
+                                <span class="text-sm text-gray-700">${event.location}</span>
+                            </div>
+                            ` : ''}
+                        </div>
+
+                        ${event.category ? `
+                        <div class="flex items-center gap-2 mb-3">
+                            <i class="fas fa-tag text-primary"></i>
+                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
+                                ${event.category}
+                            </span>
+                        </div>
+                        ` : ''}
+
+                        <div class="text-sm text-gray-500">
+                            Created on ${new Date(event.created_at).toLocaleDateString()}
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-calendar-alt text-gray-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Events</h3>
+                    <p class="text-gray-600">There are no events scheduled at this time.</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading events section:', error);
+        const container = document.getElementById('events-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Events</h3>
+                    <p class="text-gray-600">Unable to load events. Please try again later.</p>
+                </div>
+            `;
+        }
+    }
+}
+
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
     console.log('Dashboard DOM loaded, initializing...');
@@ -20,8 +461,10 @@ async function initializeDashboard() {
             return;
         }
 
-        // Wait a bit for auth to initialize
-        await new Promise(resolve => setTimeout(resolve, 500));
+        // Wait a bit for auth to initialize (churchAuth.init() is called automatically in supabase.js)
+        console.log('Waiting for auth system to initialize...');
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        console.log('Auth system should be initialized');
 
         // Check if user is authenticated
         if (!churchAuth.isAuthenticated()) {
@@ -63,14 +506,64 @@ async function initializeDashboard() {
           // Don't show error message for individual component failures
         }
 
+        // Force refresh dashboard content after a short delay to ensure data is loaded
+        setTimeout(async () => {
+          try {
+            console.log('Force refreshing dashboard content...');
+            await loadDashboardAnnouncements();
+            await loadDashboardEvents();
+            console.log('Dashboard content refreshed successfully');
+          } catch (error) {
+            console.error('Error refreshing dashboard content:', error);
+          }
+        }, 2000);
+
+        // Additional refresh after longer delay to catch any missed data
+        setTimeout(async () => {
+          try {
+            console.log('Final dashboard content refresh...');
+            await loadDashboardAnnouncements();
+            await loadDashboardEvents();
+            console.log('Final dashboard content refresh completed');
+          } catch (error) {
+            console.error('Error in final dashboard refresh:', error);
+          }
+        }, 5000);
+
+        // Setup real-time subscriptions for live updates
+        console.log('Setting up real-time subscriptions...');
+        try {
+          const announcementsChannel = setupAnnouncementsSubscription();
+          const eventsChannel = setupEventsSubscription();
+          console.log('Real-time subscriptions established successfully');
+
+          // Store channels globally for cleanup if needed
+          window.announcementsChannel = announcementsChannel;
+          window.eventsChannel = eventsChannel;
+
+          // Test the subscriptions by manually triggering a reload after setup
+          setTimeout(async () => {
+            console.log('Testing subscriptions by reloading data...');
+            await loadDashboardAnnouncements();
+            await loadDashboardEvents();
+          }, 1000);
+        } catch (error) {
+          console.error('Error setting up real-time subscriptions:', error);
+        }
+
+        // Also load the full announcements and events sections for when users navigate
+        try {
+          await loadAnnouncementsSection();
+          await loadEventsSection();
+          console.log('Full announcements and events sections loaded successfully');
+        } catch (error) {
+          console.error('Error loading full sections:', error);
+        }
+
     } catch (error) {
         console.error('Dashboard initialization error:', error);
-        // Only show error if it's a critical authentication/profile error
-        if (error.message && (error.message.includes('auth') || error.message.includes('profile'))) {
-            showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
-        } else {
-            console.log('Non-critical dashboard error, continuing with partial load');
-        }
+        // Show error message for critical initialization failures
+        showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
     }
 }
 
@@ -752,273 +1245,7 @@ window.addEventListener('popstate', function(event) {
     if (event.state && event.state.section) {
         switchSection(event.state.section);
     }
-// Load announcements for dashboard overview
-async function loadDashboardAnnouncements() {
-  try {
-    const now = new Date().toISOString();
-
-    // Get announcements that are active and either have no expiration or haven't expired
-    const { data: announcements, error } = await supabaseClient
-      .from('announcements')
-      .select('*')
-      .eq('status', 'active')
-      .or(`expires_at.is.null,expires_at.gt.${now}`)
-      .order('created_at', { ascending: false })
-      .limit(3);
-
-    if (error) throw error;
-
-    const announcementsList = document.querySelector('.dashboard-announcements ul');
-    if (announcementsList) {
-      announcementsList.innerHTML = '';
-
-      if (announcements && announcements.length > 0) {
-        announcements.forEach(announcement => {
-          const li = document.createElement('li');
-          li.className = 'flex items-start gap-2';
-          li.innerHTML = `
-            <div class="w-2 h-2 bg-primary rounded-full mt-2 flex-shrink-0"></div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-900 truncate font-medium">${announcement.title}</p>
-              <p class="text-xs text-gray-600 truncate">${new Date(announcement.created_at).toLocaleDateString()}</p>
-            </div>
-          `;
-          announcementsList.appendChild(li);
-        });
-      } else {
-        announcementsList.innerHTML = '<li class="text-sm text-gray-500">No announcements available</li>';
-      }
-    }
-  } catch (error) {
-    console.error('Error loading dashboard announcements:', error);
-    // Don't throw error, just show empty state
-    const announcementsList = document.querySelector('.dashboard-announcements ul');
-    if (announcementsList) {
-      announcementsList.innerHTML = '<li class="text-sm text-gray-500">Unable to load announcements</li>';
-    }
-  }
-}
-
-// Load events for dashboard overview
-async function loadDashboardEvents() {
-  try {
-    // Get events that are not cancelled, ordered by date
-    const { data: events, error } = await supabaseClient
-      .from('events')
-      .select('*')
-      .neq('status', 'cancelled')
-      .order('event_date', { ascending: true })
-      .limit(3);
-
-    if (error) throw error;
-
-    const eventsList = document.querySelector('.dashboard-events .space-y-3');
-    if (eventsList) {
-      eventsList.innerHTML = '';
-
-      if (events && events.length > 0) {
-        events.forEach(event => {
-          const eventDate = new Date(event.event_date);
-          const dateStr = eventDate.toLocaleDateString();
-          const timeStr = event.event_time || 'TBD';
-
-          const eventDiv = document.createElement('div');
-          eventDiv.className = 'flex items-start gap-2';
-          eventDiv.innerHTML = `
-            <div class="w-2 h-2 bg-secondary rounded-full mt-2 flex-shrink-0"></div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-gray-900 truncate font-medium">${event.title}</p>
-              <p class="text-xs text-gray-600">${dateStr} at ${timeStr}</p>
-              ${event.location ? `<p class="text-xs text-gray-500 truncate">${event.location}</p>` : ''}
-            </div>
-          `;
-          eventsList.appendChild(eventDiv);
-        });
-      } else {
-        eventsList.innerHTML = '<div class="text-sm text-gray-500">No events available</div>';
-      }
-    }
-  } catch (error) {
-    console.error('Error loading dashboard events:', error);
-    // Don't throw error, just show empty state
-    const eventsList = document.querySelector('.dashboard-events .space-y-3');
-    if (eventsList) {
-      eventsList.innerHTML = '<div class="text-sm text-gray-500">Unable to load events</div>';
-    }
-  }
-}
-
-// Load announcements for announcements section
-async function loadAnnouncementsSection() {
-    try {
-        const container = document.getElementById('announcements-container');
-        if (!container) return;
-
-        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading announcements...</p></div>';
-
-        const { data: announcements, error } = await supabaseClient
-            .from('announcements')
-            .select('*')
-            .eq('status', 'active')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        if (announcements && announcements.length > 0) {
-            container.innerHTML = announcements.map(announcement => {
-                const priorityColor = announcement.priority === 'urgent' ? 'border-red-200 bg-red-50' :
-                                    announcement.priority === 'high' ? 'border-orange-200 bg-orange-50' :
-                                    announcement.priority === 'normal' ? 'border-blue-200 bg-blue-50' :
-                                    'border-gray-200 bg-gray-50';
-
-                return `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${priorityColor}">
-                        <div class="flex items-start justify-between mb-3">
-                            <h3 class="text-lg font-display font-bold text-secondary">${announcement.title}</h3>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                announcement.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                                announcement.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                                announcement.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
-                                'bg-gray-100 text-gray-800'
-                            }">
-                                ${announcement.priority}
-                            </span>
-                        </div>
-                        <p class="text-gray-700 mb-4 leading-relaxed">${announcement.content}</p>
-                        <div class="flex items-center justify-between text-sm text-gray-500">
-                            <span>Posted on ${new Date(announcement.created_at).toLocaleDateString()}</span>
-                            ${announcement.expires_at ? `<span>Expires: ${new Date(announcement.expires_at).toLocaleDateString()}</span>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        } else {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-bullhorn text-gray-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Announcements</h3>
-                    <p class="text-gray-600">There are no active announcements at this time.</p>
-                </div>
-            `;
-        }
-    } catch (error) {
-        console.error('Error loading announcements section:', error);
-        const container = document.getElementById('announcements-container');
-        if (container) {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Announcements</h3>
-                    <p class="text-gray-600">Unable to load announcements. Please try again later.</p>
-                </div>
-            `;
-        }
-    }
-}
-
-// Load events for events section
-async function loadEventsSection() {
-    try {
-        const container = document.getElementById('events-container');
-        if (!container) return;
-
-        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading events...</p></div>';
-
-        const { data: events, error } = await supabaseClient
-            .from('events')
-            .select('*')
-            .order('event_date', { ascending: true });
-
-        if (error) throw error;
-
-        if (events && events.length > 0) {
-            container.innerHTML = events.map(event => {
-                const eventDate = new Date(event.event_date);
-                const dateStr = eventDate.toLocaleDateString('en-US', {
-                    weekday: 'long',
-                    year: 'numeric',
-                    month: 'long',
-                    day: 'numeric'
-                });
-                const timeStr = event.event_time || 'TBD';
-
-                const statusColor = event.status === 'completed' ? 'border-green-200 bg-green-50' :
-                                  event.status === 'ongoing' ? 'border-blue-200 bg-blue-50' :
-                                  event.status === 'cancelled' ? 'border-red-200 bg-red-50' :
-                                  'border-yellow-200 bg-yellow-50';
-
-                return `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${statusColor}">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-display font-bold text-secondary mb-1">${event.title}</h3>
-                                ${event.description ? `<p class="text-gray-700 mb-3">${event.description}</p>` : ''}
-                            </div>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ml-4 ${
-                                event.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
-                                event.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                                'bg-yellow-100 text-yellow-800'
-                            }">
-                                ${event.status}
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-calendar text-primary"></i>
-                                <span class="text-sm text-gray-700">${dateStr}</span>
-                            </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-clock text-primary"></i>
-                                <span class="text-sm text-gray-700">${timeStr}</span>
-                            </div>
-                            ${event.location ? `
-                            <div class="flex items-center gap-2 md:col-span-2">
-                                <i class="fas fa-map-marker-alt text-primary"></i>
-                                <span class="text-sm text-gray-700">${event.location}</span>
-                            </div>
-                            ` : ''}
-                        </div>
-
-                        ${event.category ? `
-                        <div class="flex items-center gap-2 mb-3">
-                            <i class="fas fa-tag text-primary"></i>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                                ${event.category}
-                            </span>
-                        </div>
-                        ` : ''}
-
-                        <div class="text-sm text-gray-500">
-                            Created on ${new Date(event.created_at).toLocaleDateString()}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        } else {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-calendar-alt text-gray-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Events</h3>
-                    <p class="text-gray-600">There are no events scheduled at this time.</p>
-                </div>
-            `;
-        }
-    } catch (error) {
-        console.error('Error loading events section:', error);
-        const container = document.getElementById('events-container');
-        if (container) {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Events</h3>
-                    <p class="text-gray-600">Unable to load events. Please try again later.</p>
-                </div>
-            `;
-        }
-    }
-}
+});
 
 // Load announcements when announcements section is shown
 document.addEventListener('DOMContentLoaded', function() {
@@ -1043,7 +1270,20 @@ document.addEventListener('DOMContentLoaded', function() {
             }, 100);
         });
     });
-});
+
+    // Refresh dashboard content when navigating back to dashboard
+    const dashboardLinks = document.querySelectorAll('.nav-link[data-section="dashboard"]');
+    dashboardLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            setTimeout(() => {
+                if (document.getElementById('dashboard-section').classList.contains('hidden') === false) {
+                    // Refresh dashboard content
+                    loadDashboardAnnouncements();
+                    loadDashboardEvents();
+                }
+            }, 100);
+        });
+    });
 });
 
 // Export functions for global access
