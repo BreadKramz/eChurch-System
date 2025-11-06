@@ -354,10 +354,473 @@
                     <p class="text-gray-600 text-sm">Request sacramental services and certificates</p>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-gray-600 text-center py-6 text-sm">Service request functionality coming soon...</p>
+                <!-- Services Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <!-- Certificate Request -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-certificate text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-display font-bold text-secondary">Certificate Request</h3>
+                                <p class="text-sm text-gray-600">Request church certificates and documents</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-gray-700 text-sm mb-3">Available certificates:</p>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Mass Offering</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Funeral</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Marriage</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Confirmation/Baptism</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Sick Call</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-primary text-xs"></i>
+                                    <span>Mass Card</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleCertificateForm()" class="w-full bg-primary text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-all text-sm">
+                            <i class="fas fa-plus text-xs mr-2"></i>Request Certificate
+                        </button>
+                    </div>
+
+                    <!-- Services Request -->
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                        <div class="flex items-center gap-4 mb-4">
+                            <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                                <i class="fas fa-pray text-secondary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-display font-bold text-secondary">Services Request</h3>
+                                <p class="text-sm text-gray-600">Request sacramental services</p>
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <p class="text-gray-700 text-sm mb-3">Available services:</p>
+                            <div class="grid grid-cols-2 gap-2 text-xs">
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Confirmation/Baptism</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Funeral</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Communion</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Marriage</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Convocation</span>
+                                </div>
+                                <div class="flex items-center gap-1">
+                                    <i class="fas fa-check text-secondary text-xs"></i>
+                                    <span>Other</span>
+                                </div>
+                            </div>
+                        </div>
+                        <button onclick="toggleServiceForm()" class="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-secondary/90 transition-all text-sm">
+                            <i class="fas fa-calendar-plus text-xs mr-2"></i>Request Service
+                        </button>
+                    </div>
                 </div>
-            
+
+                <!-- Certificate Request Form -->
+                <div id="certificate-form-section" class="hidden mt-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-display font-bold text-secondary">Certificate Request Form</h3>
+                            <button onclick="toggleCertificateForm()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <form id="certificate-form" class="space-y-4">
+                            <div>
+                                <label for="certificate-type" class="block text-sm font-medium text-gray-700 mb-1">Certificate Type *</label>
+                                <select id="certificate-type" name="certificateType" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="">Select certificate type</option>
+                                    <option value="mass-offering">Mass Offering</option>
+                                    <option value="funeral">Funeral</option>
+                                    <option value="marriage">Marriage</option>
+                                    <option value="confirmation-baptism">Confirmation/Baptism</option>
+                                    <option value="sick-call">Sick Call</option>
+                                    <option value="mass-card">Mass Card</option>
+                                </select>
+                            </div>
+
+                            <!-- Mass Offering Specific Fields -->
+                            <div id="mass-offering-fields" class="hidden space-y-3">
+                                <div>
+                                    <label for="soul-name" class="block text-sm font-medium text-gray-700 mb-1">Name of Soul:</label>
+                                    <input type="text" id="soul-name" name="soulName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Enter name of the soul">
+                                </div>
+
+                                <div>
+                                    <label for="petitions" class="block text-sm font-medium text-gray-700 mb-1">Petitions:</label>
+                                    <textarea id="petitions" name="petitions" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" placeholder="Enter petitions for the mass"></textarea>
+                                </div>
+
+                                <div>
+                                    <label for="thanksgiving" class="block text-sm font-medium text-gray-700 mb-1">Thanksgiving:</label>
+                                    <textarea id="thanksgiving" name="thanksgiving" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" placeholder="Enter thanksgiving intentions"></textarea>
+                                </div>
+
+                                <div>
+                                    <label for="mass-date-time" class="block text-sm font-medium text-gray-700 mb-1">Date and Time:</label>
+                                    <input type="datetime-local" id="mass-date-time" name="massDateTime" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                </div>
+
+                                <div>
+                                    <label for="mass-in-charge" class="block text-sm font-medium text-gray-700 mb-1">Name in charge of the Mass Offering:</label>
+                                    <input type="text" id="mass-in-charge" name="massInCharge" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Enter name of person in charge">
+                                </div>
+                            </div>
+
+                            <!-- Funeral Specific Fields -->
+                            <div id="funeral-fields" class="hidden space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="deceased-name" class="block text-sm font-medium text-gray-700 mb-1">Name of the Deceased:</label>
+                                        <input type="text" id="deceased-name" name="deceasedName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="deceased-age" class="block text-sm font-medium text-gray-700 mb-1">Age:</label>
+                                        <input type="number" id="deceased-age" name="deceasedAge" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Age at death">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="deceased-gender" class="block text-sm font-medium text-gray-700 mb-1">Gender:</label>
+                                        <select id="deceased-gender" name="deceasedGender" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                            <option value="">Select gender</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="civil-status" class="block text-sm font-medium text-gray-700 mb-1">Civil Status:</label>
+                                        <select id="civil-status" name="civilStatus" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                            <option value="">Select status</option>
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="widowed">Widowed</option>
+                                            <option value="divorced">Divorced</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div id="spouse-field" class="hidden">
+                                    <label for="spouse-name" class="block text-sm font-medium text-gray-700 mb-1">Name of Spouse:</label>
+                                    <input type="text" id="spouse-name" name="spouseName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Spouse's full name">
+                                </div>
+
+                                <div>
+                                    <label for="children-count" class="block text-sm font-medium text-gray-700 mb-1">No. of children:</label>
+                                    <input type="number" id="children-count" name="childrenCount" min="0" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Number of children">
+                                </div>
+
+                                <div>
+                                    <label for="deceased-address" class="block text-sm font-medium text-gray-700 mb-1">Address of deceased:</label>
+                                    <textarea id="deceased-address" name="deceasedAddress" rows="2" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" placeholder="Complete address"></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="occupation" class="block text-sm font-medium text-gray-700 mb-1">Work/Occupation:</label>
+                                        <input type="text" id="occupation" name="occupation" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Occupation">
+                                    </div>
+
+                                    <div>
+                                        <label for="church-involvement" class="block text-sm font-medium text-gray-700 mb-1">Church Involvement:</label>
+                                        <input type="text" id="church-involvement" name="churchInvolvement" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Church roles/activities">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="cause-of-death" class="block text-sm font-medium text-gray-700 mb-1">Cause of death:</label>
+                                        <input type="text" id="cause-of-death" name="causeOfDeath" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Cause of death">
+                                    </div>
+
+                                    <div>
+                                        <label for="death-date" class="block text-sm font-medium text-gray-700 mb-1">Date of Death:</label>
+                                        <input type="date" id="death-date" name="deathDate" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="informant-name" class="block text-sm font-medium text-gray-700 mb-1">Name of Informant:</label>
+                                        <input type="text" id="informant-name" name="informantName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Informant's full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="informant-contact" class="block text-sm font-medium text-gray-700 mb-1">Contact Number of informant:</label>
+                                        <input type="tel" id="informant-contact" name="informantContact" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="(035) 123-4567">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Mass Card Specific Fields -->
+                            <div id="mass-card-fields" class="hidden space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="mass-card-deceased-name" class="block text-sm font-medium text-gray-700 mb-1">Name of the Deceased:</label>
+                                        <input type="text" id="mass-card-deceased-name" name="massCardDeceasedName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name of deceased">
+                                    </div>
+
+                                    <div>
+                                        <label for="mass-card-from" class="block text-sm font-medium text-gray-700 mb-1">From:</label>
+                                        <input type="text" id="mass-card-from" name="massCardFrom" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Name of person/family offering mass">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Confirmation/Baptism Specific Fields -->
+                            <div id="confirmation-baptism-fields" class="hidden space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="person-name" class="block text-sm font-medium text-gray-700 mb-1">Name of Person:</label>
+                                        <input type="text" id="person-name" name="personName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="person-dob" class="block text-sm font-medium text-gray-700 mb-1">Date of Birth:</label>
+                                        <input type="date" id="person-dob" name="personDOB" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="place-birth" class="block text-sm font-medium text-gray-700 mb-1">Place of Birth:</label>
+                                    <input type="text" id="place-birth" name="placeOfBirth" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="City, Province/Country">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="father-name" class="block text-sm font-medium text-gray-700 mb-1">Father's Name:</label>
+                                        <input type="text" id="father-name" name="fatherName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="mother-name" class="block text-sm font-medium text-gray-700 mb-1">Mother's Name:</label>
+                                        <input type="text" id="mother-name" name="motherName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="godfather-name" class="block text-sm font-medium text-gray-700 mb-1">Godfather/Ninong:</label>
+                                        <input type="text" id="godfather-name" name="godfatherName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="godmother-name" class="block text-sm font-medium text-gray-700 mb-1">Godmother/Ninang:</label>
+                                        <input type="text" id="godmother-name" name="godmotherName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="baptism-date" class="block text-sm font-medium text-gray-700 mb-1">Date of Baptism:</label>
+                                        <input type="date" id="baptism-date" name="baptismDate" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    </div>
+
+                                    <div>
+                                        <label for="confirmation-date" class="block text-sm font-medium text-gray-700 mb-1">Date of Confirmation:</label>
+                                        <input type="date" id="confirmation-date" name="confirmationDate" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="confirmation-sponsor" class="block text-sm font-medium text-gray-700 mb-1">Confirmation Sponsor:</label>
+                                    <input type="text" id="confirmation-sponsor" name="confirmationSponsor" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Full name of confirmation sponsor">
+                                </div>
+
+                                <div>
+                                    <label for="confirmation-name" class="block text-sm font-medium text-gray-700 mb-1">Confirmation Name:</label>
+                                    <input type="text" id="confirmation-name" name="confirmationName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Chosen confirmation name (optional)">
+                                </div>
+                            </div>
+
+                            <!-- Sick Call Specific Fields -->
+                            <div id="sick-call-fields" class="hidden space-y-3">
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="patient-name" class="block text-sm font-medium text-gray-700 mb-1">Name:</label>
+                                        <input type="text" id="patient-name" name="patientName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Patient's full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="patient-age" class="block text-sm font-medium text-gray-700 mb-1">Age:</label>
+                                        <input type="number" id="patient-age" name="patientAge" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Patient's age">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="patient-sex" class="block text-sm font-medium text-gray-700 mb-1">Sex:</label>
+                                        <select id="patient-sex" name="patientSex" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                            <option value="">Select sex</option>
+                                            <option value="male">Male</option>
+                                            <option value="female">Female</option>
+                                        </select>
+                                    </div>
+
+                                    <div>
+                                        <label for="patient-civil-status" class="block text-sm font-medium text-gray-700 mb-1">Civil Status:</label>
+                                        <select id="patient-civil-status" name="patientCivilStatus" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                            <option value="">Select status</option>
+                                            <option value="single">Single</option>
+                                            <option value="married">Married</option>
+                                            <option value="widowed">Widowed</option>
+                                            <option value="divorced">Divorced</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label for="patient-status" class="block text-sm font-medium text-gray-700 mb-1">Status of the Patient:</label>
+                                    <input type="text" id="patient-status" name="patientStatus" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Current condition/status">
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="hospital-room" class="block text-sm font-medium text-gray-700 mb-1">Hospital/Room#:</label>
+                                        <input type="text" id="hospital-room" name="hospitalRoom" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Hospital name & room number">
+                                    </div>
+
+                                    <div>
+                                        <label for="patient-address" class="block text-sm font-medium text-gray-700 mb-1">Home/Address:</label>
+                                        <input type="text" id="patient-address" name="patientAddress" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Patient's home address">
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <label class="block text-sm font-medium text-gray-700 mb-2">Needs:</label>
+                                    <div class="space-y-2">
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="need-anointing" name="needs[]" value="ANOINTING" class="mr-2 text-primary focus:ring-primary">
+                                            <span class="text-sm">ANOINTING</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="need-confession" name="needs[]" value="CONFESSION" class="mr-2 text-primary focus:ring-primary">
+                                            <span class="text-sm">CONFESSION</span>
+                                        </label>
+                                        <label class="flex items-center">
+                                            <input type="checkbox" id="need-continuous-care" name="needs[]" value="CONTINUOUS CARE FOR THE SICK" class="mr-2 text-primary focus:ring-primary">
+                                            <span class="text-sm">CONTINUOUS CARE FOR THE SICK</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div>
+                                        <label for="contact-person-name" class="block text-sm font-medium text-gray-700 mb-1">Name of Contact person:</label>
+                                        <input type="text" id="contact-person-name" name="contactPersonName" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="Contact person's full name">
+                                    </div>
+
+                                    <div>
+                                        <label for="contact-number" class="block text-sm font-medium text-gray-700 mb-1">Contact number:</label>
+                                        <input type="tel" id="contact-number" name="contactNumber" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent" placeholder="(035) 123-4567">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Marriage Certificate Requirements -->
+                            <div id="marriage-requirements" class="hidden">
+                                <label class="block text-sm font-medium text-gray-700 mb-3">Marriage Certificate Requirements:</label>
+                                <div class="space-y-1 text-sm text-gray-700">
+                                    <p>a. Baptismal Certificate</p>
+                                    <p>b. Confirmation Certificate</p>
+                                    <p>c. Pre-Cana Certificate of Attendance</p>
+                                    <p>d. Marriage License/Marriage Contract(Civil)</p>
+                                    <p>e. publication of marriage Banns</p>
+                                    <p>f. Letter of Permission (non-parishioner)</p>
+                                    <p>g. Clearance(for Foreign Citizens)</p>
+                                    <p>h. other requirements (Dispensation Mix Marriage/Disparity of Cult if Applicable and CENOMAR)</p>
+                                </div>
+                                <p class="text-sm text-gray-700 italic mt-3">(For more information go to our parish office)</p>
+                            </div>
+
+                            <div class="flex gap-2 pt-4">
+                                <button type="submit" class="flex-1 bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary/90 transition-all">
+                                    <i class="fas fa-paper-plane text-xs mr-1"></i> Submit Request
+                                </button>
+                                <button type="button" onclick="toggleCertificateForm()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Service Request Form -->
+                <div id="service-form-section" class="hidden mt-6">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <h3 class="text-lg font-display font-bold text-secondary">Service Request Form</h3>
+                            <button onclick="toggleServiceForm()" class="text-gray-400 hover:text-gray-600">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <form id="service-form" class="space-y-4">
+                            <div>
+                                <label for="service-type" class="block text-sm font-medium text-gray-700 mb-1">Service Type *</label>
+                                <select id="service-type" name="serviceType" required class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="">Select service type</option>
+                                    <option value="confirmation-baptism">Confirmation/Baptism</option>
+                                    <option value="funeral">Funeral</option>
+                                    <option value="communion">Communion</option>
+                                    <option value="marriage">Marriage</option>
+                                    <option value="convocation">Convocation</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="service-details" class="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+                                <textarea id="service-details" name="details" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" placeholder="Please provide any additional information..."></textarea>
+                            </div>
+
+                            <div class="flex gap-2 pt-4">
+                                <button type="submit" class="flex-1 bg-secondary text-white py-2 px-4 rounded font-semibold hover:bg-secondary/90 transition-all">
+                                    <i class="fas fa-paper-plane text-xs mr-1"></i> Submit Request
+                                </button>
+                                <button type="button" onclick="toggleServiceForm()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                                    Cancel
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
                 <!-- Notifications click handler -->
                 <script>
                   document.addEventListener('DOMContentLoaded', function () {
@@ -458,6 +921,7 @@
                     <p class="text-gray-600 text-center py-6 text-sm">Settings functionality coming soon...</p>
                 </div>
             </div>
+
         </main>
     </div>
 

@@ -344,3 +344,347 @@ for each row execute function public.update_updated_at_column();
 create trigger update_announcements_updated_at
 before update on public.announcements
 for each row execute function public.update_updated_at_column();
+
+-- =====================================================
+-- INDIVIDUAL CERTIFICATE REQUEST TABLES
+-- =====================================================
+
+-- Mass Offering Requests
+create table if not exists public.mass_offering_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  soul_name text,
+  petitions text,
+  thanksgiving text,
+  mass_date_time timestamptz,
+  mass_in_charge text,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Funeral Certificate Requests
+create table if not exists public.funeral_certificate_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  deceased_name text,
+  deceased_age integer,
+  deceased_gender text check (deceased_gender in ('male', 'female')),
+  civil_status text check (civil_status in ('single', 'married', 'widowed', 'divorced')),
+  spouse_name text,
+  children_count integer default 0,
+  deceased_address text,
+  occupation text,
+  church_involvement text,
+  cause_of_death text,
+  death_date date,
+  informant_name text,
+  informant_contact text,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Mass Card Requests
+create table if not exists public.mass_card_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  deceased_name text,
+  requester_name text,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Sick Call Certificate Requests
+create table if not exists public.sick_call_certificate_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  patient_name text,
+  patient_age integer,
+  patient_sex text check (patient_sex in ('male', 'female')),
+  patient_civil_status text check (patient_civil_status in ('single', 'married', 'widowed', 'divorced')),
+  patient_status text,
+  hospital_room text,
+  patient_address text,
+  needs text[], -- Array of selected needs
+  contact_person_name text,
+  contact_number text,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Marriage Certificate Requests
+create table if not exists public.marriage_certificate_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Confirmation/Baptism Certificate Requests
+create table if not exists public.confirmation_baptism_certificate_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  person_name text,
+  person_dob date,
+  place_of_birth text,
+  father_name text,
+  mother_name text,
+  godfather_name text,
+  godmother_name text,
+  baptism_date date,
+  confirmation_date date,
+  confirmation_sponsor text,
+  confirmation_name text,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- =====================================================
+-- INDIVIDUAL SERVICE REQUEST TABLES
+-- =====================================================
+
+-- Confirmation/Baptism Service Requests
+create table if not exists public.confirmation_baptism_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Funeral Service Requests
+create table if not exists public.funeral_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Communion Service Requests
+create table if not exists public.communion_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Marriage Service Requests
+create table if not exists public.marriage_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Convocation Service Requests
+create table if not exists public.convocation_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- Other Service Requests
+create table if not exists public.other_service_requests (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  additional_details text,
+  status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
+  admin_notes text,
+  submitted_at timestamptz default now(),
+  updated_at timestamptz default now()
+);
+
+-- =====================================================
+-- ENABLE RLS AND POLICIES FOR ALL TABLES
+-- =====================================================
+
+-- Certificate tables RLS
+alter table public.mass_offering_requests enable row level security;
+alter table public.funeral_certificate_requests enable row level security;
+alter table public.mass_card_requests enable row level security;
+alter table public.sick_call_certificate_requests enable row level security;
+alter table public.marriage_certificate_requests enable row level security;
+alter table public.confirmation_baptism_certificate_requests enable row level security;
+
+-- Service tables RLS
+alter table public.confirmation_baptism_service_requests enable row level security;
+alter table public.funeral_service_requests enable row level security;
+alter table public.communion_service_requests enable row level security;
+alter table public.marriage_service_requests enable row level security;
+alter table public.convocation_service_requests enable row level security;
+alter table public.other_service_requests enable row level security;
+
+-- Grants for all tables
+grant select, insert, update on table public.mass_offering_requests to authenticated;
+grant select, insert, update on table public.funeral_certificate_requests to authenticated;
+grant select, insert, update on table public.mass_card_requests to authenticated;
+grant select, insert, update on table public.sick_call_certificate_requests to authenticated;
+grant select, insert, update on table public.marriage_certificate_requests to authenticated;
+grant select, insert, update on table public.confirmation_baptism_certificate_requests to authenticated;
+
+grant select, insert, update on table public.confirmation_baptism_service_requests to authenticated;
+grant select, insert, update on table public.funeral_service_requests to authenticated;
+grant select, insert, update on table public.communion_service_requests to authenticated;
+grant select, insert, update on table public.marriage_service_requests to authenticated;
+grant select, insert, update on table public.convocation_service_requests to authenticated;
+grant select, insert, update on table public.other_service_requests to authenticated;
+
+grant all on table public.mass_offering_requests to service_role;
+grant all on table public.funeral_certificate_requests to service_role;
+grant all on table public.mass_card_requests to service_role;
+grant all on table public.sick_call_certificate_requests to service_role;
+grant all on table public.marriage_certificate_requests to service_role;
+grant all on table public.confirmation_baptism_certificate_requests to service_role;
+
+grant all on table public.confirmation_baptism_service_requests to service_role;
+grant all on table public.funeral_service_requests to service_role;
+grant all on table public.communion_service_requests to service_role;
+grant all on table public.marriage_service_requests to service_role;
+grant all on table public.convocation_service_requests to service_role;
+grant all on table public.other_service_requests to service_role;
+
+-- RLS Policies for all certificate tables
+create policy "mass_offering_requests_select_own" on public.mass_offering_requests for select to authenticated using (auth.uid() = user_id);
+create policy "mass_offering_requests_insert_own" on public.mass_offering_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "mass_offering_requests_admin_all" on public.mass_offering_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "funeral_certificate_requests_select_own" on public.funeral_certificate_requests for select to authenticated using (auth.uid() = user_id);
+create policy "funeral_certificate_requests_insert_own" on public.funeral_certificate_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "funeral_certificate_requests_admin_all" on public.funeral_certificate_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "mass_card_requests_select_own" on public.mass_card_requests for select to authenticated using (auth.uid() = user_id);
+create policy "mass_card_requests_insert_own" on public.mass_card_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "mass_card_requests_admin_all" on public.mass_card_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "sick_call_certificate_requests_select_own" on public.sick_call_certificate_requests for select to authenticated using (auth.uid() = user_id);
+create policy "sick_call_certificate_requests_insert_own" on public.sick_call_certificate_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "sick_call_certificate_requests_admin_all" on public.sick_call_certificate_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "marriage_certificate_requests_select_own" on public.marriage_certificate_requests for select to authenticated using (auth.uid() = user_id);
+create policy "marriage_certificate_requests_insert_own" on public.marriage_certificate_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "marriage_certificate_requests_admin_all" on public.marriage_certificate_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "confirmation_baptism_certificate_requests_select_own" on public.confirmation_baptism_certificate_requests for select to authenticated using (auth.uid() = user_id);
+create policy "confirmation_baptism_certificate_requests_insert_own" on public.confirmation_baptism_certificate_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "confirmation_baptism_certificate_requests_admin_all" on public.confirmation_baptism_certificate_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+-- RLS Policies for all service tables
+create policy "confirmation_baptism_service_requests_select_own" on public.confirmation_baptism_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "confirmation_baptism_service_requests_insert_own" on public.confirmation_baptism_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "confirmation_baptism_service_requests_admin_all" on public.confirmation_baptism_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "funeral_service_requests_select_own" on public.funeral_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "funeral_service_requests_insert_own" on public.funeral_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "funeral_service_requests_admin_all" on public.funeral_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "communion_service_requests_select_own" on public.communion_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "communion_service_requests_insert_own" on public.communion_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "communion_service_requests_admin_all" on public.communion_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "marriage_service_requests_select_own" on public.marriage_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "marriage_service_requests_insert_own" on public.marriage_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "marriage_service_requests_admin_all" on public.marriage_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "convocation_service_requests_select_own" on public.convocation_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "convocation_service_requests_insert_own" on public.convocation_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "convocation_service_requests_admin_all" on public.convocation_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+create policy "other_service_requests_select_own" on public.other_service_requests for select to authenticated using (auth.uid() = user_id);
+create policy "other_service_requests_insert_own" on public.other_service_requests for insert to authenticated with check (auth.uid() = user_id);
+create policy "other_service_requests_admin_all" on public.other_service_requests for all to authenticated using (public.is_admin(auth.uid()));
+
+-- Indexes for all tables
+create index if not exists mass_offering_requests_user_idx on public.mass_offering_requests(user_id);
+create index if not exists mass_offering_requests_status_idx on public.mass_offering_requests(status);
+create index if not exists mass_offering_requests_submitted_idx on public.mass_offering_requests(submitted_at);
+
+create index if not exists funeral_certificate_requests_user_idx on public.funeral_certificate_requests(user_id);
+create index if not exists funeral_certificate_requests_status_idx on public.funeral_certificate_requests(status);
+create index if not exists funeral_certificate_requests_submitted_idx on public.funeral_certificate_requests(submitted_at);
+
+create index if not exists mass_card_requests_user_idx on public.mass_card_requests(user_id);
+create index if not exists mass_card_requests_status_idx on public.mass_card_requests(status);
+create index if not exists mass_card_requests_submitted_idx on public.mass_card_requests(submitted_at);
+
+create index if not exists sick_call_certificate_requests_user_idx on public.sick_call_certificate_requests(user_id);
+create index if not exists sick_call_certificate_requests_status_idx on public.sick_call_certificate_requests(status);
+create index if not exists sick_call_certificate_requests_submitted_idx on public.sick_call_certificate_requests(submitted_at);
+
+create index if not exists marriage_certificate_requests_user_idx on public.marriage_certificate_requests(user_id);
+create index if not exists marriage_certificate_requests_status_idx on public.marriage_certificate_requests(status);
+create index if not exists marriage_certificate_requests_submitted_idx on public.marriage_certificate_requests(submitted_at);
+
+create index if not exists confirmation_baptism_certificate_requests_user_idx on public.confirmation_baptism_certificate_requests(user_id);
+create index if not exists confirmation_baptism_certificate_requests_status_idx on public.confirmation_baptism_certificate_requests(status);
+create index if not exists confirmation_baptism_certificate_requests_submitted_idx on public.confirmation_baptism_certificate_requests(submitted_at);
+
+create index if not exists confirmation_baptism_service_requests_user_idx on public.confirmation_baptism_service_requests(user_id);
+create index if not exists confirmation_baptism_service_requests_status_idx on public.confirmation_baptism_service_requests(status);
+create index if not exists confirmation_baptism_service_requests_submitted_idx on public.confirmation_baptism_service_requests(submitted_at);
+
+create index if not exists funeral_service_requests_user_idx on public.funeral_service_requests(user_id);
+create index if not exists funeral_service_requests_status_idx on public.funeral_service_requests(status);
+create index if not exists funeral_service_requests_submitted_idx on public.funeral_service_requests(submitted_at);
+
+create index if not exists communion_service_requests_user_idx on public.communion_service_requests(user_id);
+create index if not exists communion_service_requests_status_idx on public.communion_service_requests(status);
+create index if not exists communion_service_requests_submitted_idx on public.communion_service_requests(submitted_at);
+
+create index if not exists marriage_service_requests_user_idx on public.marriage_service_requests(user_id);
+create index if not exists marriage_service_requests_status_idx on public.marriage_service_requests(status);
+create index if not exists marriage_service_requests_submitted_idx on public.marriage_service_requests(submitted_at);
+
+create index if not exists convocation_service_requests_user_idx on public.convocation_service_requests(user_id);
+create index if not exists convocation_service_requests_status_idx on public.convocation_service_requests(status);
+create index if not exists convocation_service_requests_submitted_idx on public.convocation_service_requests(submitted_at);
+
+create index if not exists other_service_requests_user_idx on public.other_service_requests(user_id);
+create index if not exists other_service_requests_status_idx on public.other_service_requests(status);
+create index if not exists other_service_requests_submitted_idx on public.other_service_requests(submitted_at);
+
+-- Triggers for updated_at on all tables
+create trigger update_mass_offering_requests_updated_at before update on public.mass_offering_requests for each row execute function public.update_updated_at_column();
+create trigger update_funeral_certificate_requests_updated_at before update on public.funeral_certificate_requests for each row execute function public.update_updated_at_column();
+create trigger update_mass_card_requests_updated_at before update on public.mass_card_requests for each row execute function public.update_updated_at_column();
+create trigger update_sick_call_certificate_requests_updated_at before update on public.sick_call_certificate_requests for each row execute function public.update_updated_at_column();
+create trigger update_marriage_certificate_requests_updated_at before update on public.marriage_certificate_requests for each row execute function public.update_updated_at_column();
+create trigger update_confirmation_baptism_certificate_requests_updated_at before update on public.confirmation_baptism_certificate_requests for each row execute function public.update_updated_at_column();
+
+create trigger update_confirmation_baptism_service_requests_updated_at before update on public.confirmation_baptism_service_requests for each row execute function public.update_updated_at_column();
+create trigger update_funeral_service_requests_updated_at before update on public.funeral_service_requests for each row execute function public.update_updated_at_column();
+create trigger update_communion_service_requests_updated_at before update on public.communion_service_requests for each row execute function public.update_updated_at_column();
+create trigger update_marriage_service_requests_updated_at before update on public.marriage_service_requests for each row execute function public.update_updated_at_column();
+create trigger update_convocation_service_requests_updated_at before update on public.convocation_service_requests for each row execute function public.update_updated_at_column();
+create trigger update_other_service_requests_updated_at before update on public.other_service_requests for each row execute function public.update_updated_at_column();

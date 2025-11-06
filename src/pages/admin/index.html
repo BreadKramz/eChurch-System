@@ -310,11 +310,75 @@
             <div id="services-section" class="section-content hidden">
                 <div class="mb-4">
                     <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Church Services</h1>
-                    <p class="text-gray-600 text-sm">Request sacramental services and certificates</p>
+                    <p class="text-gray-600 text-sm">Manage certificate and service requests</p>
                 </div>
 
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4">
-                    <p class="text-gray-600 text-center py-6 text-sm">Service request functionality coming soon...</p>
+                <!-- Certificate Requests -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-display font-bold text-secondary">Certificate Requests</h3>
+                            <button onclick="loadCertificateRequests()" class="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-primary/90 transition-all">
+                                <i class="fas fa-sync text-xs"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="certificate-requests-table-body" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                                        Loading certificate requests...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Service Requests -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-display font-bold text-secondary">Service Requests</h3>
+                            <button onclick="loadServiceRequests()" class="bg-secondary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-secondary/90 transition-all">
+                                <i class="fas fa-sync text-xs"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="service-requests-table-body" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                                        Loading service requests...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
 
@@ -649,19 +713,29 @@
     <script>
       document.addEventListener('DOMContentLoaded', async function() {
         try {
+          console.log('Admin dashboard initializing...');
           // Allow auth to initialize
           await new Promise(r => setTimeout(r, 500));
+          console.log('Auth system initialized');
+
           // Must be signed in
           if (!window.churchAuth || !churchAuth.isAuthenticated()) {
+            console.log('Not authenticated, redirecting to login');
             window.location.href = '/src/pages/auth/login.html';
             return;
           }
+
           const profile = await churchAuth.getUserProfile();
+          console.log('User profile:', profile);
+
           if (!profile || (profile.user_role || '').toLowerCase() !== 'admin') {
+            console.log('Not admin user, redirecting to login. Role:', profile?.user_role);
             // Not admin -> back to user login
             window.location.href = '/src/pages/auth/login.html';
             return;
           }
+
+          console.log('Admin authentication successful');
         } catch (e) {
           console.error('Admin gate error:', e);
           window.location.href = '/src/pages/auth/login.html';
@@ -1843,6 +1917,57 @@
             }, 100);
           });
         });
+
+        // Load service requests when Services section is shown
+        const serviceLinks = document.querySelectorAll('.nav-link[data-section="services"]');
+        serviceLinks.forEach(link => {
+          link.addEventListener('click', function() {
+            setTimeout(() => {
+              if (document.getElementById('services-section').classList.contains('hidden') === false) {
+                loadCertificateRequests();
+                loadServiceRequests();
+              }
+            }, 100);
+          });
+        });
+
+        // Auto-load services section on page load for testing
+        setTimeout(() => {
+          const servicesSection = document.getElementById('services-section');
+          if (servicesSection && servicesSection.classList.contains('hidden')) {
+            // Switch to services section to show it
+            switchSection('services');
+          }
+        }, 2000);
+
+        // Debug admin permissions
+        setTimeout(async () => {
+          try {
+            console.log('=== ADMIN PERMISSIONS DEBUG ===');
+            const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+            console.log('Current user:', user);
+            console.log('User ID:', user?.id);
+
+            const profile = await churchAuth.getUserProfile();
+            console.log('User profile:', profile);
+            console.log('User role:', profile?.user_role);
+
+            // Test is_admin function
+            const { data: isAdminResult, error: isAdminError } = await supabaseClient.rpc('is_admin', { p_uid: user?.id });
+            console.log('is_admin function result:', isAdminResult, 'error:', isAdminError);
+
+            // Test direct query to profiles
+            const { data: profiles, error: profilesError } = await supabaseClient
+              .from('profiles')
+              .select('user_role')
+              .eq('id', user?.id);
+            console.log('Direct profiles query:', profiles, 'error:', profilesError);
+
+            console.log('=== END ADMIN DEBUG ===');
+          } catch (error) {
+            console.error('Admin debug error:', error);
+          }
+        }, 3000);
       });
 
       async function loadEvents() {
@@ -2071,17 +2196,313 @@
         }
       });
 
+      // Load certificate requests for admin
+      async function loadCertificateRequests() {
+          try {
+              const tbody = document.getElementById('certificate-requests-table-body');
+              tbody.innerHTML = `
+                  <tr>
+                      <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                          <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                          Loading certificate requests...
+                      </td>
+                  </tr>
+              `;
+
+              // Query all certificate tables
+              const tableQueries = [
+                  { table: 'mass_offering_requests', type: 'Mass Offering' },
+                  { table: 'funeral_certificate_requests', type: 'Funeral Certificate' },
+                  { table: 'mass_card_requests', type: 'Mass Card' },
+                  { table: 'sick_call_certificate_requests', type: 'Sick Call Certificate' },
+                  { table: 'marriage_certificate_requests', type: 'Marriage Certificate' },
+                  { table: 'confirmation_baptism_certificate_requests', type: 'Confirmation/Baptism Certificate' }
+              ];
+
+              const allRequests = [];
+
+              for (const { table, type } of tableQueries) {
+                  const { data: requests, error } = await supabaseClient
+                      .from(table)
+                      .select(`
+                          *,
+                          profiles (
+                              first_name,
+                              last_name,
+                              email
+                          )
+                      `)
+                      .order('submitted_at', { ascending: false });
+
+                  if (!error && requests) {
+                      requests.forEach(request => {
+                          allRequests.push({ ...request, request_type: type, table_name: table });
+                      });
+                  }
+              }
+
+              // Sort all requests by submitted_at
+              allRequests.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+              if (allRequests.length > 0) {
+                  tbody.innerHTML = allRequests.map(request => {
+                      const userName = request.profiles ?
+                          `${request.profiles.first_name || ''} ${request.profiles.last_name || ''}`.trim() :
+                          'Unknown User';
+                      const userEmail = request.profiles?.email || 'N/A';
+
+                      return `
+                          <tr class="hover:bg-gray-50">
+                              <td class="px-4 py-3">
+                                  <div class="text-sm font-medium text-gray-900">${userName}</div>
+                                  <div class="text-xs text-gray-500">${userEmail}</div>
+                              </td>
+                              <td class="px-4 py-3">
+                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                                      ${request.request_type}
+                                  </span>
+                              </td>
+                              <td class="px-4 py-3">
+                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                      request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
+                                      request.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                      'bg-blue-100 text-blue-800'
+                                  }">
+                                      ${request.status}
+                                  </span>
+                              </td>
+                              <td class="px-4 py-3 text-sm text-gray-500">
+                                  ${new Date(request.submitted_at).toLocaleDateString()}
+                              </td>
+                              <td class="px-4 py-3 text-sm">
+                                  <div class="flex gap-1">
+                                      <button onclick="viewCertificateRequest('${request.table_name}', '${request.id}')" class="text-primary hover:text-primary/80 p-1" title="View details">
+                                          <i class="fas fa-eye text-xs"></i>
+                                      </button>
+                                      <button onclick="updateCertificateRequestStatus('${request.table_name}', '${request.id}', 'approved')" class="text-green-600 hover:text-green-800 p-1" title="Approve">
+                                          <i class="fas fa-check text-xs"></i>
+                                      </button>
+                                      <button onclick="updateCertificateRequestStatus('${request.table_name}', '${request.id}', 'rejected')" class="text-red-600 hover:text-red-800 p-1" title="Reject">
+                                          <i class="fas fa-times text-xs"></i>
+                                      </button>
+                                  </div>
+                              </td>
+                          </tr>
+                      `;
+                  }).join('');
+              } else {
+                  tbody.innerHTML = `
+                      <tr>
+                          <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                              <i class="fas fa-certificate mr-2"></i>
+                              No certificate requests found.
+                          </td>
+                      </tr>
+                  `;
+              }
+          } catch (error) {
+              console.error('Error loading certificate requests:', error);
+              document.getElementById('certificate-requests-table-body').innerHTML = `
+                  <tr>
+                      <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          Failed to load certificate requests.
+                      </td>
+                  </tr>
+              `;
+          }
+      }
+
+      // Load service requests for admin
+      async function loadServiceRequests() {
+          try {
+              console.log('Loading service requests for admin...');
+              const tbody = document.getElementById('service-requests-table-body');
+              tbody.innerHTML = `
+                  <tr>
+                      <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                          <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                          Loading service requests...
+                      </td>
+                  </tr>
+              `;
+
+              // Query all service tables
+              const tableQueries = [
+                  { table: 'confirmation_baptism_service_requests', type: 'Confirmation/Baptism' },
+                  { table: 'funeral_service_requests', type: 'Funeral' },
+                  { table: 'communion_service_requests', type: 'Communion' },
+                  { table: 'marriage_service_requests', type: 'Marriage' },
+                  { table: 'convocation_service_requests', type: 'Convocation' },
+                  { table: 'other_service_requests', type: 'Other' }
+              ];
+
+              const allRequests = [];
+              console.log('Querying service tables...');
+
+              for (const { table, type } of tableQueries) {
+                  console.log(`Querying table: ${table}`);
+                  const { data: requests, error } = await supabaseClient
+                      .from(table)
+                      .select(`
+                          *,
+                          profiles (
+                              first_name,
+                              last_name,
+                              email
+                          )
+                      `)
+                      .order('submitted_at', { ascending: false });
+
+                  console.log(`Table ${table} results:`, { data: requests, error, count: requests?.length || 0 });
+
+                  if (!error && requests) {
+                      requests.forEach(request => {
+                          allRequests.push({ ...request, request_type: type, table_name: table });
+                      });
+                  } else if (error) {
+                      console.error(`Error querying ${table}:`, error);
+                  }
+              }
+
+              console.log('All service requests collected:', allRequests.length);
+
+              // Sort all requests by submitted_at
+              allRequests.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+              console.log('Sorted requests:', allRequests);
+
+              if (allRequests.length > 0) {
+                  console.log('Rendering service requests to table');
+                  tbody.innerHTML = allRequests.map(request => {
+                      const userName = request.profiles ?
+                          `${request.profiles.first_name || ''} ${request.profiles.last_name || ''}`.trim() :
+                          'Unknown User';
+                      const userEmail = request.profiles?.email || 'N/A';
+
+                      return `
+                          <tr class="hover:bg-gray-50">
+                              <td class="px-4 py-3">
+                                  <div class="text-sm font-medium text-gray-900">${userName}</div>
+                                  <div class="text-xs text-gray-500">${userEmail}</div>
+                              </td>
+                              <td class="px-4 py-3">
+                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
+                                      ${request.request_type}
+                                  </span>
+                              </td>
+                              <td class="px-4 py-3">
+                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                                      request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
+                                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
+                                      request.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                      'bg-blue-100 text-blue-800'
+                                  }">
+                                      ${request.status}
+                                  </span>
+                              </td>
+                              <td class="px-4 py-3 text-sm text-gray-500">
+                                  ${new Date(request.submitted_at).toLocaleDateString()}
+                              </td>
+                              <td class="px-4 py-3 text-sm">
+                                  <div class="flex gap-1">
+                                      <button onclick="viewServiceRequest('${request.table_name}', '${request.id}')" class="text-primary hover:text-primary/80 p-1" title="View details">
+                                          <i class="fas fa-eye text-xs"></i>
+                                      </button>
+                                      <button onclick="updateServiceRequestStatus('${request.table_name}', '${request.id}', 'approved')" class="text-green-600 hover:text-green-800 p-1" title="Approve">
+                                          <i class="fas fa-check text-xs"></i>
+                                      </button>
+                                      <button onclick="updateServiceRequestStatus('${request.table_name}', '${request.id}', 'rejected')" class="text-red-600 hover:text-red-800 p-1" title="Reject">
+                                          <i class="fas fa-times text-xs"></i>
+                                      </button>
+                                  </div>
+                              </td>
+                          </tr>
+                      `;
+                  }).join('');
+              } else {
+                  console.log('No service requests found - this is expected if no users have submitted service requests yet');
+                  tbody.innerHTML = `
+                      <tr>
+                          <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                              <i class="fas fa-pray mr-2"></i>
+                              No service requests found.
+                              <br><small class="text-gray-400">Users can submit service requests from their dashboard.</small>
+                          </td>
+                      </tr>
+                  `;
+              }
+          } catch (error) {
+              console.error('Error loading service requests:', error);
+              document.getElementById('service-requests-table-body').innerHTML = `
+                  <tr>
+                      <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
+                          <i class="fas fa-exclamation-triangle mr-2"></i>
+                          Failed to load service requests.
+                      </td>
+                  </tr>
+              `;
+          }
+      }
+
+      // Update certificate request status
+      async function updateCertificateRequestStatus(tableName, requestId, status) {
+          try {
+              const { error } = await supabaseClient
+                  .from(tableName)
+                  .update({ status, updated_at: new Date().toISOString() })
+                  .eq('id', requestId);
+
+              if (error) throw error;
+
+              showDashboardMessage(`Certificate request ${status} successfully!`, 'success');
+              loadCertificateRequests();
+          } catch (error) {
+              console.error('Error updating certificate request:', error);
+              showDashboardMessage('Failed to update certificate request.', 'error');
+          }
+      }
+
+      // Update service request status
+      async function updateServiceRequestStatus(tableName, requestId, status) {
+          try {
+              const { error } = await supabaseClient
+                  .from(tableName)
+                  .update({ status, updated_at: new Date().toISOString() })
+                  .eq('id', requestId);
+
+              if (error) throw error;
+
+              showDashboardMessage(`Service request ${status} successfully!`, 'success');
+              loadServiceRequests();
+          } catch (error) {
+              console.error('Error updating service request:', error);
+              showDashboardMessage('Failed to update service request.', 'error');
+          }
+      }
+
+      // View certificate request details (placeholder)
+      function viewCertificateRequest(tableName, requestId) {
+          showDashboardMessage('View certificate request details - Coming soon!', 'info');
+      }
+
+      // View service request details (placeholder)
+      function viewServiceRequest(tableName, requestId) {
+          showDashboardMessage('View service request details - Coming soon!', 'info');
+      }
+
       // After dashboard.js sets labels, enforce Administrator label
       window.addEventListener('load', function() {
-        setTimeout(async () => {
-          try {
-            const profile = await churchAuth.getUserProfile();
-            if (profile && (profile.user_role || '').toLowerCase() === 'admin') {
-              const nameEl = document.getElementById('user-name');
-              if (nameEl) nameEl.textContent = 'Administrator';
-            }
-          } catch (e) {}
-        }, 600);
+          setTimeout(async () => {
+              try {
+                  const profile = await churchAuth.getUserProfile();
+                  if (profile && (profile.user_role || '').toLowerCase() === 'admin') {
+                      const nameEl = document.getElementById('user-name');
+                      if (nameEl) nameEl.textContent = 'Administrator';
+                  }
+              } catch (e) {}
+          }, 600);
       });
 
       // Admin notifications button

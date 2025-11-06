@@ -1286,6 +1286,352 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
+// Service Request Form Toggle Functions
+function toggleCertificateForm() {
+    const formSection = document.getElementById('certificate-form-section');
+    const isHidden = formSection.classList.contains('hidden');
+
+    // Hide service form if it's open
+    const serviceForm = document.getElementById('service-form-section');
+    if (serviceForm && !serviceForm.classList.contains('hidden')) {
+        serviceForm.classList.add('hidden');
+        document.getElementById('service-form').reset();
+    }
+
+    if (isHidden) {
+        formSection.classList.remove('hidden');
+        // Scroll to form
+        setTimeout(() => {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    } else {
+        formSection.classList.add('hidden');
+        // Reset form and hide conditional fields
+        document.getElementById('certificate-form').reset();
+        document.getElementById('mass-offering-fields').classList.add('hidden');
+        document.getElementById('funeral-fields').classList.add('hidden');
+        document.getElementById('mass-card-fields').classList.add('hidden');
+        document.getElementById('sick-call-fields').classList.add('hidden');
+        document.getElementById('marriage-requirements').classList.add('hidden');
+        document.getElementById('confirmation-baptism-fields').classList.add('hidden');
+        document.getElementById('spouse-field').classList.add('hidden');
+    }
+}
+
+function toggleServiceForm() {
+    const formSection = document.getElementById('service-form-section');
+    const isHidden = formSection.classList.contains('hidden');
+
+    // Hide certificate form if it's open
+    const certificateForm = document.getElementById('certificate-form-section');
+    if (certificateForm && !certificateForm.classList.contains('hidden')) {
+        certificateForm.classList.add('hidden');
+        document.getElementById('certificate-form').reset();
+    }
+
+    if (isHidden) {
+        formSection.classList.remove('hidden');
+        // Scroll to form
+        setTimeout(() => {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        }, 100);
+    } else {
+        formSection.classList.add('hidden');
+        document.getElementById('service-form').reset();
+    }
+}
+
+// Certificate form type change handler
+function handleCertificateTypeChange() {
+    const certificateType = document.getElementById('certificate-type').value;
+    const massOfferingFields = document.getElementById('mass-offering-fields');
+    const funeralFields = document.getElementById('funeral-fields');
+    const massCardFields = document.getElementById('mass-card-fields');
+    const sickCallFields = document.getElementById('sick-call-fields');
+    const marriageRequirements = document.getElementById('marriage-requirements');
+    const confirmationBaptismFields = document.getElementById('confirmation-baptism-fields');
+
+    // Hide all conditional fields first
+    massOfferingFields.classList.add('hidden');
+    funeralFields.classList.add('hidden');
+    massCardFields.classList.add('hidden');
+    sickCallFields.classList.add('hidden');
+    marriageRequirements.classList.add('hidden');
+    confirmationBaptismFields.classList.add('hidden');
+
+    // Clear all conditional fields
+    const massFields = ['soul-name', 'petitions', 'thanksgiving', 'mass-date-time', 'mass-in-charge'];
+    massFields.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) field.value = '';
+    });
+
+    const funeralFieldsList = [
+        'deceased-name', 'deceased-age', 'deceased-gender', 'civil-status', 'spouse-name',
+        'children-count', 'deceased-address', 'occupation', 'church-involvement',
+        'cause-of-death', 'death-date', 'informant-name', 'informant-contact'
+    ];
+    funeralFieldsList.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) field.value = '';
+    });
+
+    const massCardFieldsList = ['mass-card-deceased-name', 'mass-card-from'];
+    massCardFieldsList.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) field.value = '';
+    });
+
+    const sickCallFieldsList = [
+        'patient-name', 'patient-age', 'patient-sex', 'patient-civil-status', 'patient-status',
+        'hospital-room', 'patient-address', 'contact-person-name', 'contact-number'
+    ];
+    sickCallFieldsList.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) field.value = '';
+    });
+
+    const confirmationBaptismFieldsList = [
+        'person-name', 'person-dob', 'place-birth', 'father-name', 'mother-name',
+        'godfather-name', 'godmother-name', 'baptism-date', 'confirmation-date',
+        'confirmation-sponsor', 'confirmation-name'
+    ];
+    confirmationBaptismFieldsList.forEach(fieldId => {
+        const field = document.getElementById(fieldId);
+        if (field) field.value = '';
+    });
+
+    // Clear all checkboxes
+    const allCheckboxes = [
+        'need-anointing', 'need-confession', 'need-continuous-care'
+    ];
+    allCheckboxes.forEach(checkboxId => {
+        const checkbox = document.getElementById(checkboxId);
+        if (checkbox) checkbox.checked = false;
+    });
+
+    // Hide spouse field
+    document.getElementById('spouse-field').classList.add('hidden');
+
+    // Show relevant fields based on selection
+    if (certificateType === 'mass-offering') {
+        massOfferingFields.classList.remove('hidden');
+    } else if (certificateType === 'funeral') {
+        funeralFields.classList.remove('hidden');
+    } else if (certificateType === 'mass-card') {
+        massCardFields.classList.remove('hidden');
+    } else if (certificateType === 'sick-call') {
+        sickCallFields.classList.remove('hidden');
+    } else if (certificateType === 'marriage') {
+        marriageRequirements.classList.remove('hidden');
+    } else if (certificateType === 'confirmation-baptism') {
+        confirmationBaptismFields.classList.remove('hidden');
+    }
+}
+
+// Civil status change handler for funeral form
+function handleCivilStatusChange() {
+    const civilStatus = document.getElementById('civil-status').value;
+    const spouseField = document.getElementById('spouse-field');
+
+    if (civilStatus === 'married') {
+        spouseField.classList.remove('hidden');
+    } else {
+        spouseField.classList.add('hidden');
+        document.getElementById('spouse-name').value = '';
+    }
+}
+
+// Initialize certificate form handlers
+document.addEventListener('DOMContentLoaded', function() {
+    const certificateTypeSelect = document.getElementById('certificate-type');
+    if (certificateTypeSelect) {
+        certificateTypeSelect.addEventListener('change', handleCertificateTypeChange);
+    }
+
+    const civilStatusSelect = document.getElementById('civil-status');
+    if (civilStatusSelect) {
+        civilStatusSelect.addEventListener('change', handleCivilStatusChange);
+    }
+});
+
+// Submit certificate request
+async function submitCertificateRequest(event) {
+    event.preventDefault();
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const certificateType = formData.get('certificateType');
+
+    if (!certificateType) {
+        showDashboardMessage('Please select a certificate type.', 'error');
+        return;
+    }
+
+    // Determine the correct table based on certificate type
+    const tableMap = {
+        'mass-offering': 'mass_offering_requests',
+        'funeral': 'funeral_certificate_requests',
+        'mass-card': 'mass_card_requests',
+        'sick-call': 'sick_call_certificate_requests',
+        'marriage': 'marriage_certificate_requests',
+        'confirmation-baptism': 'confirmation_baptism_certificate_requests'
+    };
+
+    const tableName = tableMap[certificateType];
+    if (!tableName) {
+        showDashboardMessage('Invalid certificate type.', 'error');
+        return;
+    }
+
+    // Prepare data based on certificate type
+    let insertData = {
+        user_id: currentUser.id,
+        additional_details: formData.get('details') || ''
+    };
+
+    if (certificateType === 'mass-offering') {
+        insertData.soul_name = formData.get('soulName') || '';
+        insertData.petitions = formData.get('petitions') || '';
+        insertData.thanksgiving = formData.get('thanksgiving') || '';
+        insertData.mass_date_time = formData.get('massDateTime') || null;
+        insertData.mass_in_charge = formData.get('massInCharge') || '';
+    } else if (certificateType === 'funeral') {
+        insertData.deceased_name = formData.get('deceasedName') || '';
+        insertData.deceased_age = formData.get('deceasedAge') ? parseInt(formData.get('deceasedAge')) : null;
+        insertData.deceased_gender = formData.get('deceasedGender') || '';
+        insertData.civil_status = formData.get('civilStatus') || '';
+        insertData.spouse_name = formData.get('spouseName') || '';
+        insertData.children_count = formData.get('childrenCount') ? parseInt(formData.get('childrenCount')) : 0;
+        insertData.deceased_address = formData.get('deceasedAddress') || '';
+        insertData.occupation = formData.get('occupation') || '';
+        insertData.church_involvement = formData.get('churchInvolvement') || '';
+        insertData.cause_of_death = formData.get('causeOfDeath') || '';
+        insertData.death_date = formData.get('deathDate') || null;
+        insertData.informant_name = formData.get('informantName') || '';
+        insertData.informant_contact = formData.get('informantContact') || '';
+    } else if (certificateType === 'mass-card') {
+        insertData.deceased_name = formData.get('massCardDeceasedName') || '';
+        insertData.requester_name = formData.get('massCardFrom') || '';
+    } else if (certificateType === 'sick-call') {
+        insertData.patient_name = formData.get('patientName') || '';
+        insertData.patient_age = formData.get('patientAge') ? parseInt(formData.get('patientAge')) : null;
+        insertData.patient_sex = formData.get('patientSex') || '';
+        insertData.patient_civil_status = formData.get('patientCivilStatus') || '';
+        insertData.patient_status = formData.get('patientStatus') || '';
+        insertData.hospital_room = formData.get('hospitalRoom') || '';
+        insertData.patient_address = formData.get('patientAddress') || '';
+        insertData.contact_person_name = formData.get('contactPersonName') || '';
+        insertData.contact_number = formData.get('contactNumber') || '';
+
+        // Handle checkboxes for needs
+        const needs = [];
+        if (form.querySelector('#need-anointing')?.checked) needs.push('ANOINTING');
+        if (form.querySelector('#need-confession')?.checked) needs.push('CONFESSION');
+        if (form.querySelector('#need-continuous-care')?.checked) needs.push('CONTINUOUS CARE FOR THE SICK');
+        insertData.needs = needs;
+    } else if (certificateType === 'confirmation-baptism') {
+        insertData.person_name = formData.get('personName') || '';
+        insertData.person_dob = formData.get('personDOB') || null;
+        insertData.place_of_birth = formData.get('placeOfBirth') || '';
+        insertData.father_name = formData.get('fatherName') || '';
+        insertData.mother_name = formData.get('motherName') || '';
+        insertData.godfather_name = formData.get('godfatherName') || '';
+        insertData.godmother_name = formData.get('godmotherName') || '';
+        insertData.baptism_date = formData.get('baptismDate') || null;
+        insertData.confirmation_date = formData.get('confirmationDate') || null;
+        insertData.confirmation_sponsor = formData.get('confirmationSponsor') || '';
+        insertData.confirmation_name = formData.get('confirmationName') || '';
+    }
+
+    try {
+        const { data, error } = await supabaseClient
+            .from(tableName)
+            .insert(insertData);
+
+        if (error) throw error;
+
+        showDashboardMessage('Certificate request submitted successfully!', 'success');
+        toggleCertificateForm(); // Close the form
+    } catch (error) {
+        console.error('Error submitting certificate request:', error);
+        showDashboardMessage('Failed to submit certificate request. Please try again.', 'error');
+    }
+}
+
+// Submit service request
+async function submitServiceRequest(event) {
+    event.preventDefault();
+    console.log('Submitting service request...');
+
+    const form = event.target;
+    const formData = new FormData(form);
+    const serviceType = formData.get('serviceType');
+    console.log('Service type:', serviceType);
+
+    if (!serviceType) {
+        showDashboardMessage('Please select a service type.', 'error');
+        return;
+    }
+
+    // Determine the correct table based on service type
+    const tableMap = {
+        'confirmation-baptism': 'confirmation_baptism_service_requests',
+        'funeral': 'funeral_service_requests',
+        'communion': 'communion_service_requests',
+        'marriage': 'marriage_service_requests',
+        'convocation': 'convocation_service_requests',
+        'other': 'other_service_requests'
+    };
+
+    const tableName = tableMap[serviceType];
+    console.log('Table name:', tableName);
+    if (!tableName) {
+        showDashboardMessage('Invalid service type.', 'error');
+        return;
+    }
+
+    // Prepare data - all service tables currently just have additional_details
+    const insertData = {
+        user_id: currentUser.id,
+        additional_details: formData.get('details') || ''
+    };
+    console.log('Insert data:', insertData);
+
+    try {
+        const { data, error } = await supabaseClient
+            .from(tableName)
+            .insert(insertData);
+
+        console.log('Insert result:', { data, error });
+
+        if (error) throw error;
+
+        showDashboardMessage('Service request submitted successfully!', 'success');
+        toggleServiceForm(); // Close the form
+    } catch (error) {
+        console.error('Error submitting service request:', error);
+        showDashboardMessage('Failed to submit service request. Please try again.', 'error');
+    }
+}
+
+// Initialize form event listeners
+document.addEventListener('DOMContentLoaded', function() {
+    // Certificate form submission
+    const certificateForm = document.getElementById('certificate-form');
+    if (certificateForm) {
+        certificateForm.addEventListener('submit', submitCertificateRequest);
+    }
+
+    // Service form submission
+    const serviceForm = document.getElementById('service-form');
+    if (serviceForm) {
+        serviceForm.addEventListener('submit', submitServiceRequest);
+    }
+});
+
 // Export functions for global access
 window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
+window.toggleCertificateForm = toggleCertificateForm;
+window.toggleServiceForm = toggleServiceForm;
