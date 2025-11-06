@@ -756,10 +756,52 @@
             }
         }
 
+        // Load admin statistics
+        async function loadAdminStatistics() {
+            try {
+                // Get total users
+                const { count: totalUsers, error: totalError } = await supabaseClient
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true });
+
+                if (!totalError) {
+                    document.getElementById('total-users').textContent = totalUsers || 0;
+                }
+
+                // Get active users
+                const { count: activeUsers, error: activeError } = await supabaseClient
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true })
+                    .eq('membership_status', 'active');
+
+                if (!activeError) {
+                    document.getElementById('active-users').textContent = activeUsers || 0;
+                }
+
+                // Get new users this month
+                const now = new Date();
+                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+
+                const { count: newUsers, error: newError } = await supabaseClient
+                    .from('profiles')
+                    .select('*', { count: 'exact', head: true })
+                    .gte('created_at', startOfMonth);
+
+                if (!newError) {
+                    document.getElementById('new-users').textContent = newUsers || 0;
+                }
+
+            } catch (error) {
+                console.error('Error loading admin statistics:', error);
+                // Keep default values (0) on error
+            }
+        }
+
         // Initialize navigation when DOM is ready
         document.addEventListener('DOMContentLoaded', function() {
             initializeNavigation();
             loadAdminProfile(); // Load admin profile data
+            loadAdminStatistics(); // Load admin statistics
             initializeLogout(); // Initialize logout functionality
         });
 
