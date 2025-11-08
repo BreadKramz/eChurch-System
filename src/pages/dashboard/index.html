@@ -159,7 +159,7 @@
                 </div>
 
                 <!-- Main Cards -->
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
                     <!-- Announcements -->
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-announcements">
                         <div class="flex items-center justify-between mb-3">
@@ -180,6 +180,17 @@
                         <div class="space-y-3">
                             <!-- Upcoming events will be populated here -->
                         </div>
+                    </div>
+
+                    <!-- Service Requests -->
+                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-service-requests">
+                        <div class="flex items-center justify-between mb-3">
+                            <h3 class="text-base font-display font-bold text-secondary">My Requests</h3>
+                            <a href="#" onclick="switchSection('services')" class="text-xs text-primary hover:underline">View all</a>
+                        </div>
+                        <ul class="space-y-3">
+                            <!-- Service requests will be populated here -->
+                        </ul>
                     </div>
 
                     <!-- Quick Actions -->
@@ -354,8 +365,24 @@
                     <p class="text-gray-600 text-sm">Request sacramental services and certificates</p>
                 </div>
 
-                <!-- Services Grid -->
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- My Services Tab Navigation -->
+                <div class="mb-6">
+                    <div class="border-b border-gray-200">
+                        <nav class="flex space-x-8">
+                            <button id="services-request-tab" class="py-2 px-1 border-b-2 font-medium text-sm services-tab active" data-tab="request">
+                                Request Services
+                            </button>
+                            <button id="services-history-tab" class="py-2 px-1 border-b-2 font-medium text-sm services-tab" data-tab="history">
+                                My Services
+                            </button>
+                        </nav>
+                    </div>
+                </div>
+
+                <!-- Services Request Tab -->
+                <div id="services-request-content" class="services-content">
+                    <!-- Services Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <!-- Certificate Request -->
                     <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
                         <div class="flex items-center gap-4 mb-4">
@@ -446,6 +473,41 @@
                         </button>
                     </div>
                 </div>
+
+                <!-- My Services History Tab -->
+                <div id="services-history-content" class="services-content hidden">
+                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <div>
+                                <h3 class="text-lg font-display font-bold text-secondary">My Service Requests</h3>
+                                <p class="text-sm text-gray-600 mt-1">Track the status of your submitted requests</p>
+                            </div>
+                            <div class="flex gap-2">
+                                <select id="services-filter" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="all">All Requests</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                                <select id="services-sort" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                    <option value="status">By Status</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div id="services-history-container" class="space-y-4">
+                            <!-- Service requests will be loaded here -->
+                            <div class="text-center py-8">
+                                <i class="fas fa-spinner fa-spin text-primary text-2xl mb-4"></i>
+                                <p class="text-gray-600">Loading your service requests...</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
                 <!-- Certificate Request Form -->
                 <div id="certificate-form-section" class="hidden mt-6">

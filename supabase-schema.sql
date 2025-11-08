@@ -194,17 +194,17 @@ begin
   -- Consume most recent valid code
   update public.admin_access_codes
      set used = true
-   where id in (
-     select id
-       from public.admin_access_codes
-      where admin_user_id = v_uid
-        and used = false
-        and expires_at > now()
-        and code = p_code
+    where id in (
+      select id
+        from public.admin_access_codes
+       where admin_user_id = v_uid
+         and used = false
+         and expires_at > now()
+         and code = p_code
       order by created_at desc
       limit 1
-   )
-  returning true into v_consumed;
+    )
+   returning true into v_consumed;
 
   return coalesce(v_consumed, false);
 end;

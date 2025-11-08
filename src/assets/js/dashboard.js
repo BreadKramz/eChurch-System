@@ -506,6 +506,16 @@ async function initializeDashboard() {
           // Don't show error message for individual component failures
         }
 
+        // Load service requests for dashboard
+        console.log('Loading dashboard service requests...');
+        try {
+          await loadDashboardServiceRequests();
+          console.log('Dashboard service requests loaded successfully');
+        } catch (error) {
+          console.error('Error loading dashboard service requests:', error);
+          // Don't show error message for individual component failures
+        }
+
         // Force refresh dashboard content after a short delay to ensure data is loaded
         setTimeout(async () => {
           try {
@@ -668,6 +678,9 @@ function initializeNavigation() {
 
     // Initialize profile editing functionality
     initializeProfileEditing();
+
+    // Initialize services tabs
+    initializeServicesTabs();
 }
 
 // Initialize profile editing functionality
@@ -1164,13 +1177,177 @@ function initializeLogout() {
     }
 }
 
+// Load user's service requests for dashboard overview
+async function loadDashboardServiceRequests() {
+    try {
+        console.log('Loading dashboard service requests...');
+
+        if (!currentUser?.id) {
+            console.log('No current user, skipping service requests load');
+            return;
+        }
+
+        // Load certificate requests
+        const certificateTables = [
+            'mass_offering_requests',
+            'funeral_certificate_requests',
+            'mass_card_requests',
+            'sick_call_certificate_requests',
+            'marriage_certificate_requests',
+            'confirmation_baptism_certificate_requests'
+        ];
+
+        let allCertificateRequests = [];
+        for (const table of certificateTables) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from(table)
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('submitted_at', { ascending: false })
+                    .limit(5);
+
+                if (error) {
+                    console.warn(`Error loading from ${table}:`, error);
+                    continue;
+                }
+
+                if (data && data.length > 0) {
+                    allCertificateRequests = allCertificateRequests.concat(
+                        data.map(req => ({ ...req, type: 'certificate', table }))
+                    );
+                }
+            } catch (err) {
+                console.warn(`Failed to load from ${table}:`, err);
+            }
+        }
+
+        // Load service requests
+        const serviceTables = [
+            'confirmation_baptism_service_requests',
+            'funeral_service_requests',
+            'communion_service_requests',
+            'marriage_service_requests',
+            'convocation_service_requests',
+            'other_service_requests'
+        ];
+
+        let allServiceRequests = [];
+        for (const table of serviceTables) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from(table)
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('submitted_at', { ascending: false })
+                    .limit(5);
+
+                if (error) {
+                    console.warn(`Error loading from ${table}:`, error);
+                    continue;
+                }
+
+                if (data && data.length > 0) {
+                    allServiceRequests = allServiceRequests.concat(
+                        data.map(req => ({ ...req, type: 'service', table }))
+                    );
+                }
+            } catch (err) {
+                console.warn(`Failed to load from ${table}:`, err);
+            }
+        }
+
+        // Combine and sort all requests by submitted_at
+        const allRequests = [...allCertificateRequests, ...allServiceRequests]
+            .sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at))
+            .slice(0, 5); // Show only the 5 most recent
+
+        console.log('Dashboard service requests loaded:', allRequests.length, 'requests');
+
+        // Update dashboard UI
+        const requestsContainer = document.querySelector('.dashboard-service-requests');
+        if (requestsContainer) {
+            const requestsList = requestsContainer.querySelector('ul') || requestsContainer;
+
+            if (allRequests.length > 0) {
+                const requestsHtml = allRequests.map(request => {
+                    const statusColor = request.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                      request.status === 'approved' ? 'bg-blue-100 text-blue-800' :
+                                      request.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                      'bg-yellow-100 text-yellow-800';
+
+                    const typeLabel = request.type === 'certificate' ? 'Certificate' : 'Service';
+                    const tableName = request.table.replace(/_/g, ' ').replace('requests', '').trim();
+
+                    // Get a meaningful title based on the request data
+                    let title = tableName;
+                    if (request.type === 'certificate') {
+                        if (request.soul_name) title = `Mass Offering for ${request.soul_name}`;
+                        else if (request.deceased_name) title = `Funeral Certificate for ${request.deceased_name}`;
+                        else if (request.patient_name) title = `Sick Call for ${request.patient_name}`;
+                        else if (request.person_name) title = `Confirmation/Baptism for ${request.person_name}`;
+                    }
+
+                    return `
+                        <li class="flex items-start gap-3 p-3 bg-gradient-to-r from-primary/5 to-secondary/5 rounded-lg border border-primary/10 hover:border-primary/20 transition-all duration-200">
+                            <div class="flex-shrink-0">
+                                <div class="w-3 h-3 bg-primary rounded-full shadow-sm"></div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center justify-between mb-1">
+                                    <p class="text-sm font-semibold text-gray-900 truncate">${title}</p>
+                                    <span class="text-xs px-2 py-0.5 rounded-full font-medium ${statusColor}">${request.status}</span>
+                                </div>
+                                <p class="text-xs text-gray-600 mb-2">${typeLabel} Request</p>
+                                <div class="flex items-center justify-between">
+                                    <span class="text-xs text-gray-500">${new Date(request.submitted_at).toLocaleDateString()}</span>
+                                    <span class="text-xs text-primary hover:text-primary/80 font-medium">View details →</span>
+                                </div>
+                            </div>
+                        </li>
+                    `;
+                }).join('');
+
+                requestsList.innerHTML = requestsHtml;
+            } else {
+                requestsList.innerHTML = `
+                    <li class="text-center py-6">
+                        <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                            <i class="fas fa-file-alt text-gray-400 text-lg"></i>
+                        </div>
+                        <p class="text-sm text-gray-500">No service requests yet</p>
+                        <p class="text-xs text-gray-400 mt-1">Your submitted requests will appear here</p>
+                    </li>
+                `;
+            }
+        }
+
+    } catch (error) {
+        console.error('Error loading dashboard service requests:', error);
+        // Show error state
+        const requestsContainer = document.querySelector('.dashboard-service-requests');
+        if (requestsContainer) {
+            const requestsList = requestsContainer.querySelector('ul') || requestsContainer;
+            requestsList.innerHTML = `
+                <li class="text-center py-6">
+                    <div class="w-12 h-12 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-3">
+                        <i class="fas fa-exclamation-triangle text-red-400 text-lg"></i>
+                    </div>
+                    <p class="text-sm text-red-600">Unable to load requests</p>
+                    <p class="text-xs text-gray-400 mt-1">Please try refreshing the page</p>
+                </li>
+            `;
+        }
+    }
+}
+
 // Load dashboard data
 async function loadDashboardData() {
     try {
-        // This would load actual data from Supabase in a full implementation
-        // For now, we'll just show placeholder data
+        // Load user's service requests
+        await loadDashboardServiceRequests();
 
-        // You could load:
+        // You could load additional data here:
         // - Recent service requests
         // - Upcoming events
         // - Prayer request count
@@ -1271,6 +1448,20 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Load services history when services section is shown
+    const servicesLinks = document.querySelectorAll('.nav-link[data-section="services"]');
+    servicesLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            setTimeout(() => {
+                if (document.getElementById('services-section').classList.contains('hidden') === false) {
+                    // Always load services history when entering services section
+                    // This ensures data is fresh when switching to the history tab
+                    loadUserServiceRequests();
+                }
+            }, 100);
+        });
+    });
+
     // Refresh dashboard content when navigating back to dashboard
     const dashboardLinks = document.querySelectorAll('.nav-link[data-section="dashboard"]');
     dashboardLinks.forEach(link => {
@@ -1280,6 +1471,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     // Refresh dashboard content
                     loadDashboardAnnouncements();
                     loadDashboardEvents();
+                    loadDashboardServiceRequests();
                 }
             }, 100);
         });
@@ -1553,6 +1745,14 @@ async function submitCertificateRequest(event) {
 
         showDashboardMessage('Certificate request submitted successfully!', 'success');
         toggleCertificateForm(); // Close the form
+
+        // Switch to history tab and refresh data
+        setTimeout(() => {
+            switchToHistoryTab();
+            // Refresh both dashboard and services history
+            loadUserServiceRequests();
+            loadDashboardServiceRequests();
+        }, 500); // Small delay to ensure database commit
     } catch (error) {
         console.error('Error submitting certificate request:', error);
         showDashboardMessage('Failed to submit certificate request. Please try again.', 'error');
@@ -1609,6 +1809,14 @@ async function submitServiceRequest(event) {
 
         showDashboardMessage('Service request submitted successfully!', 'success');
         toggleServiceForm(); // Close the form
+
+        // Switch to history tab and refresh data
+        setTimeout(() => {
+            switchToHistoryTab();
+            // Refresh both dashboard and services history
+            loadUserServiceRequests();
+            loadDashboardServiceRequests();
+        }, 500); // Small delay to ensure database commit
     } catch (error) {
         console.error('Error submitting service request:', error);
         showDashboardMessage('Failed to submit service request. Please try again.', 'error');
@@ -1630,8 +1838,606 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+// Load user's service requests history for the services section
+async function loadUserServiceRequests() {
+    try {
+        console.log('Loading user service requests history...');
+
+        if (!currentUser?.id) {
+            console.log('No current user, skipping service requests load');
+            return;
+        }
+
+        const container = document.getElementById('services-history-container');
+        if (!container) return;
+
+        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading your service requests...</p></div>';
+
+        // Load certificate requests
+        const certificateTables = [
+            'mass_offering_requests',
+            'funeral_certificate_requests',
+            'mass_card_requests',
+            'sick_call_certificate_requests',
+            'marriage_certificate_requests',
+            'confirmation_baptism_certificate_requests'
+        ];
+
+        let allCertificateRequests = [];
+        for (const table of certificateTables) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from(table)
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('submitted_at', { ascending: false });
+
+                if (error) {
+                    console.warn(`Error loading from ${table}:`, error);
+                    continue;
+                }
+
+                if (data && data.length > 0) {
+                    allCertificateRequests = allCertificateRequests.concat(
+                        data.map(req => ({ ...req, type: 'certificate', table, requestType: getRequestTypeLabel(table) }))
+                    );
+                }
+            } catch (err) {
+                console.warn(`Failed to load from ${table}:`, err);
+            }
+        }
+
+        // Load service requests
+        const serviceTables = [
+            'confirmation_baptism_service_requests',
+            'funeral_service_requests',
+            'communion_service_requests',
+            'marriage_service_requests',
+            'convocation_service_requests',
+            'other_service_requests'
+        ];
+
+        let allServiceRequests = [];
+        for (const table of serviceTables) {
+            try {
+                const { data, error } = await supabaseClient
+                    .from(table)
+                    .select('*')
+                    .eq('user_id', currentUser.id)
+                    .order('submitted_at', { ascending: false });
+
+                if (error) {
+                    console.warn(`Error loading from ${table}:`, error);
+                    continue;
+                }
+
+                if (data && data.length > 0) {
+                    allServiceRequests = allServiceRequests.concat(
+                        data.map(req => ({ ...req, type: 'service', table, requestType: getRequestTypeLabel(table) }))
+                    );
+                }
+            } catch (err) {
+                console.warn(`Failed to load from ${table}:`, err);
+            }
+        }
+
+        // Combine all requests
+        let allRequests = [...allCertificateRequests, ...allServiceRequests];
+
+        console.log('Loaded', allRequests.length, 'total service requests');
+
+        if (allRequests.length > 0) {
+            // Store requests globally for filtering/sorting
+            window.userServiceRequests = allRequests;
+
+            // Render requests
+            renderServiceRequests(allRequests);
+        } else {
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-file-alt text-gray-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Service Requests</h3>
+                    <p class="text-gray-600 mb-4">You haven't submitted any service requests yet.</p>
+                    <button onclick="switchToRequestTab()" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                        <i class="fas fa-plus text-xs mr-2"></i>Request a Service
+                    </button>
+                </div>
+            `;
+        }
+
+    } catch (error) {
+        console.error('Error loading user service requests:', error);
+        const container = document.getElementById('services-history-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="text-center py-12">
+                    <div class="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <i class="fas fa-exclamation-triangle text-red-400 text-2xl"></i>
+                    </div>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Requests</h3>
+                    <p class="text-gray-600 mb-4">Unable to load your service requests. Please try again later.</p>
+                    <button onclick="loadUserServiceRequests()" class="bg-primary text-white px-4 py-2 rounded-lg font-semibold hover:bg-primary/90 transition-all">
+                        <i class="fas fa-refresh text-xs mr-2"></i>Try Again
+                    </button>
+                </div>
+            `;
+        }
+    }
+}
+
+// Helper function to get human-readable request type labels
+function getRequestTypeLabel(tableName) {
+    const labels = {
+        'mass_offering_requests': 'Mass Offering',
+        'funeral_certificate_requests': 'Funeral Certificate',
+        'mass_card_requests': 'Mass Card',
+        'sick_call_certificate_requests': 'Sick Call Certificate',
+        'marriage_certificate_requests': 'Marriage Certificate',
+        'confirmation_baptism_certificate_requests': 'Confirmation/Baptism Certificate',
+        'confirmation_baptism_service_requests': 'Confirmation/Baptism Service',
+        'funeral_service_requests': 'Funeral Service',
+        'communion_service_requests': 'Communion Service',
+        'marriage_service_requests': 'Marriage Service',
+        'convocation_service_requests': 'Convocation Service',
+        'other_service_requests': 'Other Service'
+    };
+    return labels[tableName] || tableName.replace(/_/g, ' ').replace('requests', '').trim();
+}
+
+// Render service requests with filtering and sorting
+function renderServiceRequests(requests, filter = 'all', sort = 'newest') {
+    const container = document.getElementById('services-history-container');
+    if (!container) return;
+
+    // Apply filtering
+    let filteredRequests = requests;
+    if (filter !== 'all') {
+        filteredRequests = requests.filter(req => req.status === filter);
+    }
+
+    // Apply sorting
+    filteredRequests.sort((a, b) => {
+        switch (sort) {
+            case 'oldest':
+                return new Date(a.submitted_at) - new Date(b.submitted_at);
+            case 'status':
+                const statusOrder = { 'pending': 1, 'approved': 2, 'completed': 3, 'rejected': 4 };
+                return (statusOrder[a.status] || 5) - (statusOrder[b.status] || 5);
+            case 'newest':
+            default:
+                return new Date(b.submitted_at) - new Date(a.submitted_at);
+        }
+    });
+
+    if (filteredRequests.length === 0) {
+        container.innerHTML = `
+            <div class="text-center py-8">
+                <div class="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-3">
+                    <i class="fas fa-filter text-gray-400 text-lg"></i>
+                </div>
+                <p class="text-sm text-gray-500">No requests match your current filters.</p>
+                <button onclick="resetServiceFilters()" class="text-primary hover:text-primary/80 text-sm mt-2 underline">Clear filters</button>
+            </div>
+        `;
+        return;
+    }
+
+    const requestsHtml = filteredRequests.map(request => {
+        const statusColor = request.status === 'completed' ? 'bg-green-100 text-green-800' :
+                          request.status === 'approved' ? 'bg-blue-100 text-blue-800' :
+                          request.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                          'bg-yellow-100 text-yellow-800';
+
+        const statusIcon = request.status === 'completed' ? 'fas fa-check-circle' :
+                          request.status === 'approved' ? 'fas fa-clock' :
+                          request.status === 'rejected' ? 'fas fa-times-circle' :
+                          'fas fa-hourglass-half';
+
+        // Get meaningful title and details
+        const { title, details } = getRequestDisplayInfo(request);
+
+        return `
+            <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-4 hover:shadow-md transition-shadow">
+                <div class="flex items-start justify-between mb-3">
+                    <div class="flex-1">
+                        <div class="flex items-center gap-2 mb-1">
+                            <h4 class="text-base font-semibold text-secondary">${title}</h4>
+                            <span class="inline-flex items-center gap-1 px-2 py-0.5 text-xs font-medium rounded-full ${statusColor}">
+                                <i class="${statusIcon} text-xs"></i>
+                                ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                            </span>
+                        </div>
+                        <p class="text-sm text-gray-600 mb-2">${request.requestType}</p>
+                        ${details ? `<p class="text-sm text-gray-700 mb-2">${details}</p>` : ''}
+                    </div>
+                </div>
+
+                <div class="flex items-center justify-between text-xs text-gray-500">
+                    <span>Submitted ${new Date(request.submitted_at).toLocaleDateString()}</span>
+                    <button onclick="viewRequestDetails('${request.id}', '${request.table}', '${request.type}')" class="text-primary hover:text-primary/80 font-medium">
+                        View Details →
+                    </button>
+                </div>
+
+                ${request.admin_notes ? `
+                    <div class="mt-3 p-3 bg-gray-50 rounded-lg border-l-4 border-primary">
+                        <p class="text-xs font-medium text-secondary mb-1">Admin Notes:</p>
+                        <p class="text-xs text-gray-700">${request.admin_notes}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }).join('');
+
+    container.innerHTML = requestsHtml;
+}
+
+// Get display information for a request
+function getRequestDisplayInfo(request) {
+    let title = request.requestType;
+    let details = '';
+
+    if (request.type === 'certificate') {
+        if (request.soul_name) {
+            title = `Mass Offering for ${request.soul_name}`;
+            details = request.petitions ? `Petitions: ${request.petitions.substring(0, 100)}${request.petitions.length > 100 ? '...' : ''}` : '';
+        } else if (request.deceased_name) {
+            title = `${request.table.includes('funeral') ? 'Funeral Certificate' : 'Mass Card'} for ${request.deceased_name}`;
+            if (request.table.includes('funeral')) {
+                details = `Age: ${request.deceased_age || 'N/A'}, ${request.civil_status || 'N/A'}`;
+            }
+        } else if (request.patient_name) {
+            title = `Sick Call for ${request.patient_name}`;
+            details = `Age: ${request.patient_age || 'N/A'}, Status: ${request.patient_status || 'N/A'}`;
+        } else if (request.person_name) {
+            title = `Confirmation/Baptism Certificate for ${request.person_name}`;
+            details = `DOB: ${request.person_dob ? new Date(request.person_dob).toLocaleDateString() : 'N/A'}`;
+        }
+    } else {
+        // Service requests
+        title = request.requestType;
+        details = request.additional_details ? request.additional_details.substring(0, 150) + (request.additional_details.length > 150 ? '...' : '') : '';
+    }
+
+    return { title, details };
+}
+
+// View request details in a modal
+function viewRequestDetails(requestId, tableName, requestType) {
+    // Find the request in our stored data
+    const request = window.userServiceRequests?.find(req => req.id === requestId && req.table === tableName);
+    if (!request) {
+        showDashboardMessage('Request details not found.', 'error');
+        return;
+    }
+
+    // Create modal with request details
+    const modal = document.createElement('div');
+    modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+    modal.innerHTML = `
+        <div class="bg-white rounded-lg max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex items-center justify-between mb-4">
+                    <h3 class="text-lg font-display font-bold text-secondary">Request Details</h3>
+                    <button onclick="this.closest('.fixed').remove()" class="text-gray-400 hover:text-gray-600">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+
+                <div class="space-y-4">
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Request Type</label>
+                            <p class="text-sm text-gray-900">${request.requestType}</p>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                            <span class="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium rounded-full ${
+                                request.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                request.status === 'approved' ? 'bg-blue-100 text-blue-800' :
+                                request.status === 'rejected' ? 'bg-red-100 text-red-800' :
+                                'bg-yellow-100 text-yellow-800'
+                            }">
+                                <i class="${
+                                    request.status === 'completed' ? 'fas fa-check-circle' :
+                                    request.status === 'approved' ? 'fas fa-clock' :
+                                    request.status === 'rejected' ? 'fas fa-times-circle' :
+                                    'fas fa-hourglass-half'
+                                } text-xs"></i>
+                                ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                            </span>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Submitted Date</label>
+                        <p class="text-sm text-gray-900">${new Date(request.submitted_at).toLocaleString()}</p>
+                    </div>
+
+                    ${request.type === 'certificate' ? generateCertificateDetailsHTML(request) : generateServiceDetailsHTML(request)}
+
+                    ${request.admin_notes ? `
+                        <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400">
+                            <label class="block text-sm font-medium text-blue-800 mb-1">Admin Notes</label>
+                            <p class="text-sm text-blue-700">${request.admin_notes}</p>
+                        </div>
+                    ` : ''}
+
+                    ${request.status === 'pending' ? `
+                        <div class="bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                            <p class="text-sm text-yellow-800">
+                                <i class="fas fa-info-circle mr-1"></i>
+                                Your request is being reviewed. You will be notified once there's an update.
+                            </p>
+                        </div>
+                    ` : ''}
+                </div>
+            </div>
+        </div>
+    `;
+
+    document.body.appendChild(modal);
+}
+
+// Generate HTML for certificate request details
+function generateCertificateDetailsHTML(request) {
+    let html = '';
+
+    if (request.soul_name) {
+        html += `
+            <div class="grid grid-cols-1 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Soul Name</label>
+                    <p class="text-sm text-gray-900">${request.soul_name}</p>
+                </div>
+                ${request.petitions ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Petitions</label>
+                        <p class="text-sm text-gray-900">${request.petitions}</p>
+                    </div>
+                ` : ''}
+                ${request.thanksgiving ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Thanksgiving</label>
+                        <p class="text-sm text-gray-900">${request.thanksgiving}</p>
+                    </div>
+                ` : ''}
+                ${request.mass_date_time ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mass Date & Time</label>
+                        <p class="text-sm text-gray-900">${new Date(request.mass_date_time).toLocaleString()}</p>
+                    </div>
+                ` : ''}
+                ${request.mass_in_charge ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Person in Charge</label>
+                        <p class="text-sm text-gray-900">${request.mass_in_charge}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    } else if (request.deceased_name) {
+        html += `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Deceased Name</label>
+                    <p class="text-sm text-gray-900">${request.deceased_name}</p>
+                </div>
+                ${request.deceased_age ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                        <p class="text-sm text-gray-900">${request.deceased_age}</p>
+                    </div>
+                ` : ''}
+                ${request.deceased_gender ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Gender</label>
+                        <p class="text-sm text-gray-900">${request.deceased_gender}</p>
+                    </div>
+                ` : ''}
+                ${request.civil_status ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Civil Status</label>
+                        <p class="text-sm text-gray-900">${request.civil_status}</p>
+                    </div>
+                ` : ''}
+                ${request.spouse_name ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Spouse Name</label>
+                        <p class="text-sm text-gray-900">${request.spouse_name}</p>
+                    </div>
+                ` : ''}
+                ${request.occupation ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Occupation</label>
+                        <p class="text-sm text-gray-900">${request.occupation}</p>
+                    </div>
+                ` : ''}
+                ${request.cause_of_death ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Cause of Death</label>
+                        <p class="text-sm text-gray-900">${request.cause_of_death}</p>
+                    </div>
+                ` : ''}
+                ${request.death_date ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Death</label>
+                        <p class="text-sm text-gray-900">${new Date(request.death_date).toLocaleDateString()}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    } else if (request.patient_name) {
+        html += `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Patient Name</label>
+                    <p class="text-sm text-gray-900">${request.patient_name}</p>
+                </div>
+                ${request.patient_age ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Age</label>
+                        <p class="text-sm text-gray-900">${request.patient_age}</p>
+                    </div>
+                ` : ''}
+                ${request.patient_sex ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sex</label>
+                        <p class="text-sm text-gray-900">${request.patient_sex}</p>
+                    </div>
+                ` : ''}
+                ${request.patient_status ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                        <p class="text-sm text-gray-900">${request.patient_status}</p>
+                    </div>
+                ` : ''}
+                ${request.needs && request.needs.length > 0 ? `
+                    <div class="md:col-span-2">
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Needs</label>
+                        <p class="text-sm text-gray-900">${request.needs.join(', ')}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    } else if (request.person_name) {
+        html += `
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Person Name</label>
+                    <p class="text-sm text-gray-900">${request.person_name}</p>
+                </div>
+                ${request.person_dob ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Date of Birth</label>
+                        <p class="text-sm text-gray-900">${new Date(request.person_dob).toLocaleDateString()}</p>
+                    </div>
+                ` : ''}
+                ${request.father_name ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Father's Name</label>
+                        <p class="text-sm text-gray-900">${request.father_name}</p>
+                    </div>
+                ` : ''}
+                ${request.mother_name ? `
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Mother's Name</label>
+                        <p class="text-sm text-gray-900">${request.mother_name}</p>
+                    </div>
+                ` : ''}
+            </div>
+        `;
+    }
+
+    if (request.additional_details) {
+        html += `
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+                <p class="text-sm text-gray-900">${request.additional_details}</p>
+            </div>
+        `;
+    }
+
+    return html;
+}
+
+// Generate HTML for service request details
+function generateServiceDetailsHTML(request) {
+    return `
+        <div>
+            <label class="block text-sm font-medium text-gray-700 mb-1">Additional Details</label>
+            <p class="text-sm text-gray-900">${request.additional_details || 'No additional details provided.'}</p>
+        </div>
+    `;
+}
+
+// Initialize services tab functionality
+function initializeServicesTabs() {
+    const tabButtons = document.querySelectorAll('.services-tab');
+    const tabContents = document.querySelectorAll('.services-content');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const tabName = this.getAttribute('data-tab');
+
+            // Remove active class from all tabs
+            tabButtons.forEach(btn => btn.classList.remove('active', 'border-primary', 'text-primary'));
+            tabButtons.forEach(btn => btn.classList.add('border-transparent', 'text-gray-500'));
+
+            // Add active class to clicked tab
+            this.classList.add('active', 'border-primary', 'text-primary');
+            this.classList.remove('border-transparent', 'text-gray-500');
+
+            // Hide all tab contents
+            tabContents.forEach(content => content.classList.add('hidden'));
+
+            // Show selected tab content
+            const targetContent = document.getElementById(`services-${tabName}-content`);
+            if (targetContent) {
+                targetContent.classList.remove('hidden');
+
+                // Load data if it's the history tab
+                if (tabName === 'history') {
+                    loadUserServiceRequests();
+                }
+            }
+        });
+    });
+
+    // Auto-switch to history tab after successful form submission
+    window.switchToHistoryTab = function() {
+        const historyTab = document.getElementById('services-history-tab');
+        if (historyTab) {
+            historyTab.click();
+        }
+    };
+
+    // Initialize filter and sort functionality
+    const filterSelect = document.getElementById('services-filter');
+    const sortSelect = document.getElementById('services-sort');
+
+    if (filterSelect) {
+        filterSelect.addEventListener('change', function() {
+            const sortValue = sortSelect ? sortSelect.value : 'newest';
+            renderServiceRequests(window.userServiceRequests || [], this.value, sortValue);
+        });
+    }
+
+    if (sortSelect) {
+        sortSelect.addEventListener('change', function() {
+            const filterValue = filterSelect ? filterSelect.value : 'all';
+            renderServiceRequests(window.userServiceRequests || [], filterValue, this.value);
+        });
+    }
+}
+
+// Reset service filters
+function resetServiceFilters() {
+    const filterSelect = document.getElementById('services-filter');
+    const sortSelect = document.getElementById('services-sort');
+
+    if (filterSelect) filterSelect.value = 'all';
+    if (sortSelect) sortSelect.value = 'newest';
+
+    renderServiceRequests(window.userServiceRequests || [], 'all', 'newest');
+}
+
+// Switch to request tab
+function switchToRequestTab() {
+    const requestTab = document.getElementById('services-request-tab');
+    if (requestTab) {
+        requestTab.click();
+    }
+}
+
 // Export functions for global access
 window.toggleSidebar = toggleSidebar;
 window.closeSidebar = closeSidebar;
 window.toggleCertificateForm = toggleCertificateForm;
 window.toggleServiceForm = toggleServiceForm;
+window.loadUserServiceRequests = loadUserServiceRequests;
+window.viewRequestDetails = viewRequestDetails;
+window.resetServiceFilters = resetServiceFilters;
+window.switchToRequestTab = switchToRequestTab;
