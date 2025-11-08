@@ -1465,6 +1465,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
+    // Load announcements and events sections on page load for immediate display
+    setTimeout(() => {
+        loadAnnouncementsSection();
+        loadEventsSection();
+    }, 500);
+
     // Load services when services section is shown
     const servicesLinks = document.querySelectorAll('.nav-link[data-section="services"]');
     servicesLinks.forEach(link => {
