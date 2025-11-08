@@ -10,14 +10,6 @@ async function loadDashboardAnnouncements() {
     console.log('Loading dashboard announcements...');
     const now = new Date().toISOString();
 
-    // First, try to get ALL announcements to see what's in the database
-    const { data: allAnnouncements, error: allError } = await supabaseClient
-      .from('announcements')
-      .select('*')
-      .order('created_at', { ascending: false });
-
-    console.log('ALL announcements in database:', { allAnnouncements, allError, count: allAnnouncements?.length || 0 });
-
     // Get announcements that are active and either have no expiration or haven't expired
     const { data: announcements, error } = await supabaseClient
       .from('announcements')
@@ -61,10 +53,9 @@ async function loadDashboardAnnouncements() {
                   'bg-gray-100 text-gray-700'
                 }">${announcement.priority}</span>
               </div>
-              <p class="text-xs text-gray-600 mb-2 line-clamp-2">${announcement.content.substring(0, 100)}${announcement.content.length > 100 ? '...' : ''}</p>
+              <p class="text-xs text-gray-600 mb-2 leading-relaxed">${announcement.content}</p>
               <div class="flex items-center justify-between">
                 <span class="text-xs text-gray-500">${new Date(announcement.created_at).toLocaleDateString()}</span>
-                <span class="text-xs text-primary hover:text-primary/80 font-medium">Read more →</span>
               </div>
             </div>
           `;
@@ -120,6 +111,10 @@ function setupAnnouncementsSubscription() {
         console.log('Announcements change detected:', payload);
         // Reload announcements when any change occurs
         loadDashboardAnnouncements();
+        // Also reload full announcements section if it's currently visible
+        if (currentSection === 'announcements') {
+          loadAnnouncementsSection();
+        }
       }
     )
     .subscribe((status) => {
@@ -130,18 +125,102 @@ function setupAnnouncementsSubscription() {
   return channel;
 }
 
+// Load announcements for announcements section
+async function loadAnnouncementsSection() {
+    try {
+        const container = document.getElementById('announcements-container');
+        if (!container) return;
+
+        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading announcements...</p></div>';
+
+        const now = new Date().toISOString();
+        const { data: announcements, error } = await supabaseClient
+            .from('announcements')
+            .select('*')
+            .eq('status', 'active')
+            .or(`expires_at.is.null,expires_at.gt.${now}`)
+            .order('created_at', { ascending: false });
+
+        if (error) throw error;
+
+        if (announcements && announcements.length > 0) {
+            container.innerHTML = announcements.map(announcement => {
+                const priorityColor = announcement.priority === 'urgent' ? 'border-red-200 bg-red-50' :
+                                    announcement.priority === 'high' ? 'border-orange-200 bg-orange-50' :
+                                    announcement.priority === 'normal' ? 'border-blue-200 bg-blue-50' :
+                                    'border-gray-200 bg-gray-50';
+
+                const priorityIcon = announcement.priority === 'urgent' ? 'fas fa-exclamation-triangle' :
+                                   announcement.priority === 'high' ? 'fas fa-exclamation-circle' :
+                                   announcement.priority === 'normal' ? 'fas fa-info-circle' :
+                                   'fas fa-bell';
+
+                return `
+                    <div class="bg-white rounded-lg shadow-sm border p-4 ${priorityColor} hover:shadow-md transition-all duration-200">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0 ${
+                                announcement.priority === 'urgent' ? 'bg-red-100' :
+                                announcement.priority === 'high' ? 'bg-orange-100' :
+                                announcement.priority === 'normal' ? 'bg-blue-100' :
+                                'bg-gray-100'
+                            }">
+                                <i class="${priorityIcon} ${
+                                    announcement.priority === 'urgent' ? 'text-red-600' :
+                                    announcement.priority === 'high' ? 'text-orange-600' :
+                                    announcement.priority === 'normal' ? 'text-blue-600' :
+                                    'text-gray-600'
+                                } text-sm"></i>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-semibold text-gray-900 leading-tight">${announcement.title}</h4>
+                                    <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full ml-2 flex-shrink-0 ${
+                                        announcement.priority === 'urgent' ? 'bg-red-100 text-red-800' :
+                                        announcement.priority === 'high' ? 'bg-orange-100 text-orange-800' :
+                                        announcement.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
+                                        'bg-gray-100 text-gray-800'
+                                    }">
+                                        ${announcement.priority}
+                                    </span>
+                                </div>
+                                <p class="text-gray-700 text-sm leading-relaxed mb-3">${announcement.content}</p>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span>${new Date(announcement.created_at).toLocaleDateString()}</span>
+                                    ${announcement.expires_at ? `<span>Expires ${new Date(announcement.expires_at).toLocaleDateString()}</span>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        } else {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-bullhorn text-gray-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Announcements</h3>
+                    <p class="text-gray-600">There are no active announcements at this time.</p>
+                </div>
+            `;
+        }
+    } catch (error) {
+        console.error('Error loading announcements section:', error);
+        const container = document.getElementById('announcements-container');
+        if (container) {
+            container.innerHTML = `
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
+                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
+                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Announcements</h3>
+                    <p class="text-gray-600">Unable to load announcements. Please try again later.</p>
+                </div>
+            `;
+        }
+    }
+}
+
 // Load events for dashboard overview
 async function loadDashboardEvents() {
   try {
     console.log('Loading dashboard events...');
-
-    // First, try to get ALL events to see what's in the database
-    const { data: allEvents, error: allError } = await supabaseClient
-      .from('events')
-      .select('*')
-      .order('event_date', { ascending: true });
-
-    console.log('ALL events in database:', { allEvents, allError, count: allEvents?.length || 0 });
 
     // Get upcoming events that are not cancelled, ordered by date
     const today = new Date().toISOString().split('T')[0];
@@ -205,10 +284,7 @@ async function loadDashboardEvents() {
                   ${event.location}
                 </span>` : ''}
               </div>
-              ${event.description ? `<p class="text-xs text-gray-600 line-clamp-1">${event.description.substring(0, 80)}${event.description.length > 80 ? '...' : ''}</p>` : ''}
-              <div class="flex items-center justify-end mt-2">
-                <span class="text-xs text-primary hover:text-primary/80 font-medium">View details →</span>
-              </div>
+              ${event.description ? `<p class="text-xs text-gray-600 leading-relaxed">${event.description}</p>` : ''}
             </div>
           `;
           eventsList.appendChild(eventDiv);
@@ -263,6 +339,10 @@ function setupEventsSubscription() {
         console.log('Events change detected:', payload);
         // Reload events when any change occurs
         loadDashboardEvents();
+        // Also reload full events section if it's currently visible
+        if (currentSection === 'events') {
+          loadEventsSection();
+        }
       }
     )
     .subscribe((status) => {
@@ -271,74 +351,6 @@ function setupEventsSubscription() {
 
   console.log('Events real-time subscription established');
   return channel;
-}
-
-// Load announcements for announcements section
-async function loadAnnouncementsSection() {
-    try {
-        const container = document.getElementById('announcements-container');
-        if (!container) return;
-
-        container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading announcements...</p></div>';
-
-        const { data: announcements, error } = await supabaseClient
-            .from('announcements')
-            .select('*')
-            .eq('status', 'active')
-            .order('created_at', { ascending: false });
-
-        if (error) throw error;
-
-        if (announcements && announcements.length > 0) {
-            container.innerHTML = announcements.map(announcement => {
-                const priorityColor = announcement.priority === 'urgent' ? 'border-red-200 bg-red-50' :
-                                    announcement.priority === 'high' ? 'border-orange-200 bg-orange-50' :
-                                    announcement.priority === 'normal' ? 'border-blue-200 bg-blue-50' :
-                                    'border-gray-200 bg-gray-50';
-
-                return `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${priorityColor}">
-                        <div class="flex items-start justify-between mb-3">
-                            <h3 class="text-lg font-display font-bold text-secondary">${announcement.title}</h3>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                announcement.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                                announcement.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                                announcement.priority === 'normal' ? 'bg-blue-100 text-blue-800' :
-                                'bg-gray-100 text-gray-800'
-                            }">
-                                ${announcement.priority}
-                            </span>
-                        </div>
-                        <p class="text-gray-700 mb-4 leading-relaxed">${announcement.content}</p>
-                        <div class="flex items-center justify-between text-sm text-gray-500">
-                            <span>Posted on ${new Date(announcement.created_at).toLocaleDateString()}</span>
-                            ${announcement.expires_at ? `<span>Expires: ${new Date(announcement.expires_at).toLocaleDateString()}</span>` : ''}
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        } else {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-bullhorn text-gray-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">No Announcements</h3>
-                    <p class="text-gray-600">There are no active announcements at this time.</p>
-                </div>
-            `;
-        }
-    } catch (error) {
-        console.error('Error loading announcements section:', error);
-        const container = document.getElementById('announcements-container');
-        if (container) {
-            container.innerHTML = `
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-8 text-center">
-                    <i class="fas fa-exclamation-triangle text-red-400 text-4xl mb-4"></i>
-                    <h3 class="text-lg font-display font-bold text-secondary mb-2">Error Loading Announcements</h3>
-                    <p class="text-gray-600">Unable to load announcements. Please try again later.</p>
-                </div>
-            `;
-        }
-    }
 }
 
 // Load events for events section
@@ -352,6 +364,7 @@ async function loadEventsSection() {
         const { data: events, error } = await supabaseClient
             .from('events')
             .select('*')
+            .neq('status', 'cancelled')
             .order('event_date', { ascending: true });
 
         if (error) throw error;
@@ -372,51 +385,51 @@ async function loadEventsSection() {
                                   event.status === 'cancelled' ? 'border-red-200 bg-red-50' :
                                   'border-yellow-200 bg-yellow-50';
 
+                const statusIcon = event.status === 'completed' ? 'fas fa-check-circle' :
+                                 event.status === 'ongoing' ? 'fas fa-play-circle' :
+                                 event.status === 'cancelled' ? 'fas fa-times-circle' :
+                                 'fas fa-calendar-plus';
+
+                const dayOfMonth = eventDate.getDate();
+                const monthName = eventDate.toLocaleDateString('en-US', { month: 'short' });
+
                 return `
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 ${statusColor}">
-                        <div class="flex items-start justify-between mb-3">
-                            <div class="flex-1">
-                                <h3 class="text-lg font-display font-bold text-secondary mb-1">${event.title}</h3>
-                                ${event.description ? `<p class="text-gray-700 mb-3">${event.description}</p>` : ''}
+                    <div class="bg-white rounded-lg shadow-sm border p-4 ${statusColor} hover:shadow-md transition-all duration-200">
+                        <div class="flex items-start gap-3 mb-3">
+                            <div class="w-8 h-8 bg-gradient-to-br from-primary to-secondary rounded-lg flex flex-col items-center justify-center text-white shadow-sm flex-shrink-0">
+                                <span class="text-xs font-bold">${dayOfMonth}</span>
+                                <span class="text-xs font-semibold uppercase">${monthName}</span>
                             </div>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ml-4 ${
-                                event.status === 'completed' ? 'bg-green-100 text-green-800' :
-                                event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
-                                event.status === 'cancelled' ? 'bg-red-100 text-red-800' :
-                                'bg-yellow-100 text-yellow-800'
-                            }">
-                                ${event.status}
-                            </span>
-                        </div>
-
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-calendar text-primary"></i>
-                                <span class="text-sm text-gray-700">${dateStr}</span>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-start justify-between mb-2">
+                                    <h4 class="text-sm font-semibold text-gray-900 leading-tight">${event.title}</h4>
+                                    <span class="inline-flex px-2 py-1 text-xs font-medium rounded-full ml-2 flex-shrink-0 ${
+                                        event.status === 'completed' ? 'bg-green-100 text-green-800' :
+                                        event.status === 'ongoing' ? 'bg-blue-100 text-blue-800' :
+                                        event.status === 'cancelled' ? 'bg-red-100 text-red-800' :
+                                        'bg-yellow-100 text-yellow-800'
+                                    }">
+                                        ${event.status}
+                                    </span>
+                                </div>
+                                <div class="flex flex-wrap items-center gap-2 text-xs text-gray-600 mb-2">
+                                    <span class="flex items-center gap-1">
+                                        <i class="fas fa-clock text-primary"></i>
+                                        ${timeStr}
+                                    </span>
+                                    ${event.location ? `<span class="flex items-center gap-1">
+                                        <i class="fas fa-map-marker-alt text-primary"></i>
+                                        ${event.location}
+                                    </span>` : ''}
+                                    ${event.category ? `<span class="inline-flex px-1.5 py-0.5 text-xs font-medium rounded-full bg-gray-100 text-gray-800">
+                                        ${event.category}
+                                    </span>` : ''}
+                                </div>
+                                ${event.description ? `<p class="text-gray-700 text-sm leading-relaxed mb-2">${event.description}</p>` : ''}
+                                <div class="text-xs text-gray-500">
+                                    Created ${new Date(event.created_at).toLocaleDateString()}
+                                </div>
                             </div>
-                            <div class="flex items-center gap-2">
-                                <i class="fas fa-clock text-primary"></i>
-                                <span class="text-sm text-gray-700">${timeStr}</span>
-                            </div>
-                            ${event.location ? `
-                            <div class="flex items-center gap-2 md:col-span-2">
-                                <i class="fas fa-map-marker-alt text-primary"></i>
-                                <span class="text-sm text-gray-700">${event.location}</span>
-                            </div>
-                            ` : ''}
-                        </div>
-
-                        ${event.category ? `
-                        <div class="flex items-center gap-2 mb-3">
-                            <i class="fas fa-tag text-primary"></i>
-                            <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-gray-100 text-gray-800">
-                                ${event.category}
-                            </span>
-                        </div>
-                        ` : ''}
-
-                        <div class="text-sm text-gray-500">
-                            Created on ${new Date(event.created_at).toLocaleDateString()}
                         </div>
                     </div>
                 `;
@@ -444,6 +457,8 @@ async function loadEventsSection() {
         }
     }
 }
+
+
 
 // Initialize dashboard when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
@@ -681,6 +696,9 @@ function initializeNavigation() {
 
     // Initialize services tabs
     initializeServicesTabs();
+
+    // No longer loading service requests in navigation initialization
+    // They will be loaded when the my-services section is accessed
 }
 
 // Initialize profile editing functionality
@@ -1299,9 +1317,8 @@ async function loadDashboardServiceRequests() {
                                     <span class="text-xs px-2 py-0.5 rounded-full font-medium ${statusColor}">${request.status}</span>
                                 </div>
                                 <p class="text-xs text-gray-600 mb-2">${typeLabel} Request</p>
-                                <div class="flex items-center justify-between">
-                                    <span class="text-xs text-gray-500">${new Date(request.submitted_at).toLocaleDateString()}</span>
-                                    <span class="text-xs text-primary hover:text-primary/80 font-medium">View details →</span>
+                                <div class="flex items-center justify-between text-xs text-gray-500">
+                                    <span>Submitted ${new Date(request.submitted_at).toLocaleDateString()}</span>
                                 </div>
                             </div>
                         </li>
@@ -1448,14 +1465,24 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 
-    // Load services history when services section is shown
+    // Load services when services section is shown
     const servicesLinks = document.querySelectorAll('.nav-link[data-section="services"]');
     servicesLinks.forEach(link => {
         link.addEventListener('click', function() {
             setTimeout(() => {
                 if (document.getElementById('services-section').classList.contains('hidden') === false) {
-                    // Always load services history when entering services section
-                    // This ensures data is fresh when switching to the history tab
+                    // Services section is now just for requesting services
+                }
+            }, 100);
+        });
+    });
+
+    // Load service history when my-services section is shown
+    const myServicesLinks = document.querySelectorAll('.nav-link[data-section="my-services"]');
+    myServicesLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            setTimeout(() => {
+                if (document.getElementById('my-services-section').classList.contains('hidden') === false) {
                     loadUserServiceRequests();
                 }
             }, 100);
@@ -1746,9 +1773,9 @@ async function submitCertificateRequest(event) {
         showDashboardMessage('Certificate request submitted successfully!', 'success');
         toggleCertificateForm(); // Close the form
 
-        // Switch to history tab and refresh data
+        // Switch to my-services section and refresh data
         setTimeout(() => {
-            switchToHistoryTab();
+            switchSection('my-services');
             // Refresh both dashboard and services history
             loadUserServiceRequests();
             loadDashboardServiceRequests();
@@ -1810,9 +1837,9 @@ async function submitServiceRequest(event) {
         showDashboardMessage('Service request submitted successfully!', 'success');
         toggleServiceForm(); // Close the form
 
-        // Switch to history tab and refresh data
+        // Switch to my-services section and refresh data
         setTimeout(() => {
-            switchToHistoryTab();
+            switchSection('my-services');
             // Refresh both dashboard and services history
             loadUserServiceRequests();
             loadDashboardServiceRequests();
@@ -2056,9 +2083,6 @@ function renderServiceRequests(requests, filter = 'all', sort = 'newest') {
 
                 <div class="flex items-center justify-between text-xs text-gray-500">
                     <span>Submitted ${new Date(request.submitted_at).toLocaleDateString()}</span>
-                    <button onclick="viewRequestDetails('${request.id}', '${request.table}', '${request.type}')" class="text-primary hover:text-primary/80 font-medium">
-                        View Details →
-                    </button>
                 </div>
 
                 ${request.admin_notes ? `
@@ -2082,7 +2106,7 @@ function getRequestDisplayInfo(request) {
     if (request.type === 'certificate') {
         if (request.soul_name) {
             title = `Mass Offering for ${request.soul_name}`;
-            details = request.petitions ? `Petitions: ${request.petitions.substring(0, 100)}${request.petitions.length > 100 ? '...' : ''}` : '';
+            details = request.petitions ? `Petitions: ${request.petitions}` : '';
         } else if (request.deceased_name) {
             title = `${request.table.includes('funeral') ? 'Funeral Certificate' : 'Mass Card'} for ${request.deceased_name}`;
             if (request.table.includes('funeral')) {
@@ -2098,7 +2122,7 @@ function getRequestDisplayInfo(request) {
     } else {
         // Service requests
         title = request.requestType;
-        details = request.additional_details ? request.additional_details.substring(0, 150) + (request.additional_details.length > 150 ? '...' : '') : '';
+        details = request.additional_details ? request.additional_details : '';
     }
 
     return { title, details };
@@ -2353,47 +2377,9 @@ function generateServiceDetailsHTML(request) {
     `;
 }
 
-// Initialize services tab functionality
+// Initialize services tab functionality (removed since we now have separate sections)
+// Initialize filter and sort functionality for my-services section
 function initializeServicesTabs() {
-    const tabButtons = document.querySelectorAll('.services-tab');
-    const tabContents = document.querySelectorAll('.services-content');
-
-    tabButtons.forEach(button => {
-        button.addEventListener('click', function() {
-            const tabName = this.getAttribute('data-tab');
-
-            // Remove active class from all tabs
-            tabButtons.forEach(btn => btn.classList.remove('active', 'border-primary', 'text-primary'));
-            tabButtons.forEach(btn => btn.classList.add('border-transparent', 'text-gray-500'));
-
-            // Add active class to clicked tab
-            this.classList.add('active', 'border-primary', 'text-primary');
-            this.classList.remove('border-transparent', 'text-gray-500');
-
-            // Hide all tab contents
-            tabContents.forEach(content => content.classList.add('hidden'));
-
-            // Show selected tab content
-            const targetContent = document.getElementById(`services-${tabName}-content`);
-            if (targetContent) {
-                targetContent.classList.remove('hidden');
-
-                // Load data if it's the history tab
-                if (tabName === 'history') {
-                    loadUserServiceRequests();
-                }
-            }
-        });
-    });
-
-    // Auto-switch to history tab after successful form submission
-    window.switchToHistoryTab = function() {
-        const historyTab = document.getElementById('services-history-tab');
-        if (historyTab) {
-            historyTab.click();
-        }
-    };
-
     // Initialize filter and sort functionality
     const filterSelect = document.getElementById('services-filter');
     const sortSelect = document.getElementById('services-sort');
@@ -2424,12 +2410,9 @@ function resetServiceFilters() {
     renderServiceRequests(window.userServiceRequests || [], 'all', 'newest');
 }
 
-// Switch to request tab
+// Switch to services section
 function switchToRequestTab() {
-    const requestTab = document.getElementById('services-request-tab');
-    if (requestTab) {
-        requestTab.click();
-    }
+    switchSection('services');
 }
 
 // Export functions for global access

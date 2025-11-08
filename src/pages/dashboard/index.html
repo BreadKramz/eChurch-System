@@ -83,15 +83,11 @@
                     <span>Services</span>
                 </a>
 
-                <a href="#announcements" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="announcements">
-                    <i class="fas fa-bullhorn text-primary text-sm"></i>
-                    <span>Announcements</span>
+                <a href="#my-services" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="my-services">
+                    <i class="fas fa-file-alt text-primary text-sm"></i>
+                    <span>My Services</span>
                 </a>
 
-                <a href="#events" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="events">
-                    <i class="fas fa-calendar-alt text-primary text-sm"></i>
-                    <span>Events</span>
-                </a>
             </nav>
 
             <!-- Logout Button -->
@@ -159,34 +155,13 @@
                 </div>
 
                 <!-- Main Cards -->
-                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-4 mb-6">
-                    <!-- Announcements -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-announcements">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-base font-display font-bold text-secondary">Announcements</h3>
-                            <a href="#" onclick="switchSection('announcements')" class="text-xs text-primary hover:underline">View all</a>
-                        </div>
-                        <ul class="space-y-3">
-                            <!-- Announcements will be populated here -->
-                        </ul>
-                    </div>
-
-                    <!-- Upcoming Events -->
-                    <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-events">
-                        <div class="flex items-center justify-between mb-3">
-                            <h3 class="text-base font-display font-bold text-secondary">Upcoming Events</h3>
-                            <a href="#" onclick="switchSection('events')" class="text-xs text-primary hover:underline">View all</a>
-                        </div>
-                        <div class="space-y-3">
-                            <!-- Upcoming events will be populated here -->
-                        </div>
-                    </div>
+                <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-2 gap-4 mb-6">
 
                     <!-- Service Requests -->
                     <div class="bg-white rounded-xl p-5 shadow-sm border border-gray-200 dashboard-service-requests">
                         <div class="flex items-center justify-between mb-3">
                             <h3 class="text-base font-display font-bold text-secondary">My Requests</h3>
-                            <a href="#" onclick="switchSection('services')" class="text-xs text-primary hover:underline">View all</a>
+                            <a href="#" onclick="switchSection('my-services')" class="text-xs text-primary hover:underline">View all</a>
                         </div>
                         <ul class="space-y-3">
                             <!-- Service requests will be populated here -->
@@ -203,7 +178,7 @@
                             </button>
                             <button onclick="switchSection('services')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition">
                                 <i class="fas fa-certificate text-primary"></i>
-                                <span class="text-sm text-gray-800">Services</span>
+                                <span class="text-sm text-gray-800">Request Services</span>
                             </button>
                             <button onclick="showDashboardMessage('No new notifications', 'info')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition">
                                 <i class="fas fa-bell text-primary"></i>
@@ -365,145 +340,134 @@
                     <p class="text-gray-600 text-sm">Request sacramental services and certificates</p>
                 </div>
 
-                <!-- My Services Tab Navigation -->
-                <div class="mb-6">
-                    <div class="border-b border-gray-200">
-                        <nav class="flex space-x-8">
-                            <button id="services-request-tab" class="py-2 px-1 border-b-2 font-medium text-sm services-tab active" data-tab="request">
-                                Request Services
-                            </button>
-                            <button id="services-history-tab" class="py-2 px-1 border-b-2 font-medium text-sm services-tab" data-tab="history">
-                                My Services
-                            </button>
-                        </nav>
+                <!-- Services Grid -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Certificate Request -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                            <i class="fas fa-certificate text-primary text-xl"></i>
+                        </div>
+                        <div>
+                            <h3 class="text-lg font-display font-bold text-secondary">Certificate Request</h3>
+                            <p class="text-sm text-gray-600">Request church certificates and documents</p>
+                        </div>
                     </div>
+                    <div class="mb-4">
+                        <p class="text-gray-700 text-sm mb-3">Available certificates:</p>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Mass Offering</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Funeral</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Marriage</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Confirmation/Baptism</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Sick Call</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-primary text-xs"></i>
+                                <span>Mass Card</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="toggleCertificateForm()" class="w-full bg-primary text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-all text-sm">
+                        <i class="fas fa-plus text-xs mr-2"></i>Request Certificate
+                    </button>
                 </div>
 
-                <!-- Services Request Tab -->
-                <div id="services-request-content" class="services-content">
-                    <!-- Services Grid -->
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <!-- Certificate Request -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-certificate text-primary text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-display font-bold text-secondary">Certificate Request</h3>
-                                <p class="text-sm text-gray-600">Request church certificates and documents</p>
-                            </div>
+                <!-- Services Request -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
+                    <div class="flex items-center gap-4 mb-4">
+                        <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
+                            <i class="fas fa-pray text-secondary text-xl"></i>
                         </div>
-                        <div class="mb-4">
-                            <p class="text-gray-700 text-sm mb-3">Available certificates:</p>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Mass Offering</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Funeral</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Marriage</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Confirmation/Baptism</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Sick Call</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-primary text-xs"></i>
-                                    <span>Mass Card</span>
-                                </div>
-                            </div>
+                        <div>
+                            <h3 class="text-lg font-display font-bold text-secondary">Services Request</h3>
+                            <p class="text-sm text-gray-600">Request sacramental services</p>
                         </div>
-                        <button onclick="toggleCertificateForm()" class="w-full bg-primary text-white py-2 px-4 rounded-lg font-semibold hover:bg-primary/90 transition-all text-sm">
-                            <i class="fas fa-plus text-xs mr-2"></i>Request Certificate
-                        </button>
                     </div>
+                    <div class="mb-4">
+                        <p class="text-gray-700 text-sm mb-3">Available services:</p>
+                        <div class="grid grid-cols-2 gap-2 text-xs">
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Confirmation/Baptism</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Funeral</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Communion</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Marriage</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Convocation</span>
+                            </div>
+                            <div class="flex items-center gap-1">
+                                <i class="fas fa-check text-secondary text-xs"></i>
+                                <span>Other</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button onclick="toggleServiceForm()" class="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-secondary/90 transition-all text-sm">
+                        <i class="fas fa-calendar-plus text-xs mr-2"></i>Request Service
+                    </button>
+                </div>
+            </div>
+            </div>
 
-                    <!-- Services Request -->
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow">
-                        <div class="flex items-center gap-4 mb-4">
-                            <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center">
-                                <i class="fas fa-pray text-secondary text-xl"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-lg font-display font-bold text-secondary">Services Request</h3>
-                                <p class="text-sm text-gray-600">Request sacramental services</p>
-                            </div>
-                        </div>
-                        <div class="mb-4">
-                            <p class="text-gray-700 text-sm mb-3">Available services:</p>
-                            <div class="grid grid-cols-2 gap-2 text-xs">
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Confirmation/Baptism</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Funeral</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Communion</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Marriage</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Convocation</span>
-                                </div>
-                                <div class="flex items-center gap-1">
-                                    <i class="fas fa-check text-secondary text-xs"></i>
-                                    <span>Other</span>
-                                </div>
-                            </div>
-                        </div>
-                        <button onclick="toggleServiceForm()" class="w-full bg-secondary text-white py-2 px-4 rounded-lg font-semibold hover:bg-secondary/90 transition-all text-sm">
-                            <i class="fas fa-calendar-plus text-xs mr-2"></i>Request Service
-                        </button>
-                    </div>
+            <!-- My Services Section -->
+            <div id="my-services-section" class="section-content hidden">
+                <div class="mb-4">
+                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">My Service Requests</h1>
+                    <p class="text-gray-600 text-sm">Track the status of your submitted requests</p>
                 </div>
 
-                <!-- My Services History Tab -->
-                <div id="services-history-content" class="services-content hidden">
-                    <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
-                        <div class="flex items-center justify-between mb-6">
-                            <div>
-                                <h3 class="text-lg font-display font-bold text-secondary">My Service Requests</h3>
-                                <p class="text-sm text-gray-600 mt-1">Track the status of your submitted requests</p>
-                            </div>
-                            <div class="flex gap-2">
-                                <select id="services-filter" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
-                                    <option value="all">All Requests</option>
-                                    <option value="pending">Pending</option>
-                                    <option value="approved">Approved</option>
-                                    <option value="completed">Completed</option>
-                                    <option value="rejected">Rejected</option>
-                                </select>
-                                <select id="services-sort" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
-                                    <option value="newest">Newest First</option>
-                                    <option value="oldest">Oldest First</option>
-                                    <option value="status">By Status</option>
-                                </select>
-                            </div>
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+                    <div class="flex items-center justify-between mb-6">
+                        <div>
+                            <h3 class="text-lg font-display font-bold text-secondary">Service History</h3>
+                            <p class="text-sm text-gray-600 mt-1">View and manage all your service requests</p>
                         </div>
+                        <div class="flex gap-2">
+                            <select id="services-filter" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
+                                <option value="all">All Requests</option>
+                                <option value="pending">Pending</option>
+                                <option value="approved">Approved</option>
+                                <option value="completed">Completed</option>
+                                <option value="rejected">Rejected</option>
+                            </select>
+                            <select id="services-sort" class="px-3 py-2 border border-gray-300 rounded text-sm focus:ring-1 focus:ring-primary focus:border-transparent">
+                                <option value="newest">Newest First</option>
+                                <option value="oldest">Oldest First</option>
+                                <option value="status">By Status</option>
+                            </select>
+                        </div>
+                    </div>
 
-                        <div id="services-history-container" class="space-y-4">
-                            <!-- Service requests will be loaded here -->
-                            <div class="text-center py-8">
-                                <i class="fas fa-spinner fa-spin text-primary text-2xl mb-4"></i>
-                                <p class="text-gray-600">Loading your service requests...</p>
-                            </div>
+                    <div id="services-history-container" class="space-y-4">
+                        <!-- Service requests will be loaded here -->
+                        <div class="text-center py-8">
+                            <i class="fas fa-spinner fa-spin text-primary text-2xl mb-4"></i>
+                            <p class="text-gray-600">Loading your service requests...</p>
                         </div>
                     </div>
                 </div>
@@ -948,29 +912,6 @@
             </div>
 
 
-            <!-- Announcements Section -->
-            <div id="announcements-section" class="section-content hidden">
-                <div class="mb-4">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Announcements</h1>
-                    <p class="text-gray-600 text-sm">Latest news and updates from our parish</p>
-                </div>
-
-                <div id="announcements-container" class="space-y-4">
-                    <!-- Announcements will be loaded here -->
-                </div>
-            </div>
-
-            <!-- Events Section -->
-            <div id="events-section" class="section-content hidden">
-                <div class="mb-4">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Events</h1>
-                    <p class="text-gray-600 text-sm">Upcoming events and activities</p>
-                </div>
-
-                <div id="events-container" class="space-y-4">
-                    <!-- Events will be loaded here -->
-                </div>
-            </div>
 
             <!-- Settings Section -->
             <div id="settings-section" class="section-content hidden">
