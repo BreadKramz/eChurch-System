@@ -79,11 +79,6 @@
                     <span>User Management</span>
                 </a>
 
-                <a href="#services" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="services">
-                    <i class="fas fa-certificate text-primary text-sm"></i>
-                    <span>Services</span>
-                </a>
-
                 <a href="#announcements" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="announcements">
                     <i class="fas fa-bullhorn text-primary text-sm"></i>
                     <span>Announcements</span>
@@ -92,6 +87,11 @@
                 <a href="#events" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="events">
                     <i class="fas fa-calendar-alt text-primary text-sm"></i>
                     <span>Events</span>
+                </a>
+
+                <a href="#services" class="nav-link flex items-center gap-3 px-3 py-2 text-sm font-medium text-gray-700 rounded-lg hover:bg-primary/10 hover:text-primary transition-colors" data-section="services">
+                    <i class="fas fa-certificate text-primary text-sm"></i>
+                    <span>Services</span>
                 </a>
 
                 <div class="border-t border-gray-200 my-4"></div>
@@ -213,10 +213,6 @@
                             <i class="fas fa-users text-primary"></i>
                             <span class="text-sm text-gray-800">Manage Users</span>
                         </button>
-                        <button onclick="switchSection('services')" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-gray-200 hover:border-primary/40 hover:bg-primary/5 transition">
-                            <i class="fas fa-certificate text-primary"></i>
-                            <span class="text-sm text-gray-800">Services</span>
-                        </button>
                         <button onclick="confirmLogout()" class="flex items-center gap-2 px-3 py-2 rounded-lg border border-red-200 hover:border-red-400 hover:bg-red-50 transition">
                             <i class="fas fa-sign-out-alt text-red-600"></i>
                             <span class="text-sm text-gray-800">Logout</span>
@@ -306,81 +302,6 @@
                 </div>
             </div>
 
-            <!-- Services Section -->
-            <div id="services-section" class="section-content hidden">
-                <div class="mb-4">
-                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Church Services</h1>
-                    <p class="text-gray-600 text-sm">Manage certificate and service requests</p>
-                </div>
-
-                <!-- Certificate Requests -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
-                    <div class="p-4 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-base font-display font-bold text-secondary">Certificate Requests</h3>
-                            <button onclick="loadCertificateRequests()" class="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-primary/90 transition-all">
-                                <i class="fas fa-sync text-xs"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="certificate-requests-table-body" class="divide-y divide-gray-200">
-                                <tr>
-                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
-                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
-                                        Loading certificate requests...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <!-- Service Requests -->
-                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
-                    <div class="p-4 border-b border-gray-200">
-                        <div class="flex items-center justify-between">
-                            <h3 class="text-base font-display font-bold text-secondary">Service Requests</h3>
-                            <button onclick="loadServiceRequests()" class="bg-secondary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-secondary/90 transition-all">
-                                <i class="fas fa-sync text-xs"></i> Refresh
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="overflow-x-auto">
-                        <table class="w-full">
-                            <thead class="bg-gray-50">
-                                <tr>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
-                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="service-requests-table-body" class="divide-y divide-gray-200">
-                                <tr>
-                                    <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
-                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
-                                        Loading service requests...
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
 
             <!-- Announcements Section -->
             <div id="announcements-section" class="section-content hidden">
@@ -462,6 +383,62 @@
                                     <td colspan="5" class="px-4 py-8 text-center text-sm text-gray-500">
                                         <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
                                         Loading events...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Services Section -->
+            <div id="services-section" class="section-content hidden">
+                <div class="mb-4">
+                    <h1 class="text-xl lg:text-2xl font-display font-bold text-secondary mb-1">Service Requests</h1>
+                    <p class="text-gray-600 text-sm">Manage parish service requests and certificates</p>
+                </div>
+
+                <!-- Services Table -->
+                <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+                    <div class="p-4 border-b border-gray-200">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-base font-display font-bold text-secondary">All Service Requests</h3>
+                            <div class="flex gap-2">
+                                <select id="services-filter" class="px-3 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="all">All Requests</option>
+                                    <option value="pending">Pending</option>
+                                    <option value="approved">Approved</option>
+                                    <option value="completed">Completed</option>
+                                    <option value="rejected">Rejected</option>
+                                </select>
+                                <select id="services-sort" class="px-3 py-1.5 text-xs border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                                    <option value="newest">Newest First</option>
+                                    <option value="oldest">Oldest First</option>
+                                </select>
+                                <button onclick="loadServiceRequests()" class="bg-primary text-white px-3 py-1.5 rounded text-xs font-semibold hover:bg-primary/90 transition-all">
+                                    <i class="fas fa-sync text-xs"></i> Refresh
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Type</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Details</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Submitted</th>
+                                    <th class="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="services-table-body" class="divide-y divide-gray-200">
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                                        <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                                        Loading service requests...
                                     </td>
                                 </tr>
                             </tbody>
@@ -695,6 +672,69 @@
                          <i class="fas fa-save text-xs mr-1"></i> Save Event
                      </button>
                      <button type="button" onclick="closeEventModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                         Cancel
+                     </button>
+                 </div>
+             </form>
+         </div>
+     </div>
+
+     <!-- Service Request Details Modal -->
+     <div id="service-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+         <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
+             <div class="flex items-center justify-between mb-4">
+                 <h3 class="text-lg font-display font-bold text-secondary">Service Request Details</h3>
+                 <button onclick="closeServiceModal()" class="text-gray-400 hover:text-gray-600">
+                     <i class="fas fa-times"></i>
+                 </button>
+             </div>
+
+             <div id="service-details-content">
+                 <!-- Content will be populated by JavaScript -->
+             </div>
+
+             <div class="flex gap-2 pt-4">
+                 <button onclick="closeServiceModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
+                     Close
+                 </button>
+             </div>
+         </div>
+     </div>
+
+     <!-- Update Service Status Modal -->
+     <div id="update-service-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
+         <div class="bg-white rounded-lg p-6 max-w-lg w-full mx-4">
+             <div class="flex items-center justify-between mb-4">
+                 <h3 class="text-lg font-display font-bold text-secondary">Update Request Status</h3>
+                 <button onclick="closeUpdateServiceModal()" class="text-gray-400 hover:text-gray-600">
+                     <i class="fas fa-times"></i>
+                 </button>
+             </div>
+
+             <form id="update-service-form" class="space-y-4">
+                 <input type="hidden" id="update-service-id" name="serviceId">
+                 <input type="hidden" id="update-service-table" name="tableName">
+
+                 <div>
+                     <label for="update-service-status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                     <select id="update-service-status" name="status" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent">
+                         <option value="pending">Pending</option>
+                         <option value="approved">Approved</option>
+                         <option value="rejected">Rejected</option>
+                         <option value="completed">Completed</option>
+                     </select>
+                 </div>
+
+                 <div>
+                     <label for="update-service-notes" class="block text-sm font-medium text-gray-700 mb-1">Admin Notes</label>
+                     <textarea id="update-service-notes" name="adminNotes" rows="3" class="w-full px-3 py-2 border border-gray-300 rounded focus:ring-1 focus:ring-primary focus:border-transparent resize-none" placeholder="Add notes for this request..."></textarea>
+                 </div>
+
+                 <div class="flex gap-2 pt-4">
+                     <button type="submit" id="update-service-btn" class="flex-1 bg-primary text-white py-2 px-4 rounded font-semibold hover:bg-primary/90 transition-all">
+                         <i class="fas fa-save text-xs mr-1"></i> Update Status
+                     </button>
+                     <button type="button" onclick="closeUpdateServiceModal()" class="flex-1 bg-gray-500 text-white py-2 px-4 rounded font-semibold hover:bg-gray-600 transition-all">
                          Cancel
                      </button>
                  </div>
@@ -1899,46 +1939,56 @@
           });
         }
       });
+// ===== EVENTS MANAGEMENT =====
 
-      // ===== EVENTS MANAGEMENT =====
+let currentEventsPage = 1;
+const eventsPerPage = 10;
 
-      let currentEventsPage = 1;
-      const eventsPerPage = 10;
+// Load events when Events section is shown
+document.addEventListener('DOMContentLoaded', function() {
+  const navLinks = document.querySelectorAll('.nav-link[data-section="events"]');
+  navLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      setTimeout(() => {
+        if (document.getElementById('events-section').classList.contains('hidden') === false) {
+          loadEvents();
+        }
+      }, 100);
+    });
+  });
 
-      // Load events when Events section is shown
-      document.addEventListener('DOMContentLoaded', function() {
-        const navLinks = document.querySelectorAll('.nav-link[data-section="events"]');
-        navLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            setTimeout(() => {
-              if (document.getElementById('events-section').classList.contains('hidden') === false) {
-                loadEvents();
-              }
-            }, 100);
-          });
-        });
+  // ===== SERVICES MANAGEMENT =====
 
-        // Load service requests when Services section is shown
-        const serviceLinks = document.querySelectorAll('.nav-link[data-section="services"]');
-        serviceLinks.forEach(link => {
-          link.addEventListener('click', function() {
-            setTimeout(() => {
-              if (document.getElementById('services-section').classList.contains('hidden') === false) {
-                loadCertificateRequests();
-                loadServiceRequests();
-              }
-            }, 100);
-          });
-        });
+  // Load services when Services section is shown
+  const serviceNavLinks = document.querySelectorAll('.nav-link[data-section="services"]');
+  serviceNavLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      setTimeout(() => {
+        if (document.getElementById('services-section').classList.contains('hidden') === false) {
+          loadServiceRequests();
+        }
+      }, 100);
+    });
+  });
 
-        // Auto-load services section on page load for testing
-        setTimeout(() => {
-          const servicesSection = document.getElementById('services-section');
-          if (servicesSection && servicesSection.classList.contains('hidden')) {
-            // Switch to services section to show it
-            switchSection('services');
-          }
-        }, 2000);
+  // Services filter and sort functionality
+  const servicesFilter = document.getElementById('services-filter');
+  const servicesSort = document.getElementById('services-sort');
+
+  if (servicesFilter) {
+    servicesFilter.addEventListener('change', function() {
+      loadServiceRequests();
+    });
+  }
+
+  if (servicesSort) {
+    servicesSort.addEventListener('change', function() {
+      loadServiceRequests();
+    });
+  }
+
+
+
 
         // Debug admin permissions
         setTimeout(async () => {
@@ -2196,301 +2246,308 @@
         }
       });
 
-      // Load certificate requests for admin
-      async function loadCertificateRequests() {
-          try {
-              const tbody = document.getElementById('certificate-requests-table-body');
-              tbody.innerHTML = `
-                  <tr>
-                      <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
-                          <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
-                          Loading certificate requests...
-                      </td>
-                  </tr>
-              `;
 
-              // Query all certificate tables
-              const tableQueries = [
-                  { table: 'mass_offering_requests', type: 'Mass Offering' },
-                  { table: 'funeral_certificate_requests', type: 'Funeral Certificate' },
-                  { table: 'mass_card_requests', type: 'Mass Card' },
-                  { table: 'sick_call_certificate_requests', type: 'Sick Call Certificate' },
-                  { table: 'marriage_certificate_requests', type: 'Marriage Certificate' },
-                  { table: 'confirmation_baptism_certificate_requests', type: 'Confirmation/Baptism Certificate' }
-              ];
+      // ===== SERVICES FUNCTIONS =====
 
-              const allRequests = [];
-
-              for (const { table, type } of tableQueries) {
-                  const { data: requests, error } = await supabaseClient
-                      .from(table)
-                      .select(`
-                          *,
-                          profiles (
-                              first_name,
-                              last_name,
-                              email
-                          )
-                      `)
-                      .order('submitted_at', { ascending: false });
-
-                  if (!error && requests) {
-                      requests.forEach(request => {
-                          allRequests.push({ ...request, request_type: type, table_name: table });
-                      });
-                  }
-              }
-
-              // Sort all requests by submitted_at
-              allRequests.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
-
-              if (allRequests.length > 0) {
-                  tbody.innerHTML = allRequests.map(request => {
-                      const userName = request.profiles ?
-                          `${request.profiles.first_name || ''} ${request.profiles.last_name || ''}`.trim() :
-                          'Unknown User';
-                      const userEmail = request.profiles?.email || 'N/A';
-
-                      return `
-                          <tr class="hover:bg-gray-50">
-                              <td class="px-4 py-3">
-                                  <div class="text-sm font-medium text-gray-900">${userName}</div>
-                                  <div class="text-xs text-gray-500">${userEmail}</div>
-                              </td>
-                              <td class="px-4 py-3">
-                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
-                                      ${request.request_type}
-                                  </span>
-                              </td>
-                              <td class="px-4 py-3">
-                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                      request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                      request.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                      'bg-blue-100 text-blue-800'
-                                  }">
-                                      ${request.status}
-                                  </span>
-                              </td>
-                              <td class="px-4 py-3 text-sm text-gray-500">
-                                  ${new Date(request.submitted_at).toLocaleDateString()}
-                              </td>
-                              <td class="px-4 py-3 text-sm">
-                                  <div class="flex gap-1">
-                                      <button onclick="viewCertificateRequest('${request.table_name}', '${request.id}')" class="text-primary hover:text-primary/80 p-1" title="View details">
-                                          <i class="fas fa-eye text-xs"></i>
-                                      </button>
-                                      <button onclick="updateCertificateRequestStatus('${request.table_name}', '${request.id}', 'approved')" class="text-green-600 hover:text-green-800 p-1" title="Approve">
-                                          <i class="fas fa-check text-xs"></i>
-                                      </button>
-                                      <button onclick="updateCertificateRequestStatus('${request.table_name}', '${request.id}', 'rejected')" class="text-red-600 hover:text-red-800 p-1" title="Reject">
-                                          <i class="fas fa-times text-xs"></i>
-                                      </button>
-                                  </div>
-                              </td>
-                          </tr>
-                      `;
-                  }).join('');
-              } else {
-                  tbody.innerHTML = `
-                      <tr>
-                          <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
-                              <i class="fas fa-certificate mr-2"></i>
-                              No certificate requests found.
-                          </td>
-                      </tr>
-                  `;
-              }
-          } catch (error) {
-              console.error('Error loading certificate requests:', error);
-              document.getElementById('certificate-requests-table-body').innerHTML = `
-                  <tr>
-                      <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
-                          <i class="fas fa-exclamation-triangle mr-2"></i>
-                          Failed to load certificate requests.
-                      </td>
-                  </tr>
-              `;
-          }
-      }
-
-      // Load service requests for admin
       async function loadServiceRequests() {
-          try {
-              console.log('Loading service requests for admin...');
-              const tbody = document.getElementById('service-requests-table-body');
-              tbody.innerHTML = `
-                  <tr>
-                      <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
-                          <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
-                          Loading service requests...
-                      </td>
-                  </tr>
-              `;
+        try {
+          const tbody = document.getElementById('services-table-body');
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-spinner fa-spin text-primary mr-2"></i>
+                Loading service requests...
+              </td>
+            </tr>
+          `;
 
-              // Query all service tables
-              const tableQueries = [
-                  { table: 'confirmation_baptism_service_requests', type: 'Confirmation/Baptism' },
-                  { table: 'funeral_service_requests', type: 'Funeral' },
-                  { table: 'communion_service_requests', type: 'Communion' },
-                  { table: 'marriage_service_requests', type: 'Marriage' },
-                  { table: 'convocation_service_requests', type: 'Convocation' },
-                  { table: 'other_service_requests', type: 'Other' }
-              ];
+          const filterValue = document.getElementById('services-filter')?.value || 'all';
+          const sortValue = document.getElementById('services-sort')?.value || 'newest';
 
-              const allRequests = [];
-              console.log('Querying service tables...');
+          // Load all service request types with their specific fields
+          const serviceTypes = [
+            {
+              table: 'mass_offering_requests',
+              type: 'Mass Offering',
+              fields: 'id, user_id, soul_name, petitions, thanksgiving, mass_date_time, mass_in_charge, status, admin_notes, submitted_at'
+            },
+            {
+              table: 'funeral_certificate_requests',
+              type: 'Funeral Certificate',
+              fields: 'id, user_id, deceased_name, deceased_age, deceased_gender, civil_status, death_date, status, admin_notes, submitted_at'
+            },
+            {
+              table: 'mass_card_requests',
+              type: 'Mass Card',
+              fields: 'id, user_id, deceased_name, requester_name, status, admin_notes, submitted_at'
+            },
+            {
+              table: 'sick_call_certificate_requests',
+              type: 'Sick Call Certificate',
+              fields: 'id, user_id, patient_name, patient_age, patient_sex, status, admin_notes, submitted_at'
+            },
+            {
+              table: 'marriage_certificate_requests',
+              type: 'Marriage Certificate',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'confirmation_baptism_certificate_requests',
+              type: 'Confirmation/Baptism Certificate',
+              fields: 'id, user_id, person_name, baptism_date, confirmation_date, status, admin_notes, submitted_at'
+            },
+            {
+              table: 'confirmation_baptism_service_requests',
+              type: 'Confirmation/Baptism Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'funeral_service_requests',
+              type: 'Funeral Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'communion_service_requests',
+              type: 'Communion Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'marriage_service_requests',
+              type: 'Marriage Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'convocation_service_requests',
+              type: 'Convocation Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            },
+            {
+              table: 'other_service_requests',
+              type: 'Other Service',
+              fields: 'id, user_id, status, admin_notes, submitted_at, additional_details'
+            }
+          ];
 
-              for (const { table, type } of tableQueries) {
-                  console.log(`Querying table: ${table}`);
-                  const { data: requests, error } = await supabaseClient
-                      .from(table)
-                      .select(`
-                          *,
-                          profiles (
-                              first_name,
-                              last_name,
-                              email
-                          )
-                      `)
-                      .order('submitted_at', { ascending: false });
+          const allRequests = [];
 
-                  console.log(`Table ${table} results:`, { data: requests, error, count: requests?.length || 0 });
+          for (const serviceType of serviceTypes) {
+            try {
+              let serviceQuery = supabaseClient.from(serviceType.table).select(serviceType.fields);
 
-                  if (!error && requests) {
-                      requests.forEach(request => {
-                          allRequests.push({ ...request, request_type: type, table_name: table });
-                      });
-                  } else if (error) {
-                      console.error(`Error querying ${table}:`, error);
-                  }
+              if (filterValue !== 'all') {
+                serviceQuery = serviceQuery.eq('status', filterValue);
               }
 
-              console.log('All service requests collected:', allRequests.length);
-
-              // Sort all requests by submitted_at
-              allRequests.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
-
-              console.log('Sorted requests:', allRequests);
-
-              if (allRequests.length > 0) {
-                  console.log('Rendering service requests to table');
-                  tbody.innerHTML = allRequests.map(request => {
-                      const userName = request.profiles ?
-                          `${request.profiles.first_name || ''} ${request.profiles.last_name || ''}`.trim() :
-                          'Unknown User';
-                      const userEmail = request.profiles?.email || 'N/A';
-
-                      return `
-                          <tr class="hover:bg-gray-50">
-                              <td class="px-4 py-3">
-                                  <div class="text-sm font-medium text-gray-900">${userName}</div>
-                                  <div class="text-xs text-gray-500">${userEmail}</div>
-                              </td>
-                              <td class="px-4 py-3">
-                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-purple-100 text-purple-800">
-                                      ${request.request_type}
-                                  </span>
-                              </td>
-                              <td class="px-4 py-3">
-                                  <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
-                                      request.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                                      request.status === 'approved' ? 'bg-green-100 text-green-800' :
-                                      request.status === 'rejected' ? 'bg-red-100 text-red-800' :
-                                      'bg-blue-100 text-blue-800'
-                                  }">
-                                      ${request.status}
-                                  </span>
-                              </td>
-                              <td class="px-4 py-3 text-sm text-gray-500">
-                                  ${new Date(request.submitted_at).toLocaleDateString()}
-                              </td>
-                              <td class="px-4 py-3 text-sm">
-                                  <div class="flex gap-1">
-                                      <button onclick="viewServiceRequest('${request.table_name}', '${request.id}')" class="text-primary hover:text-primary/80 p-1" title="View details">
-                                          <i class="fas fa-eye text-xs"></i>
-                                      </button>
-                                      <button onclick="updateServiceRequestStatus('${request.table_name}', '${request.id}', 'approved')" class="text-green-600 hover:text-green-800 p-1" title="Approve">
-                                          <i class="fas fa-check text-xs"></i>
-                                      </button>
-                                      <button onclick="updateServiceRequestStatus('${request.table_name}', '${request.id}', 'rejected')" class="text-red-600 hover:text-red-800 p-1" title="Reject">
-                                          <i class="fas fa-times text-xs"></i>
-                                      </button>
-                                  </div>
-                              </td>
-                          </tr>
-                      `;
-                  }).join('');
+              if (sortValue === 'newest') {
+                serviceQuery = serviceQuery.order('submitted_at', { ascending: false });
               } else {
-                  console.log('No service requests found - this is expected if no users have submitted service requests yet');
-                  tbody.innerHTML = `
-                      <tr>
-                          <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
-                              <i class="fas fa-pray mr-2"></i>
-                              No service requests found.
-                              <br><small class="text-gray-400">Users can submit service requests from their dashboard.</small>
-                          </td>
-                      </tr>
-                  `;
+                serviceQuery = serviceQuery.order('submitted_at', { ascending: true });
               }
-          } catch (error) {
-              console.error('Error loading service requests:', error);
-              document.getElementById('service-requests-table-body').innerHTML = `
-                  <tr>
-                      <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
-                          <i class="fas fa-exclamation-triangle mr-2"></i>
-                          Failed to load service requests.
-                      </td>
-                  </tr>
-              `;
+
+              const { data: serviceData, error: serviceError } = await serviceQuery;
+
+              if (serviceError) {
+                console.error(`Error loading ${serviceType.table}:`, serviceError);
+                continue; // Skip this table but continue with others
+              }
+
+              if (serviceData && serviceData.length > 0) {
+                const requestsWithType = serviceData.map(req => ({
+                  ...req,
+                  requestType: serviceType.type,
+                  table: serviceType.table
+                }));
+                allRequests.push(...requestsWithType);
+              }
+            } catch (error) {
+              console.error(`Error processing ${serviceType.table}:`, error);
+              continue;
+            }
           }
+
+          // Now get user profiles for all the user_ids we found
+          const userIds = [...new Set(allRequests.map(req => req.user_id))];
+          let userProfiles = {};
+
+          if (userIds.length > 0) {
+            try {
+              const { data: profiles, error: profilesError } = await supabaseClient
+                .from('profiles')
+                .select('id, first_name, last_name, email')
+                .in('id', userIds);
+
+              if (!profilesError && profiles) {
+                userProfiles = profiles.reduce((acc, profile) => {
+                  acc[profile.id] = profile;
+                  return acc;
+                }, {});
+              }
+            } catch (error) {
+              console.error('Error loading user profiles:', error);
+            }
+          }
+
+          // Attach profile data to requests
+          const requestsWithProfiles = allRequests.map(request => ({
+            ...request,
+            profiles: userProfiles[request.user_id] || null
+          }));
+
+          displayServiceRequests(requestsWithProfiles);
+        } catch (error) {
+          console.error('Error loading service requests:', error);
+          document.getElementById('services-table-body').innerHTML = `
+            <tr>
+              <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
+                <i class="fas fa-exclamation-triangle mr-2"></i>
+                Failed to load service requests. Please try again.
+              </td>
+            </tr>
+          `;
+        }
       }
 
-      // Update certificate request status
-      async function updateCertificateRequestStatus(tableName, requestId, status) {
-          try {
+      function displayServiceRequests(requests) {
+        const tbody = document.getElementById('services-table-body');
+
+        if (requests.length === 0) {
+          tbody.innerHTML = `
+            <tr>
+              <td colspan="6" class="px-4 py-8 text-center text-sm text-gray-500">
+                <i class="fas fa-certificate mr-2"></i>
+                No service requests found.
+              </td>
+            </tr>
+          `;
+          return;
+        }
+
+        tbody.innerHTML = requests.map(request => {
+          const userName = request.profiles ? `${request.profiles.first_name || ''} ${request.profiles.last_name || ''}`.trim() : 'Unknown';
+          const requestType = request.requestType || 'Mass Offering';
+          const details = getRequestDetails(request);
+          const statusColor = getStatusColor(request.status);
+
+          return `
+            <tr class="hover:bg-gray-50">
+              <td class="px-4 py-3">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">
+                  ${requestType}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-900">${userName}</td>
+              <td class="px-4 py-3 text-sm text-gray-900 max-w-xs truncate" title="${details}">${details}</td>
+              <td class="px-4 py-3">
+                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${statusColor}">
+                  ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                </span>
+              </td>
+              <td class="px-4 py-3 text-sm text-gray-500">
+                ${new Date(request.submitted_at).toLocaleDateString()}
+              </td>
+              <td class="px-4 py-3 text-sm">
+                <div class="flex gap-1">
+                  <button onclick="viewServiceRequest('${request.id}', '${request.table || 'mass_offering_requests'}')" class="text-primary hover:text-primary/80 p-1" title="View details">
+                    <i class="fas fa-eye text-xs"></i>
+                  </button>
+                  <button onclick="updateServiceStatus('${request.id}', '${request.table || 'mass_offering_requests'}', '${request.status}')" class="text-green-600 hover:text-green-800 p-1" title="Update status">
+                    <i class="fas fa-edit text-xs"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      function getRequestDetails(request) {
+        if (request.soul_name) return `Soul: ${request.soul_name}`;
+        if (request.deceased_name) return `Deceased: ${request.deceased_name}`;
+        if (request.patient_name) return `Patient: ${request.patient_name}`;
+        if (request.person_name) return `Person: ${request.person_name}`;
+        if (request.requester_name) return `Requester: ${request.requester_name}`;
+        if (request.additional_details) return request.additional_details.substring(0, 50) + (request.additional_details.length > 50 ? '...' : '');
+        return 'No details available';
+      }
+
+      function getStatusColor(status) {
+        switch (status) {
+          case 'pending': return 'bg-yellow-100 text-yellow-800';
+          case 'approved': return 'bg-blue-100 text-blue-800';
+          case 'completed': return 'bg-green-100 text-green-800';
+          case 'rejected': return 'bg-red-100 text-red-800';
+          default: return 'bg-gray-100 text-gray-800';
+        }
+      }
+
+      function viewServiceRequest(requestId, tableName) {
+        // Find the request in our data
+        const tbody = document.getElementById('services-table-body');
+        // For now, we'll show a simple modal with basic info
+        // In a real implementation, you'd fetch the full details
+        showDashboardMessage('View request details functionality would be implemented here.', 'info');
+      }
+
+      function updateServiceStatus(requestId, tableName, currentStatus) {
+        document.getElementById('update-service-id').value = requestId;
+        document.getElementById('update-service-table').value = tableName;
+        document.getElementById('update-service-status').value = currentStatus;
+        document.getElementById('update-service-modal').classList.remove('hidden');
+      }
+
+      function closeServiceModal() {
+        document.getElementById('service-modal').classList.add('hidden');
+      }
+
+      function closeUpdateServiceModal() {
+        document.getElementById('update-service-modal').classList.add('hidden');
+        document.getElementById('update-service-form').reset();
+      }
+
+      // Handle update service form submission
+      document.addEventListener('DOMContentLoaded', function() {
+        const updateServiceForm = document.getElementById('update-service-form');
+        if (updateServiceForm) {
+          updateServiceForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+            const requestId = formData.get('serviceId');
+            const tableName = formData.get('tableName');
+            const status = formData.get('status');
+            const adminNotes = formData.get('adminNotes');
+
+            const submitBtn = document.getElementById('update-service-btn');
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin text-xs"></i> Updating...';
+
+            try {
+              const updates = {
+                status: status,
+                admin_notes: adminNotes || null,
+                updated_at: new Date().toISOString()
+              };
+
               const { error } = await supabaseClient
-                  .from(tableName)
-                  .update({ status, updated_at: new Date().toISOString() })
-                  .eq('id', requestId);
+                .from(tableName)
+                .update(updates)
+                .eq('id', requestId);
 
               if (error) throw error;
 
-              showDashboardMessage(`Certificate request ${status} successfully!`, 'success');
-              loadCertificateRequests();
-          } catch (error) {
-              console.error('Error updating certificate request:', error);
-              showDashboardMessage('Failed to update certificate request.', 'error');
-          }
-      }
-
-      // Update service request status
-      async function updateServiceRequestStatus(tableName, requestId, status) {
-          try {
-              const { error } = await supabaseClient
-                  .from(tableName)
-                  .update({ status, updated_at: new Date().toISOString() })
-                  .eq('id', requestId);
-
-              if (error) throw error;
-
-              showDashboardMessage(`Service request ${status} successfully!`, 'success');
+              showDashboardMessage('Service request updated successfully!', 'success');
+              closeUpdateServiceModal();
               loadServiceRequests();
-          } catch (error) {
+            } catch (error) {
               console.error('Error updating service request:', error);
               showDashboardMessage('Failed to update service request.', 'error');
-          }
-      }
-
-      // View certificate request details (placeholder)
-      function viewCertificateRequest(tableName, requestId) {
-          showDashboardMessage('View certificate request details - Coming soon!', 'info');
-      }
-
-      // View service request details (placeholder)
-      function viewServiceRequest(tableName, requestId) {
-          showDashboardMessage('View service request details - Coming soon!', 'info');
-      }
+            } finally {
+              submitBtn.disabled = false;
+              submitBtn.innerHTML = '<i class="fas fa-save text-xs mr-1"></i> Update Status';
+            }
+          });
+        }
+      });
 
       // After dashboard.js sets labels, enforce Administrator label
       window.addEventListener('load', function() {
