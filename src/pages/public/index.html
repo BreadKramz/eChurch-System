@@ -155,66 +155,64 @@
 
         <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <!-- Mobile Layout (Hidden on lg and up) -->
-            <div class="block lg:hidden space-y-4">
-                <!-- Mobile Church Name -->
-                <div class="text-center space-y-2">
-                    <h1 id="hero-title" class="text-2xl font-display font-bold text-primary leading-tight drop-shadow-2xl">
+            <div class="block lg:hidden space-y-2">
+                <!-- Mobile Church Name - Compact -->
+                <div class="text-center space-y-1">
+                    <h1 id="hero-title" class="text-2xl font-display font-bold text-primary leading-tight drop-shadow-2xl" style="filter: drop-shadow(0 0 15px rgba(139, 69, 19, 0.3));">
                         Our Mother of Perpetual Help
                     </h1>
-                    <h2 class="text-sm font-display font-light text-white/90 drop-shadow-lg">
+                    <h2 class="text-xs font-display font-light text-white/95 drop-shadow-xl" style="text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">
                         Redemptorist Church • Dumaguete City
                     </h2>
-                    <div class="w-16 h-0.5 bg-primary rounded-full mx-auto"></div>
+                    <div class="flex items-center justify-center gap-2">
+                        <div class="w-8 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+                        <div class="w-1.5 h-1.5 bg-primary rounded-full shadow-sm"></div>
+                        <div class="w-8 h-0.5 bg-gradient-to-r from-transparent via-primary to-transparent rounded-full"></div>
+                    </div>
                 </div>
 
-                <!-- Mobile Services Section -->
-                <div class="space-y-2">
-                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
-                                <i class="fas fa-cross text-sm"></i>
+                <!-- Mobile Services Section - Compact -->
+                <div class="space-y-1.5">
+                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-2 border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-primary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
+                                <i class="fas fa-cross text-xs"></i>
                             </div>
                             <div class="flex-1">
-                                <h4 class="text-white font-bold text-sm mb-1">Sacramental Services</h4>
-                                <p class="text-white/90 text-xs leading-relaxed">Baptism • Confirmation • Eucharist • Marriage • Anointing</p>
+                                <h4 class="text-white font-bold text-xs">Sacramental Services</h4>
                             </div>
+                            <a href="#services" class="bg-primary text-white px-2 py-1 rounded-full font-bold text-xs hover:bg-primary/90 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
                         </div>
-                        <a href="#services" class="inline-flex items-center gap-1 bg-primary text-white px-3 py-1.5 rounded-full font-bold text-xs hover:bg-primary/90 transition-all duration-300 shadow-lg">
-                            <span>View Services</span>
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </a>
                     </div>
 
-                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
-                                <i class="fas fa-file-alt text-sm"></i>
+                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-2 border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-secondary rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
+                                <i class="fas fa-file-alt text-xs"></i>
                             </div>
                             <div class="flex-1">
-                                <h4 class="text-white font-bold text-sm mb-1">Church Certificates</h4>
-                                <p class="text-white/90 text-xs leading-relaxed">Confirmation • Mass Cards • Marriage • Funeral</p>
+                                <h4 class="text-white font-bold text-xs">Church Certificates</h4>
                             </div>
+                            <a href="#services" class="bg-secondary text-white px-2 py-1 rounded-full font-bold text-xs hover:bg-secondary/90 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
                         </div>
-                        <a href="#services" class="inline-flex items-center gap-1 bg-secondary text-white px-3 py-1.5 rounded-full font-bold text-xs hover:bg-secondary/90 transition-all duration-300 shadow-lg">
-                            <span>View Certificates</span>
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </a>
                     </div>
 
-                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-3 border border-white/20 shadow-lg">
-                        <div class="flex items-center gap-2 mb-2">
-                            <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
-                                <i class="fas fa-users text-sm"></i>
+                    <div class="bg-white/10 backdrop-blur-md rounded-lg p-2 border border-white/20 shadow-lg">
+                        <div class="flex items-center gap-2">
+                            <div class="w-6 h-6 bg-accent rounded-full flex items-center justify-center text-white flex-shrink-0 shadow-lg">
+                                <i class="fas fa-users text-xs"></i>
                             </div>
                             <div class="flex-1">
-                                <h4 class="text-white font-bold text-sm mb-1">Community & Ministries</h4>
-                                <p class="text-white/90 text-xs leading-relaxed">Youth Programs • Charity • Fellowship Groups</p>
+                                <h4 class="text-white font-bold text-xs">Community & Ministries</h4>
                             </div>
+                            <a href="#ministries" class="bg-accent text-white px-2 py-1 rounded-full font-bold text-xs hover:bg-accent/90 transition-all duration-300 shadow-lg">
+                                <i class="fas fa-arrow-right text-xs"></i>
+                            </a>
                         </div>
-                        <a href="#ministries" class="inline-flex items-center gap-1 bg-accent text-white px-3 py-1.5 rounded-full font-bold text-xs hover:bg-accent/90 transition-all duration-300 shadow-lg">
-                            <span>View Ministries</span>
-                            <i class="fas fa-arrow-right text-xs"></i>
-                        </a>
                     </div>
                 </div>
 
@@ -798,105 +796,36 @@
                 <p class="text-sm text-gray-600 max-w-xl mx-auto leading-relaxed services-subtitle-mobile">Experience the sacraments of our faith and obtain official church certificates</p>
             </div>
 
-            <!-- Compact Services Grid -->
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 mb-6 services-grid-mobile">
-                <!-- Certificates -->
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-certificate text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Confirmation</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Receive Holy Spirit gifts</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-file-alt text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Mass Offering</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Mass for intentions</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-cross text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Funeral</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Catholic funeral rites</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-certificate text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Mass Card</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Spiritual support card</p>
-                </div>
-
+            <!-- Horizontal Square Services Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
                 <!-- Sacramental Services -->
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-water text-xs"></i>
+                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 text-center aspect-square flex flex-col justify-center">
+                    <div class="w-16 h-16 bg-primary rounded-full flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+                        <i class="fas fa-cross text-xl"></i>
                     </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Baptism</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Initiation sacrament</p>
+                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Sacramental Services</h4>
+                    <p class="text-gray-700 text-sm mb-3 leading-relaxed">Baptism • Confirmation • Eucharist • Marriage • Anointing</p>
+                    <p class="text-gray-600 text-sm italic">Experience God's grace through sacred sacraments</p>
                 </div>
 
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-secondary rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-pray text-xs"></i>
+                <!-- Church Certificates -->
+                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 text-center aspect-square flex flex-col justify-center">
+                    <div class="w-16 h-16 bg-secondary rounded-full flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+                        <i class="fas fa-file-alt text-xl"></i>
                     </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Confirmation</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Strengthen faith</p>
+                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Church Certificates</h4>
+                    <p class="text-gray-700 text-sm mb-3 leading-relaxed">Confirmation • Mass Cards • Marriage • Funeral</p>
+                    <p class="text-gray-600 text-sm italic">Official documentation for your spiritual journey</p>
                 </div>
 
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-accent rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-pray text-xs"></i>
+                <!-- Community & Ministries -->
+                <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 text-center aspect-square flex flex-col justify-center">
+                    <div class="w-16 h-16 bg-accent rounded-full flex items-center justify-center text-white mx-auto mb-4 shadow-lg">
+                        <i class="fas fa-users text-xl"></i>
                     </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Communion</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">First Holy Eucharist</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-ring text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Marriage</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Sacred union</p>
-                </div>
-
-                <!-- Additional Services -->
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-purple-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-praying-hands text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Anointing</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Healing sacrament</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-pink-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-users-cog text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Funeral Mass</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Burial services</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-indigo-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-cross text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Sick Call</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Priest visitation</p>
-                </div>
-
-                <div class="bg-white rounded-lg p-3 shadow-md hover:shadow-lg transition-all duration-300 border border-gray-100 text-center group services-card-mobile">
-                    <div class="w-8 h-8 bg-teal-600 rounded-full flex items-center justify-center text-white mx-auto mb-2 group-hover:scale-110 transition-transform services-card-icon-mobile">
-                        <i class="fas fa-users text-xs"></i>
-                    </div>
-                    <h4 class="text-sm font-display font-bold text-secondary mb-1 services-card-title-mobile">Youth Ministry</h4>
-                    <p class="text-gray-600 text-xs leading-tight services-card-desc-mobile">Faith formation</p>
+                    <h4 class="text-lg font-display font-bold text-secondary mb-3">Community & Ministries</h4>
+                    <p class="text-gray-700 text-sm mb-3 leading-relaxed">Youth Programs • Charity • Fellowship Groups</p>
+                    <p class="text-gray-600 text-sm italic">Connect and serve with fellow parishioners</p>
                 </div>
             </div>
 

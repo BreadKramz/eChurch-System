@@ -101,36 +101,38 @@ document.addEventListener('DOMContentLoaded', function() {
         const eventsSection = document.getElementById('events');
         const eventsImage = document.querySelector('#events img');
 
-        // Reduce parallax intensity on mobile for better performance
-        const parallaxMultiplier = isMobile ? 0.2 : 0.4;
-        const scaleMultiplier = isMobile ? 0.00005 : 0.0001;
+        // Skip parallax effects on mobile for better performance
+        if (!isMobile) {
+            const parallaxMultiplier = 0.4;
+            const scaleMultiplier = 0.0001;
 
-        if (heroSection && scrolled < window.innerHeight) {
-            // Parallax effect for hero background image
-            if (heroImage) {
-                const parallaxOffset = scrolled * parallaxMultiplier;
-                heroImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + scrolled * scaleMultiplier})`;
+            if (heroSection && scrolled < window.innerHeight) {
+                // Parallax effect for hero background image
+                if (heroImage) {
+                    const parallaxOffset = scrolled * parallaxMultiplier;
+                    heroImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + scrolled * scaleMultiplier})`;
+                }
+
+                // Fade out hero content as user scrolls
+                const heroContent = document.querySelector('#home .relative.z-10');
+                if (heroContent) {
+                    const fadeMultiplier = 0.5;
+                    const opacity = Math.max(0, 1 - (scrolled / (window.innerHeight * fadeMultiplier)));
+                    heroContent.style.opacity = opacity;
+                    heroContent.style.transform = `translateY(${scrolled * 0.1}px)`;
+                }
             }
 
-            // Fade out hero content as user scrolls - less intense on mobile
-            const heroContent = document.querySelector('#home .relative.z-10');
-            if (heroContent) {
-                const fadeMultiplier = isMobile ? 0.3 : 0.5;
-                const opacity = Math.max(0, 1 - (scrolled / (window.innerHeight * fadeMultiplier)));
-                heroContent.style.opacity = opacity;
-                heroContent.style.transform = `translateY(${scrolled * 0.1}px)`;
-            }
-        }
+            // Parallax effect for events section
+            if (eventsSection && eventsImage) {
+                const eventsRect = eventsSection.getBoundingClientRect();
+                const eventsTop = eventsRect.top + scrolled;
+                const eventsBottom = eventsTop + eventsRect.height;
 
-        // Parallax effect for events section - disabled on mobile for performance
-        if (!isMobile && eventsSection && eventsImage) {
-            const eventsRect = eventsSection.getBoundingClientRect();
-            const eventsTop = eventsRect.top + scrolled;
-            const eventsBottom = eventsTop + eventsRect.height;
-
-            if (scrolled >= eventsTop && scrolled <= eventsBottom) {
-                const parallaxOffset = (scrolled - eventsTop) * 0.3;
-                eventsImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + (scrolled - eventsTop) * 0.00005})`;
+                if (scrolled >= eventsTop && scrolled <= eventsBottom) {
+                    const parallaxOffset = (scrolled - eventsTop) * 0.3;
+                    eventsImage.style.transform = `translateY(${parallaxOffset}px) scale(${1 + (scrolled - eventsTop) * 0.00005})`;
+                }
             }
         }
 
