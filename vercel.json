@@ -32,15 +32,6 @@
           "value": "no-cache"
         }
       ]
-    },
-    {
-      "source": "/src/assets/js/:path*",
-      "headers": [
-        {
-          "key": "Cache-Control",
-          "value": "no-cache"
-        }
-      ]
     }
   ],
   "redirects": []

@@ -1,23 +1,5 @@
 // Dashboard JavaScript - Our Mother of Perpetual Help Redemptorist Church
 
-// Immediately exit if on admin page to prevent conflicts
-(function() {
-    // Check multiple ways to detect admin page
-    const isAdminPage =
-        window.location.pathname.includes('/admin/') ||
-        window.location.href.includes('/admin/') ||
-        document.querySelector('[data-section="users"]') !== null ||
-        document.querySelector('[data-section="announcements"]') !== null ||
-        document.querySelector('[data-section="events"]') !== null ||
-        document.querySelector('[data-section="services"]') !== null ||
-        document.getElementById('admin-notify-btn') !== null;
-
-    if (isAdminPage) {
-        console.log('Admin page detected, dashboard.js exiting to prevent conflicts');
-        return; // Exit immediately, don't execute any dashboard code
-    }
-})();
-
 // Global variables
 let currentUser = null;
 let currentSection = 'dashboard';
@@ -147,10 +129,7 @@ function setupAnnouncementsSubscription() {
 async function loadAnnouncementsSection() {
     try {
         const container = document.getElementById('announcements-container');
-        if (!container) {
-            console.log('Announcements container not found, skipping load');
-            return;
-        }
+        if (!container) return;
 
         container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading announcements...</p></div>';
 
@@ -378,10 +357,7 @@ function setupEventsSubscription() {
 async function loadEventsSection() {
     try {
         const container = document.getElementById('events-container');
-        if (!container) {
-            console.log('Events container not found, skipping load');
-            return;
-        }
+        if (!container) return;
 
         container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading events...</p></div>';
 
@@ -493,6 +469,12 @@ document.addEventListener('DOMContentLoaded', function() {
 // Initialize dashboard
 async function initializeDashboard() {
     try {
+        // Check if we're on the admin dashboard - if so, skip initialization
+        // as admin dashboard handles its own auth and UI
+        if (window.location.pathname.includes('/admin/')) {
+            console.log('Admin dashboard detected, skipping user dashboard initialization');
+            return;
+        }
 
         // Wait a bit for auth to initialize (churchAuth.init() is called automatically in supabase.js)
         console.log('Waiting for auth system to initialize...');
@@ -605,8 +587,8 @@ async function initializeDashboard() {
 
     } catch (error) {
         console.error('Dashboard initialization error:', error);
-        // Log error but don't show user-facing error message for better UX
-        console.warn('Dashboard initialization failed, but continuing with limited functionality');
+        // Show error message for critical initialization failures
+        showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
     }
 }
 
@@ -633,21 +615,13 @@ async function loadUserProfile() {
             if (headerAvatarEl) headerAvatarEl.textContent = (profile.first_name || fullName || 'U').charAt(0).toUpperCase();
 
             // Update welcome message - show first name
-            const welcomeNameEl = document.getElementById('welcome-name');
-            if (welcomeNameEl) welcomeNameEl.textContent = profile.first_name;
+            document.getElementById('welcome-name').textContent = profile.first_name;
 
             // Update profile section
-            const profileFirstNameEl = document.getElementById('profile-first-name');
-            if (profileFirstNameEl) profileFirstNameEl.textContent = profile.first_name || 'Not provided';
-
-            const profileLastNameEl = document.getElementById('profile-last-name');
-            if (profileLastNameEl) profileLastNameEl.textContent = profile.last_name || 'Not provided';
-
-            const profileEmailEl = document.getElementById('profile-email');
-            if (profileEmailEl) profileEmailEl.textContent = currentUser.email;
-
-            const profilePhoneEl = document.getElementById('profile-phone');
-            if (profilePhoneEl) profilePhoneEl.textContent = profile.phone || 'Not provided';
+            document.getElementById('profile-first-name').textContent = profile.first_name || 'Not provided';
+            document.getElementById('profile-last-name').textContent = profile.last_name || 'Not provided';
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('profile-phone').textContent = profile.phone || 'Not provided';
 
             // Update user avatar (first letter of first name)
             const avatarElement = document.getElementById('user-avatar');
@@ -663,12 +637,8 @@ async function loadUserProfile() {
             const firstName = userMeta.first_name || 'User';
 
             // Update sidebar user info
-            const userNameEl = document.getElementById('user-name');
-            if (userNameEl) userNameEl.textContent = 'Parishioner';
-
-            const userEmailEl = document.getElementById('user-email');
-            if (userEmailEl) userEmailEl.textContent = displayName;
-
+            document.getElementById('user-name').textContent = 'Parishioner';
+            document.getElementById('user-email').textContent = displayName;
             // Header mini profile (fallback)
             const headerRoleEl2 = document.getElementById('header-user-role');
             const headerNameEl2 = document.getElementById('header-user-fullname');
@@ -678,21 +648,13 @@ async function loadUserProfile() {
             if (headerAvatarEl2) headerAvatarEl2.textContent = (firstName || displayName || 'U').charAt(0).toUpperCase();
 
             // Update welcome message
-            const welcomeNameEl2 = document.getElementById('welcome-name');
-            if (welcomeNameEl2) welcomeNameEl2.textContent = firstName;
+            document.getElementById('welcome-name').textContent = firstName;
 
             // Update profile section with available data
-            const profileFirstNameEl2 = document.getElementById('profile-first-name');
-            if (profileFirstNameEl2) profileFirstNameEl2.textContent = userMeta.first_name || 'Not provided';
-
-            const profileLastNameEl2 = document.getElementById('profile-last-name');
-            if (profileLastNameEl2) profileLastNameEl2.textContent = userMeta.last_name || 'Not provided';
-
-            const profileEmailEl2 = document.getElementById('profile-email');
-            if (profileEmailEl2) profileEmailEl2.textContent = currentUser.email;
-
-            const profilePhoneEl2 = document.getElementById('profile-phone');
-            if (profilePhoneEl2) profilePhoneEl2.textContent = userMeta.phone || 'Not provided';
+            document.getElementById('profile-first-name').textContent = userMeta.first_name || 'Not provided';
+            document.getElementById('profile-last-name').textContent = userMeta.last_name || 'Not provided';
+            document.getElementById('profile-email').textContent = currentUser.email;
+            document.getElementById('profile-phone').textContent = userMeta.phone || 'Not provided';
 
             // Update user avatar
             const avatarElement = document.getElementById('user-avatar');
@@ -703,14 +665,9 @@ async function loadUserProfile() {
     } catch (error) {
         console.error('Error loading user profile:', error);
         // Final fallback to basic user info
-        const userNameEl3 = document.getElementById('user-name');
-        if (userNameEl3) userNameEl3.textContent = 'Parishioner';
-
-        const userEmailEl3 = document.getElementById('user-email');
-        if (userEmailEl3) userEmailEl3.textContent = 'User';
-
-        const welcomeNameEl3 = document.getElementById('welcome-name');
-        if (welcomeNameEl3) welcomeNameEl3.textContent = 'User';
+        document.getElementById('user-name').textContent = 'Parishioner';
+        document.getElementById('user-email').textContent = 'User';
+        document.getElementById('welcome-name').textContent = 'User';
     }
 }
 
@@ -1925,10 +1882,7 @@ async function loadUserServiceRequests() {
         }
 
         const container = document.getElementById('services-history-container');
-        if (!container) {
-            console.log('Services history container not found, skipping load');
-            return;
-        }
+        if (!container) return;
 
         container.innerHTML = '<div class="text-center py-8"><i class="fas fa-spinner fa-spin text-primary text-2xl"></i><p class="text-gray-600 mt-2">Loading your service requests...</p></div>';
 
