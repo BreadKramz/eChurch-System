@@ -1800,12 +1800,46 @@ async function submitServiceRequest(event) {
     const form = event.target;
     const formData = new FormData(form);
     const serviceType = formData.get('serviceType');
+    const serviceDate = formData.get('serviceDate');
+    const preferredTime = formData.get('preferredTime');
     console.log('Service type:', serviceType);
 
     if (!serviceType) {
         showDashboardMessage('Please select a service type.', 'error');
         return;
     }
+
+    if (!serviceDate) {
+        showDashboardMessage('Please select a service date.', 'error');
+        return;
+    }
+
+    // Validate service date is not in the past
+    const selectedDate = new Date(serviceDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to start of today
+
+    if (selectedDate < today) {
+        showDashboardMessage('Service date cannot be in the past.', 'error');
+        // Highlight the date field
+        const dateField = document.getElementById('service-date');
+        const errorDiv = document.getElementById('service-date-error');
+        if (dateField) {
+            dateField.classList.add('border-red-500');
+            dateField.focus();
+        }
+        if (errorDiv) {
+            errorDiv.textContent = 'Service date cannot be in the past';
+            errorDiv.classList.remove('hidden');
+        }
+        return;
+    }
+
+    // Clear any previous error styling
+    const dateField = document.getElementById('service-date');
+    const errorDiv = document.getElementById('service-date-error');
+    if (dateField) dateField.classList.remove('border-red-500');
+    if (errorDiv) errorDiv.classList.add('hidden');
 
     // Determine the correct table based on service type
     const tableMap = {
@@ -1824,9 +1858,11 @@ async function submitServiceRequest(event) {
         return;
     }
 
-    // Prepare data - all service tables currently just have additional_details
+    // Prepare data with new date fields
     const insertData = {
         user_id: currentUser.id,
+        service_date: serviceDate,
+        preferred_time: preferredTime || null,
         additional_details: formData.get('details') || ''
     };
     console.log('Insert data:', insertData);
@@ -1869,7 +1905,48 @@ document.addEventListener('DOMContentLoaded', function() {
     if (serviceForm) {
         serviceForm.addEventListener('submit', submitServiceRequest);
     }
+
+    // Service date validation
+    const serviceDateInput = document.getElementById('service-date');
+    if (serviceDateInput) {
+        serviceDateInput.addEventListener('change', function() {
+            validateServiceDate(this.value);
+        });
+        serviceDateInput.addEventListener('input', function() {
+            validateServiceDate(this.value);
+        });
+    }
 });
+
+// Validate service date to prevent past dates
+function validateServiceDate(selectedDateValue) {
+    const dateField = document.getElementById('service-date');
+    const errorDiv = document.getElementById('service-date-error');
+
+    if (!selectedDateValue) {
+        // Clear error if no date selected
+        if (dateField) dateField.classList.remove('border-red-500');
+        if (errorDiv) errorDiv.classList.add('hidden');
+        return;
+    }
+
+    const selectedDate = new Date(selectedDateValue);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Set to start of today
+
+    if (selectedDate < today) {
+        // Show error for past date
+        if (dateField) dateField.classList.add('border-red-500');
+        if (errorDiv) {
+            errorDiv.textContent = 'Service date cannot be in the past';
+            errorDiv.classList.remove('hidden');
+        }
+    } else {
+        // Clear error for valid date
+        if (dateField) dateField.classList.remove('border-red-500');
+        if (errorDiv) errorDiv.classList.add('hidden');
+    }
+}
 
 // Load user's service requests history for the services section
 async function loadUserServiceRequests() {

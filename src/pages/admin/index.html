@@ -683,7 +683,7 @@
      <div id="service-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50 flex items-center justify-center">
          <div class="bg-white rounded-lg p-6 max-w-2xl w-full mx-4 max-h-[90vh] overflow-y-auto">
              <div class="flex items-center justify-between mb-4">
-                 <h3 class="text-lg font-display font-bold text-secondary">Service Request Details</h3>
+                 <h3 class="text-lg font-display font-bold text-secondary" id="service-modal-title">Service Request Details</h3>
                  <button onclick="closeServiceModal()" class="text-gray-400 hover:text-gray-600">
                      <i class="fas fa-times"></i>
                  </button>
@@ -2697,12 +2697,152 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
 
-      function viewServiceRequest(requestId, tableName) {
-        // Find the request in our data
-        const tbody = document.getElementById('services-table-body');
-        // For now, we'll show a simple modal with basic info
-        // In a real implementation, you'd fetch the full details
-        showDashboardMessage('View request details functionality would be implemented here.', 'info');
+      async function viewServiceRequest(requestId, tableName) {
+        try {
+          // Fetch the specific service request
+          const { data: request, error: requestError } = await supabaseClient
+            .from(tableName)
+            .select('*')
+            .eq('id', requestId)
+            .single();
+
+          if (requestError) throw requestError;
+
+          // Fetch user profile
+          const { data: profile, error: profileError } = await supabaseClient
+            .from('profiles')
+            .select('first_name, last_name, email, phone')
+            .eq('id', request.user_id)
+            .single();
+
+          if (profileError) {
+            console.warn('Could not load user profile:', profileError);
+          }
+
+          // Determine service type display name
+          const serviceTypeMap = {
+            'mass_offering_requests': 'Mass Offering',
+            'funeral_certificate_requests': 'Funeral Certificate',
+            'mass_card_requests': 'Mass Card',
+            'sick_call_certificate_requests': 'Sick Call Certificate',
+            'marriage_certificate_requests': 'Marriage Certificate',
+            'confirmation_baptism_certificate_requests': 'Confirmation/Baptism Certificate',
+            'confirmation_baptism_service_requests': 'Confirmation/Baptism Service',
+            'funeral_service_requests': 'Funeral Service',
+            'communion_service_requests': 'Communion Service',
+            'marriage_service_requests': 'Marriage Service',
+            'convocation_service_requests': 'Convocation Service',
+            'other_service_requests': 'Other Service'
+          };
+
+          const serviceType = serviceTypeMap[tableName] || 'Service Request';
+          const userName = profile ? `${profile.first_name || ''} ${profile.last_name || ''}`.trim() : 'Unknown User';
+
+          // Build detailed content based on service type
+          let detailsContent = `
+            <div class="space-y-4">
+              <div class="grid grid-cols-2 gap-4">
+                <div>
+                  <h4 class="font-semibold text-secondary mb-2">Request Information</h4>
+                  <div class="space-y-2 text-sm">
+                    <div><span class="font-medium">Type:</span> ${serviceType}</div>
+                    <div><span class="font-medium">Status:</span>
+                      <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(request.status)} ml-2">
+                        ${request.status.charAt(0).toUpperCase() + request.status.slice(1)}
+                      </span>
+                    </div>
+                    <div><span class="font-medium">Submitted:</span> ${new Date(request.submitted_at).toLocaleString()}</div>
+                    ${request.service_date ? `<div><span class="font-medium">Service Date:</span> ${new Date(request.service_date).toLocaleDateString()}</div>` : ''}
+                    ${request.preferred_time ? `<div><span class="font-medium">Preferred Time:</span> ${request.preferred_time}</div>` : ''}
+                  </div>
+                </div>
+
+                <div>
+                  <h4 class="font-semibold text-secondary mb-2">Requester Information</h4>
+                  <div class="space-y-2 text-sm">
+                    <div><span class="font-medium">Name:</span> ${userName}</div>
+                    <div><span class="font-medium">Email:</span> ${profile?.email || 'Not available'}</div>
+                    <div><span class="font-medium">Phone:</span> ${profile?.phone || 'Not provided'}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="border-t pt-4">
+                <h4 class="font-semibold text-secondary mb-2">Service Details</h4>
+                <div class="bg-gray-50 rounded-lg p-4 space-y-3 text-sm">
+          `;
+
+          // Add specific fields based on service type
+          if (tableName === 'mass_offering_requests') {
+            detailsContent += `
+              ${request.soul_name ? `<div><span class="font-medium">Soul Name:</span> ${request.soul_name}</div>` : ''}
+              ${request.petitions ? `<div><span class="font-medium">Petitions:</span> ${request.petitions}</div>` : ''}
+              ${request.thanksgiving ? `<div><span class="font-medium">Thanksgiving:</span> ${request.thanksgiving}</div>` : ''}
+              ${request.mass_date_time ? `<div><span class="font-medium">Mass Date/Time:</span> ${request.mass_date_time}</div>` : ''}
+              ${request.mass_in_charge ? `<div><span class="font-medium">Mass In Charge:</span> ${request.mass_in_charge}</div>` : ''}
+            `;
+          } else if (tableName === 'funeral_certificate_requests') {
+            detailsContent += `
+              ${request.deceased_name ? `<div><span class="font-medium">Deceased Name:</span> ${request.deceased_name}</div>` : ''}
+              ${request.deceased_age ? `<div><span class="font-medium">Age:</span> ${request.deceased_age}</div>` : ''}
+              ${request.deceased_gender ? `<div><span class="font-medium">Gender:</span> ${request.deceased_gender}</div>` : ''}
+              ${request.civil_status ? `<div><span class="font-medium">Civil Status:</span> ${request.civil_status}</div>` : ''}
+              ${request.death_date ? `<div><span class="font-medium">Date of Death:</span> ${new Date(request.death_date).toLocaleDateString()}</div>` : ''}
+            `;
+          } else if (tableName === 'mass_card_requests') {
+            detailsContent += `
+              ${request.deceased_name ? `<div><span class="font-medium">Deceased Name:</span> ${request.deceased_name}</div>` : ''}
+              ${request.requester_name ? `<div><span class="font-medium">Requester Name:</span> ${request.requester_name}</div>` : ''}
+            `;
+          } else if (tableName === 'sick_call_certificate_requests') {
+            detailsContent += `
+              ${request.patient_name ? `<div><span class="font-medium">Patient Name:</span> ${request.patient_name}</div>` : ''}
+              ${request.patient_age ? `<div><span class="font-medium">Age:</span> ${request.patient_age}</div>` : ''}
+              ${request.patient_sex ? `<div><span class="font-medium">Sex:</span> ${request.patient_sex}</div>` : ''}
+            `;
+          } else if (tableName === 'confirmation_baptism_certificate_requests') {
+            detailsContent += `
+              ${request.person_name ? `<div><span class="font-medium">Person Name:</span> ${request.person_name}</div>` : ''}
+              ${request.baptism_date ? `<div><span class="font-medium">Baptism Date:</span> ${new Date(request.baptism_date).toLocaleDateString()}</div>` : ''}
+              ${request.confirmation_date ? `<div><span class="font-medium">Confirmation Date:</span> ${new Date(request.confirmation_date).toLocaleDateString()}</div>` : ''}
+            `;
+          } else {
+            // For other service types
+            detailsContent += request.additional_details ? `<div><span class="font-medium">Additional Details:</span> ${request.additional_details}</div>` : '<div class="text-gray-500">No additional details provided.</div>';
+          }
+
+          // Add admin notes if any
+          if (request.admin_notes) {
+            detailsContent += `
+                </div>
+
+                <div class="border-t pt-4">
+                  <h4 class="font-semibold text-secondary mb-2">Admin Notes</h4>
+                  <div class="bg-blue-50 rounded-lg p-3 text-sm text-blue-800">
+                    ${request.admin_notes}
+                  </div>
+                </div>
+            `;
+          } else {
+            detailsContent += `
+                </div>
+            `;
+          }
+
+          detailsContent += `
+              </div>
+            </div>
+          `;
+
+          // Update modal title and content, then show
+          document.getElementById('service-modal-title').textContent = `${serviceType} - Request Details`;
+          document.getElementById('service-details-content').innerHTML = detailsContent;
+          document.getElementById('service-modal').classList.remove('hidden');
+
+        } catch (error) {
+          console.error('Error loading service request details:', error);
+          showDashboardMessage('Failed to load service request details.', 'error');
+        }
       }
 
       function updateServiceStatus(requestId, tableName, currentStatus) {

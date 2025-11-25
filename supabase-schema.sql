@@ -464,6 +464,8 @@ create table if not exists public.confirmation_baptism_certificate_requests (
 create table if not exists public.confirmation_baptism_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
@@ -475,6 +477,8 @@ create table if not exists public.confirmation_baptism_service_requests (
 create table if not exists public.funeral_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
@@ -486,6 +490,8 @@ create table if not exists public.funeral_service_requests (
 create table if not exists public.communion_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
@@ -497,6 +503,8 @@ create table if not exists public.communion_service_requests (
 create table if not exists public.marriage_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
@@ -508,6 +516,8 @@ create table if not exists public.marriage_service_requests (
 create table if not exists public.convocation_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
@@ -519,6 +529,8 @@ create table if not exists public.convocation_service_requests (
 create table if not exists public.other_service_requests (
   id uuid primary key default gen_random_uuid(),
   user_id uuid not null references auth.users(id) on delete cascade,
+  service_date date not null,
+  preferred_time text,
   additional_details text,
   status text not null default 'pending' check (status in ('pending', 'approved', 'rejected', 'completed')),
   admin_notes text,
