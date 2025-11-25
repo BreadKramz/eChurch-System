@@ -605,8 +605,8 @@ async function initializeDashboard() {
 
     } catch (error) {
         console.error('Dashboard initialization error:', error);
-        // Show error message for critical initialization failures
-        showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
+        // Log error but don't show user-facing error message for better UX
+        console.warn('Dashboard initialization failed, but continuing with limited functionality');
     }
 }
 
