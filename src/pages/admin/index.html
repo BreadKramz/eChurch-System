@@ -751,9 +751,35 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="/src/assets/js/supabase.js"></script>
     <script>
+      // Database connectivity check
+      async function checkDatabaseConnection() {
+        try {
+          console.log('Checking database connection...');
+          // Simple query to test connection
+          const { data, error } = await supabaseClient.from('profiles').select('count', { count: 'exact', head: true });
+          if (error && error.code !== '42P01') { // Ignore table not found errors
+            console.error('Database connection error:', error);
+            return false;
+          }
+          console.log('Database connection successful');
+          return true;
+        } catch (error) {
+          console.error('Database connectivity check failed:', error);
+          return false;
+        }
+      }
+
       document.addEventListener('DOMContentLoaded', async function() {
         try {
           console.log('Admin dashboard initializing...');
+
+          // Check database connection first
+          const isConnected = await checkDatabaseConnection();
+          if (!isConnected) {
+            showDashboardMessage('Database connection failed. Please check your Supabase configuration.', 'error');
+            return;
+          }
+
           // Allow auth to initialize
           await new Promise(r => setTimeout(r, 500));
           console.log('Auth system initialized');
@@ -778,7 +804,11 @@
           console.log('Admin authentication successful');
         } catch (e) {
           console.error('Admin gate error:', e);
-          window.location.href = '/src/pages/auth/login.html';
+          showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
+          // Don't redirect immediately, let user see the error
+          setTimeout(() => {
+            window.location.href = '/src/pages/auth/login.html';
+          }, 3000);
         }
       });
     </script>
@@ -873,13 +903,30 @@
         // Load admin statistics
         async function loadAdminStatistics() {
             try {
+                console.log('Loading admin statistics...');
+
+                // Check if Supabase client is available
+                if (!supabaseClient) {
+                    throw new Error('Supabase client not initialized');
+                }
+
                 // Get total users
                 const { count: totalUsers, error: totalError } = await supabaseClient
                     .from('profiles')
                     .select('*', { count: 'exact', head: true });
 
-                if (!totalError) {
+                if (totalError) {
+                    console.error('Error loading total users:', totalError);
+                    // Check if table exists
+                    if (totalError.code === '42P01') {
+                        console.warn('Profiles table does not exist. Please run the database schema.');
+                        showDashboardMessage('Database not set up. Please run the schema in Supabase SQL Editor.', 'error');
+                        return; // Don't continue loading other stats
+                    }
+                    throw totalError; // Re-throw other errors
+                } else {
                     document.getElementById('total-users').textContent = totalUsers || 0;
+                    console.log('Total users loaded:', totalUsers);
                 }
 
                 // Get active users
@@ -890,6 +937,9 @@
 
                 if (!activeError) {
                     document.getElementById('active-users').textContent = activeUsers || 0;
+                    console.log('Active users loaded:', activeUsers);
+                } else {
+                    console.error('Error loading active users:', activeError);
                 }
 
                 // Get new users this month
@@ -903,10 +953,16 @@
 
                 if (!newError) {
                     document.getElementById('new-users').textContent = newUsers || 0;
+                    console.log('New users this month loaded:', newUsers);
+                } else {
+                    console.error('Error loading new users:', newError);
                 }
+
+                console.log('Admin statistics loaded successfully');
 
             } catch (error) {
                 console.error('Error loading admin statistics:', error);
+                showDashboardMessage('Failed to load dashboard. Please check your database connection and ensure the schema is applied.', 'error');
                 // Keep default values (0) on error
             }
         }
@@ -2348,7 +2404,13 @@ document.addEventListener('DOMContentLoaded', function() {
 
               if (serviceError) {
                 console.error(`Error loading ${serviceType.table}:`, serviceError);
-                continue; // Skip this table but continue with others
+                // Check if table doesn't exist - this is common during development
+                if (serviceError.code === '42P01') { // PostgreSQL table doesn't exist error
+                  console.warn(`Table ${serviceType.table} does not exist, skipping...`);
+                  continue;
+                }
+                // For other errors, continue but log them
+                continue;
               }
 
               if (serviceData && serviceData.length > 0) {
@@ -2361,6 +2423,7 @@ document.addEventListener('DOMContentLoaded', function() {
               }
             } catch (error) {
               console.error(`Error processing ${serviceType.table}:`, error);
+              // Continue with other tables even if one fails
               continue;
             }
           }
@@ -2376,7 +2439,10 @@ document.addEventListener('DOMContentLoaded', function() {
                 .select('id, first_name, last_name, email')
                 .in('id', userIds);
 
-              if (!profilesError && profiles) {
+              if (profilesError) {
+                console.error('Error loading user profiles:', profilesError);
+                // Don't fail completely if profiles can't be loaded
+              } else if (profiles) {
                 userProfiles = profiles.reduce((acc, profile) => {
                   acc[profile.id] = profile;
                   return acc;
@@ -2400,7 +2466,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <tr>
               <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
                 <i class="fas fa-exclamation-triangle mr-2"></i>
-                Failed to load service requests. Please try again.
+                Failed to load dashboard. Please try again.
               </td>
             </tr>
           `;
