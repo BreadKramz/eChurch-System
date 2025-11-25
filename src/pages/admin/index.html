@@ -754,6 +754,7 @@
       // Check for service worker bypass (for debugging Vercel issues)
       const urlParams = new URLSearchParams(window.location.search);
       const bypassSW = urlParams.get('bypass_sw') === 'true';
+      const debugMode = urlParams.get('debug') === 'true';
 
       if (bypassSW) {
         console.log('Service worker bypass enabled for debugging');
@@ -766,6 +767,17 @@
             });
           });
         }
+      }
+
+      if (debugMode) {
+        console.log('=== DEBUG MODE ENABLED ===');
+        console.log('User Agent:', navigator.userAgent);
+        console.log('Platform:', navigator.platform);
+        console.log('Cookie Enabled:', navigator.cookieEnabled);
+        console.log('Online Status:', navigator.onLine);
+        console.log('Current URL:', window.location.href);
+        console.log('Referrer:', document.referrer);
+        console.log('=== END DEBUG INFO ===');
       }
 
       // Database connectivity check
@@ -875,8 +887,13 @@
           }
 
           console.log('Admin authentication successful');
+
+          // Load admin statistics
+          await loadAdminStatistics();
+
         } catch (e) {
           console.error('Admin gate error:', e);
+          console.error('Error stack:', e.stack);
           showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
           // Don't redirect immediately, let user see the error
           setTimeout(() => {

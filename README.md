@@ -27,8 +27,12 @@ The service worker has been updated to not cache Supabase API requests. If you'r
   - Clear storage and unregister service worker
 
 ### 2. **CORS/Network Issues**
-- Check your Supabase project settings
-- Ensure your Vercel domain is added to allowed origins in Supabase
+- **Check Supabase CORS Settings:**
+  1. Go to your Supabase project dashboard
+  2. Navigate to Settings → API
+  3. Scroll down to "Allowed Origins"
+  4. Add your Vercel domain: `https://your-project-name.vercel.app`
+  5. Also add: `https://*.vercel.app` for all Vercel deployments
 - The app includes enhanced error detection for deployment issues
 
 ### 3. **Database Connection**
@@ -46,6 +50,14 @@ https://your-vercel-domain.vercel.app/src/pages/admin/index.html?bypass_sw=true
 ```
 
 This will unregister the service worker for that session and may resolve connectivity issues.
+
+### 6. **Debug Mode**
+For additional troubleshooting, add `?debug=true` to see detailed environment information:
+```
+https://your-vercel-domain.vercel.app/src/pages/admin/index.html?debug=true
+```
+
+This will log browser and network information to help identify the issue.
 
 ## Features
 - Progressive Web App (PWA) with offline support
