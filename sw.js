@@ -96,25 +96,16 @@ self.addEventListener('fetch', (event) => {
     return;
   }
 
-  // Handle API requests differently
+  // Handle API requests differently - don't cache Supabase requests
   if (url.hostname.includes('supabase.co')) {
-    // For Supabase API calls, try network first, then cache
+    // For Supabase API calls, always go to network - don't cache
+    // This prevents issues with stale cached auth tokens or data
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          // Cache successful responses
-          if (response.status === 200) {
-            const responseClone = response.clone();
-            caches.open(DYNAMIC_CACHE).then((cache) => {
-              cache.put(request, responseClone);
-            });
-          }
-          return response;
-        })
-        .catch(() => {
-          // Return cached version if available
-          return caches.match(request);
-        })
+      fetch(request).catch((error) => {
+        console.log('Service Worker: Supabase request failed:', error);
+        // Don't return cached version for API calls - let the app handle errors
+        throw error;
+      })
     );
     return;
   }
