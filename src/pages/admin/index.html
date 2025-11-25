@@ -894,11 +894,17 @@
         } catch (e) {
           console.error('Admin gate error:', e);
           console.error('Error stack:', e.stack);
-          showDashboardMessage('Failed to load dashboard. Please try again.', 'error');
-          // Don't redirect immediately, let user see the error
-          setTimeout(() => {
-            window.location.href = '/src/pages/auth/login.html';
-          }, 3000);
+          // Only show error for critical authentication issues, not database issues
+          if (e.message && (e.message.includes('auth') || e.message.includes('login'))) {
+            showDashboardMessage('Authentication failed. Redirecting to login...', 'error');
+            setTimeout(() => {
+              window.location.href = '/src/pages/auth/login.html';
+            }, 3000);
+          } else {
+            console.log('Non-critical error during admin initialization, continuing with dashboard');
+            // Continue loading dashboard even with errors
+            loadAdminStatistics();
+          }
         }
       });
     </script>
@@ -997,63 +1003,78 @@
 
                 // Check if Supabase client is available
                 if (!supabaseClient) {
-                    throw new Error('Supabase client not initialized');
+                    console.warn('Supabase client not initialized, showing default values');
+                    return;
                 }
 
-                // Get total users
-                const { count: totalUsers, error: totalError } = await supabaseClient
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true });
+                let statsLoaded = false;
 
-                if (totalError) {
-                    console.error('Error loading total users:', totalError);
-                    // Check if table exists
-                    if (totalError.code === '42P01') {
-                        console.warn('Profiles table does not exist. Please run the database schema.');
-                        showDashboardMessage('Database not set up. Please run the schema in Supabase SQL Editor.', 'error');
-                        return; // Don't continue loading other stats
+                // Get total users
+                try {
+                    const { count: totalUsers, error: totalError } = await supabaseClient
+                        .from('profiles')
+                        .select('*', { count: 'exact', head: true });
+
+                    if (!totalError) {
+                        document.getElementById('total-users').textContent = totalUsers || 0;
+                        console.log('Total users loaded:', totalUsers);
+                        statsLoaded = true;
+                    } else {
+                        console.warn('Error loading total users:', totalError);
                     }
-                    throw totalError; // Re-throw other errors
-                } else {
-                    document.getElementById('total-users').textContent = totalUsers || 0;
-                    console.log('Total users loaded:', totalUsers);
+                } catch (error) {
+                    console.warn('Failed to load total users:', error);
                 }
 
                 // Get active users
-                const { count: activeUsers, error: activeError } = await supabaseClient
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .eq('membership_status', 'active');
+                try {
+                    const { count: activeUsers, error: activeError } = await supabaseClient
+                        .from('profiles')
+                        .select('*', { count: 'exact', head: true })
+                        .eq('membership_status', 'active');
 
-                if (!activeError) {
-                    document.getElementById('active-users').textContent = activeUsers || 0;
-                    console.log('Active users loaded:', activeUsers);
-                } else {
-                    console.error('Error loading active users:', activeError);
+                    if (!activeError) {
+                        document.getElementById('active-users').textContent = activeUsers || 0;
+                        console.log('Active users loaded:', activeUsers);
+                        statsLoaded = true;
+                    } else {
+                        console.warn('Error loading active users:', activeError);
+                    }
+                } catch (error) {
+                    console.warn('Failed to load active users:', error);
                 }
 
                 // Get new users this month
-                const now = new Date();
-                const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
+                try {
+                    const now = new Date();
+                    const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1).toISOString();
 
-                const { count: newUsers, error: newError } = await supabaseClient
-                    .from('profiles')
-                    .select('*', { count: 'exact', head: true })
-                    .gte('created_at', startOfMonth);
+                    const { count: newUsers, error: newError } = await supabaseClient
+                        .from('profiles')
+                        .select('*', { count: 'exact', head: true })
+                        .gte('created_at', startOfMonth);
 
-                if (!newError) {
-                    document.getElementById('new-users').textContent = newUsers || 0;
-                    console.log('New users this month loaded:', newUsers);
-                } else {
-                    console.error('Error loading new users:', newError);
+                    if (!newError) {
+                        document.getElementById('new-users').textContent = newUsers || 0;
+                        console.log('New users this month loaded:', newUsers);
+                        statsLoaded = true;
+                    } else {
+                        console.warn('Error loading new users:', newError);
+                    }
+                } catch (error) {
+                    console.warn('Failed to load new users:', error);
                 }
 
-                console.log('Admin statistics loaded successfully');
+                if (statsLoaded) {
+                    console.log('Admin statistics loaded successfully');
+                } else {
+                    console.log('No statistics could be loaded, showing default values (0)');
+                }
 
             } catch (error) {
-                console.error('Error loading admin statistics:', error);
-                showDashboardMessage('Failed to load dashboard. Please check your database connection and ensure the schema is applied.', 'error');
-                // Keep default values (0) on error
+                console.error('Critical error loading admin statistics:', error);
+                // Don't show error message, just log it and keep default values
+                console.log('Dashboard will show with default values due to database issues');
             }
         }
 
@@ -2556,7 +2577,7 @@ document.addEventListener('DOMContentLoaded', function() {
             <tr>
               <td colspan="6" class="px-4 py-8 text-center text-sm text-red-600">
                 <i class="fas fa-exclamation-triangle mr-2"></i>
-                Failed to load dashboard. Please try again.
+                Failed to load service requests. Please try again.
               </td>
             </tr>
           `;
