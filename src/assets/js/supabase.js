@@ -206,22 +206,30 @@ class ChurchAuth {
                 console.log('Profile not found, creating from auth metadata...');
 
                 const userMetadata = data.user.user_metadata || {};
+                // Check if this is a known admin email
+                const isAdminEmail = email.toLowerCase() === 'admin@ompchurchdumaguete.com';
+                const userRole = isAdminEmail ? 'admin' : 'parishioner';
+
+                console.log('Creating profile with role:', userRole, 'for email:', email);
+
                 const { error: createError } = await this.supabase
                     .from('profiles')
                     .insert({
                         id: data.user.id,
-                        first_name: userMetadata.first_name || '',
-                        last_name: userMetadata.last_name || '',
-                        full_name: userMetadata.full_name || `${userMetadata.first_name || ''} ${userMetadata.last_name || ''}`.trim(),
+                        first_name: userMetadata.first_name || (isAdminEmail ? 'Admin' : ''),
+                        last_name: userMetadata.last_name || (isAdminEmail ? 'Administrator' : ''),
+                        full_name: userMetadata.full_name || (isAdminEmail ? 'Admin Administrator' : `${userMetadata.first_name || ''} ${userMetadata.last_name || ''}`.trim()),
                         email: email.toLowerCase(),
                         phone: userMetadata.phone || '',
                         membership_status: 'active',
-                        user_role: 'parishioner'
+                        user_role: userRole
                     });
 
                 if (createError) {
                     console.error('Error creating profile during login:', createError);
                     // Don't fail login if profile creation fails
+                } else {
+                    console.log('Profile created successfully with role:', userRole);
                 }
             } else {
                 // Check if account is active

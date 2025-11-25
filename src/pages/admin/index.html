@@ -876,11 +876,51 @@
             return;
           }
 
-          const profile = await churchAuth.getUserProfile();
+          const currentUser = churchAuth.getCurrentUser();
+          console.log('Current user:', currentUser);
+
+          // Check if user is admin by email first (for known admin accounts)
+          const isKnownAdmin = currentUser?.email?.toLowerCase() === 'admin@ompchurchdumaguete.com';
+          console.log('Is known admin by email:', isKnownAdmin);
+
+          let profile = await churchAuth.getUserProfile();
           console.log('User profile:', profile);
 
-          if (!profile || (profile.user_role || '').toLowerCase() !== 'admin') {
-            console.log('Not admin user, redirecting to login. Role:', profile?.user_role);
+          // If profile doesn't exist, try to create it for admin users
+          if (!profile && isKnownAdmin) {
+            console.log('Creating admin profile for known admin user...');
+            try {
+              const { error: createError } = await supabaseClient
+                .from('profiles')
+                .insert({
+                  id: currentUser.id,
+                  first_name: 'Admin',
+                  last_name: 'Administrator',
+                  full_name: 'Admin Administrator',
+                  email: currentUser.email.toLowerCase(),
+                  phone: '',
+                  membership_status: 'active',
+                  user_role: 'admin'
+                });
+
+              if (createError) {
+                console.error('Error creating admin profile:', createError);
+              } else {
+                console.log('Admin profile created successfully');
+                // Fetch the newly created profile
+                profile = await churchAuth.getUserProfile();
+              }
+            } catch (createError) {
+              console.error('Failed to create admin profile:', createError);
+            }
+          }
+
+          // Check admin role
+          const userRole = (profile?.user_role || '').toLowerCase();
+          console.log('User role:', userRole);
+
+          if (!profile || userRole !== 'admin') {
+            console.log('Not admin user, redirecting to login. Role:', userRole, 'Profile exists:', !!profile);
             // Not admin -> back to user login
             window.location.href = '/src/pages/auth/login.html';
             return;

@@ -146,9 +146,45 @@
           }
 
           // Ensure profile role is admin
-          const profile = await window.churchAuth.getUserProfile();
+          const currentUser = window.churchAuth.getCurrentUser();
+          const isKnownAdmin = currentUser?.email?.toLowerCase() === 'admin@ompchurchdumaguete.com';
+
+          let profile = await window.churchAuth.getUserProfile();
+          console.log('Admin login - profile:', profile);
+
+          // If profile doesn't exist for known admin, try to create it
+          if (!profile && isKnownAdmin) {
+            console.log('Creating admin profile for known admin user...');
+            try {
+              const { error: createError } = await window.supabaseClient
+                .from('profiles')
+                .insert({
+                  id: currentUser.id,
+                  first_name: 'Admin',
+                  last_name: 'Administrator',
+                  full_name: 'Admin Administrator',
+                  email: currentUser.email.toLowerCase(),
+                  phone: '',
+                  membership_status: 'active',
+                  user_role: 'admin'
+                });
+
+              if (createError) {
+                console.error('Error creating admin profile:', createError);
+              } else {
+                console.log('Admin profile created successfully');
+                // Fetch the newly created profile
+                profile = await window.churchAuth.getUserProfile();
+              }
+            } catch (createError) {
+              console.error('Failed to create admin profile:', createError);
+            }
+          }
+
           const role = (profile?.user_role || '').toLowerCase();
-          if (role !== 'admin') {
+          console.log('Admin login - user role:', role);
+
+          if (!profile || role !== 'admin') {
             showFeedback('This account is not authorized as admin.', 'error');
             resetBtn(getCodeBtn, '<i class="fas fa-key text-xs"></i> <span>Sign In & Get Admin Code</span>');
             return;
