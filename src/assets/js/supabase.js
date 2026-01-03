@@ -108,7 +108,7 @@ class ChurchAuth {
             // Create account in Supabase Auth with redirect to login page
             // Use Vercel deployment URL for email confirmation
             const currentOrigin = "https://ompchurch.vercel.app";
-            const redirectUrl = `${currentOrigin}/src/pages/auth/login.html`;
+            const redirectUrl = `${currentOrigin}https://ompchurch.vercel.app/src/pages/auth/login`;
 
             const { data, error } = await this.supabase.auth.signUp({
                 email: email,
