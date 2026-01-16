@@ -2545,11 +2545,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 serviceQuery = serviceQuery.eq('status', filterValue);
               }
 
-              if (sortValue === 'newest') {
-                serviceQuery = serviceQuery.order('submitted_at', { ascending: false });
-              } else {
-                serviceQuery = serviceQuery.order('submitted_at', { ascending: true });
-              }
+              // Always order by submitted_at descending for individual queries to ensure consistency
+              serviceQuery = serviceQuery.order('submitted_at', { ascending: false });
 
               const { data: serviceData, error: serviceError } = await serviceQuery;
 
@@ -2577,6 +2574,14 @@ document.addEventListener('DOMContentLoaded', function() {
               // Continue with other tables even if one fails
               continue;
             }
+          }
+
+          // Sort all combined requests by submitted_at in descending order (newest first)
+          allRequests.sort((a, b) => new Date(b.submitted_at) - new Date(a.submitted_at));
+
+          // Apply sort order if oldest first is selected
+          if (sortValue === 'oldest') {
+            allRequests.reverse();
           }
 
           // Now get user profiles for all the user_ids we found
